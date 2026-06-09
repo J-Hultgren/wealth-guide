@@ -3,799 +3,1928 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Wealth Builder — Jessa</title>
+<title>Wealth Builder</title>
 <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#FAFAF8;color:#1C1C1E;min-height:100vh;overflow-x:hidden}
-#root{min-height:100vh;display:flex;flex-direction:column}
-.screen{flex:1;overflow-y:auto;padding-bottom:80px}
-/* bottom nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e5e5e5;display:flex;height:64px;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;cursor:pointer;padding:8px 0}
-.nav-btn .icon{font-size:22px;line-height:1}
-.nav-btn .label{font-size:10px;font-weight:600;letter-spacing:.02em}
-/* progress ring */
-.ring-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring-center{position:absolute;text-align:center}
-/* cards */
-.card{background:#fff;border-radius:16px;padding:16px;margin:0 16px 12px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 8px rgba(0,0,0,.04)}
-.step-card{background:#fff;border-radius:14px;margin:0 16px 10px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden;transition:all .2s}
-.step-header{display:flex;align-items:center;gap:12px;padding:14px 16px;cursor:pointer;user-select:none}
-.step-body{padding:0 16px 16px}
-.sub-step{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f5f5f5}
-.sub-step:last-child{border-bottom:none}
-.cb{width:22px;height:22px;border-radius:6px;border:2px solid #ddd;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;margin-top:1px}
-.cb.done{border-color:#1A4A42;background:#1A4A42}
-.chip{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px}
-.pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px}
-/* animations */
-@keyframes pop{0%{transform:scale(0.8);opacity:0}60%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
-@keyframes slideup{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-.pop{animation:pop .3s ease forwards}
-.slideup{animation:slideup .3s ease forwards}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F5F5F7;color:#1C1C1E}
+#root{min-height:100vh}
+.scroll{overflow-y:auto;padding-bottom:76px;min-height:100vh}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e8e8e8;display:flex;height:66px;z-index:100}
+.nav-btn{flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.nav-icon{font-size:22px}
+.nav-lbl{font-size:10px;font-weight:600}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pop{animation:pop .35s ease forwards}
+.fadein{animation:fadein .25s ease forwards}
 </style>
 </head>
 <body>
-<div id="root"></div>
-
-<script type="text/babel">
-const {useState,useEffect,useRef,useCallback}=React;
-
-// ─── DATA ───────────────────────────────────────────────────────────────────
-const PHASES=[
-  {id:1,name:"Execute Now",emoji:"🔥",color:"#B71C1C",light:"#FFF5F5"},
-  {id:2,name:"Tax Setup",emoji:"🧾",color:"#1565C0",light:"#EEF4FF"},
-  {id:3,name:"Your LLC",emoji:"🏢",color:"#5b4a8a",light:"#F3EFFF"},
-  {id:4,name:"Retirement",emoji:"🏦",color:"#1A4A42",light:"#EEF7F5"},
-  {id:5,name:"Investing",emoji:"📈",color:"#1d5c2e",light:"#EDFBF0"},
-  {id:6,name:"Protection",emoji:"🛡️",color:"#7F5000",light:"#FFF8EE"},
-  {id:7,name:"Snowball",emoji:"❄️",color:"#1a1a2e",light:"#F0F0FF"},
-];
-
-const STEPS=[
-  {id:1,phase:1,title:"Close the Figure HELOC",urgency:"This week",impact:"+$1,388/mo freed",impactVal:1388,impactType:"monthly",
-   what:"Take $47,293 as cash. Pay Avant & Affirm on day one. Fund repairs.",
-   substeps:[
-    {id:"1a",text:'Go to figure.com/account/heloc → select "Access Cash"'},
-    {id:"1b",text:"Select 8.25% APR · 15-year fixed · 4.99% origination fee"},
-    {id:"1c",text:"Check both discount boxes: autopay (-0.25%) + credit union (-0.15%)"},
-    {id:"1d",text:"Upload: deed from county registry, government ID, name change docs"},
-    {id:"1e",text:"Respond to every Figure request within 24 hours — window is running"},
-    {id:"1f",text:"Day funds arrive: wire $24,359 to Avant (call day before for payoff amount)"},
-    {id:"1g",text:"Day funds arrive: wire $6,525 to Affirm (call day before for payoff amount)"},
-    {id:"1h",text:"Keep $16,409 for repairs + add your $5K savings = $21,409 total"},
-  ]},
-  {id:2,phase:1,title:"Resolve the name change with Figure",urgency:"Same day as Step 1",impact:"Prevents denial",impactVal:0,impactType:"protection",
-   what:"Your deed has an old name. Disclose proactively — surprises cause denials, disclosures just cause paperwork.",
-   substeps:[
-    {id:"2a",text:'Call Figure. Say: "I have a name change since my deed was recorded — what docs do you need?"'},
-    {id:"2b",text:"Pull deed from your county NH registry of deeds (free, online)"},
-    {id:"2c",text:"Provide: marriage certificate OR divorce decree OR court order"},
-    {id:"2d",text:"If they need a notarized affidavit: any UPS Store does this for $5–15"},
-  ]},
-  {id:3,phase:1,title:"Open a High-Yield Savings Account",urgency:"15 minutes",impact:"Earn 4.5% on savings",impactVal:675,impactType:"annual",
-   what:"Emergency fund goes here. $15K earns $675/year just sitting. FDIC insured.",
-   substeps:[
-    {id:"3a",text:"Go to marcus.com or ally.com — click Open Account → Savings"},
-    {id:"3b",text:"Link your LC Checking account. Open with whatever you can spare now."},
-    {id:"3c",text:"Set auto-transfer: $250 every two weeks on payday"},
-    {id:"3d",text:'Name this account "Emergency Fund — DO NOT TOUCH"'},
-    {id:"3e",text:"Target: $15,000 minimum before you invest anywhere else"},
-  ]},
-  {id:4,phase:1,title:"Fix your W-4 withholding (both jobs)",urgency:"20 minutes",impact:"Prevents IRS penalties",impactVal:0,impactType:"protection",
-   what:"Two W-2 jobs means you are likely under-withheld. The IRS charges penalties on underpayment over $1,000.",
-   substeps:[
-    {id:"4a",text:"Go to irs.gov/W4app — enter both jobs' income and 3 dependents"},
-    {id:"4b",text:"Note the additional withholding amount per paycheck the tool recommends"},
-    {id:"4c",text:"Request a new W-4 from HR at XE — fill in additional withholding on Step 4c"},
-    {id:"4d",text:"Request a new W-4 from HR at TP — do the same"},
-  ]},
-  {id:5,phase:1,title:"Confirm 401K match at XE and TP",urgency:"30 minutes",impact:"Free money — never skip",impactVal:0,impactType:"match",
-   what:"Every employer match you don't take is a 50–100% return you're leaving on the table.",
-   substeps:[
-    {id:"5a",text:"Log into XE benefits portal — find 401K match percentage"},
-    {id:"5b",text:"Contribute at MINIMUM enough to get the full XE match"},
-    {id:"5c",text:"Log into TP benefits portal — confirm you're capturing full TP match too"},
-    {id:"5d",text:"Select Traditional (pre-tax) 401K — not Roth — while in 24% bracket"},
-    {id:"5e",text:"Choose index funds with expense ratios below 0.10%"},
-  ]},
-  {id:6,phase:2,title:"Open and max an HSA",urgency:"Month 1",impact:"Saves $2,052/yr in taxes",impactVal:2052,impactType:"annual",
-   what:"Best account in existence. Pre-tax in, tax-free growth, tax-free out for medical. Requires an HDHP health plan.",
-   substeps:[
-    {id:"6a",text:"Check if your health plan is an HDHP (deductible ≥$1,650 individual / $3,300 family)"},
-    {id:"6b",text:"If yes: go to fidelity.com → Open Account → Health Savings Account"},
-    {id:"6c",text:"Contribute maximum: $8,550/year family or $4,300/year individual (2026)"},
-    {id:"6d",text:"CRITICAL: Invest the HSA in FZROX — do NOT leave it in cash"},
-    {id:"6e",text:"Pay current medical bills out of pocket. Save ALL receipts forever."},
-    {id:"6f",text:"Strategy: let HSA grow invested for 20 years, then reimburse past bills"},
-  ]},
-  {id:7,phase:2,title:"Enroll in Dependent Care FSA",urgency:"Next open enrollment",impact:"Saves $1,200/yr in taxes",impactVal:1200,impactType:"annual",
-   what:"$5,000/year pre-tax for childcare expenses. You're spending this anyway — make it pre-tax.",
-   substeps:[
-    {id:"7a",text:"At open enrollment: elect maximum Dependent Care FSA = $5,000/year"},
-    {id:"7b",text:"Qualifying: after-school programs, summer day camps, childcare for kids under 13"},
-    {id:"7c",text:"Submit receipts monthly through your employer's FSA portal"},
-    {id:"7d",text:"Only elect what you'll actually spend — FSA is use-it-or-lose-it"},
-  ]},
-  {id:8,phase:2,title:"Open a Backdoor Roth IRA",urgency:"Month 1–2",impact:"Tax-free wealth forever",impactVal:7000,impactType:"annual",
-   what:"At your income you're over the Roth limit. The backdoor route is perfectly legal. $7K/year grows completely tax-free.",
-   substeps:[
-    {id:"8a",text:"Go to fidelity.com → Open Account → Traditional IRA (not Roth yet)"},
-    {id:"8b",text:"Contribute $7,000 to the Traditional IRA — transfer from checking"},
-    {id:"8c",text:"Wait 1–3 business days for transfer to fully settle"},
-    {id:"8d",text:"DO NOT invest the money yet — leave it as cash"},
-    {id:"8e",text:"Go to your Traditional IRA → Convert to Roth → Convert all → Confirm"},
-    {id:"8f",text:"Now invest it: Roth IRA → Buy FZROX (Fidelity Zero Total Market)"},
-    {id:"8g",text:"Tell your CPA — they file Form 8606 to prevent double taxation"},
-    {id:"8h",text:"Set calendar reminder Jan 1 each year to do this again"},
-  ]},
-  {id:9,phase:2,title:"Maximize 401K contributions",urgency:"Month 2–3",impact:"Up to $5,640/yr tax savings",impactVal:5640,impactType:"annual",
-   what:"Increase contributions toward the $23,500 annual limit. Do this gradually as debt frees up cash.",
-   substeps:[
-    {id:"9a",text:"Calculate your current annual 401K contribution (contribution % × annual salary)"},
-    {id:"9b",text:"Calculate the gap to $23,500 — that's how much more you can contribute"},
-    {id:"9c",text:"Increase contribution % by 1-2% every few months as snowball frees cash"},
-    {id:"9d",text:"Target: fully maxed by 2028 when most debt is dead"},
-    {id:"9e",text:"Select index funds inside 401K — expense ratio below 0.10%"},
-  ]},
-  {id:10,phase:3,title:"Read your employment agreements FIRST",urgency:"Before any other LLC step",impact:"Prevents job loss",impactVal:0,impactType:"protection",
-   what:"You MUST check non-compete clauses before consulting anywhere. Violating this costs your primary job.",
-   substeps:[
-    {id:"10a",text:"Pull employment agreements from both XE and TP"},
-    {id:"10b",text:"Search for: Non-compete, Non-solicitation, Intellectual Property, Outside Employment"},
-    {id:"10c",text:"Note what you CANNOT do: typically competitors or use of employer IP"},
-    {id:"10d",text:"Note what you CAN do: web apps, digital products, non-energy consulting, teaching"},
-    {id:"10e",text:"If unclear: hire a NH employment attorney for 1-hour review ($150–300)"},
-  ]},
-  {id:11,phase:3,title:"Form your LLC in New Hampshire",urgency:"Month 1",impact:"Unlocks $1,239+/yr in deductions",impactVal:1239,impactType:"annual",
-   what:"$100 one-time. Business exists from day of formation. Deductions start immediately.",
-   substeps:[
-    {id:"11a",text:"Choose a name — search sos.nh.gov to confirm it's available"},
-    {id:"11b",text:"File Articles of Organization at sos.nh.gov → Business → File Documents → LLC → $100"},
-    {id:"11c",text:"Get EIN free at irs.gov → search 'Apply for EIN' → LLC → print confirmation page"},
-    {id:"11d",text:"Write an operating agreement (free template online) — sign and keep in a folder"},
-    {id:"11e",text:"Set calendar reminder for your $100 annual report due date in NH"},
-  ]},
-  {id:12,phase:3,title:"Open a business checking account",urgency:"Same week as LLC",impact:"Legal protection",impactVal:0,impactType:"protection",
-   what:"Personal and business money must NEVER mix. This protects your LLC status and makes taxes clean.",
-   substeps:[
-    {id:"12a",text:"Go to relayfi.com or mercury.com — both are free for LLCs"},
-    {id:"12b",text:"Open with LLC name, EIN, and Articles of Organization"},
-    {id:"12c",text:"Get a business debit card tied to this account"},
-    {id:"12d",text:"Rule: ALL business expenses on business card. ALL personal expenses on personal card."},
-  ]},
-  {id:13,phase:3,title:"Open a Solo 401K for the LLC",urgency:"Before Dec 31 of the year",impact:"Shelter up to $70K/yr",impactVal:0,impactType:"variable",
-   what:"Must be opened by Dec 31 to use for that tax year. Do it now even before earning income.",
-   substeps:[
-    {id:"13a",text:"Go to fidelity.com → Open Account → Self-Employed 401(k)"},
-    {id:"13b",text:"Enter your LLC name and EIN"},
-    {id:"13c",text:"Enable both employee AND employer contribution types"},
-    {id:"13d",text:"When consulting income arrives: contribute up to $23,500 as employee first"},
-    {id:"13e",text:"Then add 25% of net self-employment income as employer contribution"},
-    {id:"13f",text:"Invest inside Solo 401K: FZROX or FSKAX index funds"},
-  ]},
-  {id:14,phase:3,title:"Start tracking business expenses",urgency:"Day 1 of LLC",impact:"Deductions start immediately",impactVal:5162,impactType:"annual",
-   what:"These are things you already pay. With an LLC they become deductions. Keep every receipt.",
-   substeps:[
-    {id:"14a",text:"Sign up for Wave Accounting free at waveapps.com"},
-    {id:"14b",text:"Start expensing immediately: home office ($5/sqft/yr for dedicated space)"},
-    {id:"14c",text:"Expense internet (75% business): Fidium $50/mo = $540/yr"},
-    {id:"14d",text:"Expense phone (50% business): Google Fi $147/mo = $882/yr"},
-    {id:"14e",text:"Expense Claude AI ($20/mo = $240/yr), GitHub, professional memberships"},
-    {id:"14f",text:"Expense computer (Section 179 — full cost year 1)"},
-    {id:"14g",text:"Keep a weekly activity log: date, what you worked on, time spent"},
-    {id:"14h",text:"Photograph every receipt immediately — upload to Wave"},
-  ]},
-  {id:15,phase:3,title:"Set up quarterly estimated taxes",urgency:"When LLC earns income",impact:"Avoids penalties",impactVal:0,impactType:"protection",
-   what:"Self-employment income has no withholding. You pay quarterly or the IRS charges penalties.",
-   substeps:[
-    {id:"15a",text:"Create account at irs.gov/payments (IRS Direct Pay — free)"},
-    {id:"15b",text:"Mark quarterly due dates: Apr 15, Jun 16, Sep 15, Jan 15"},
-    {id:"15c",text:"Formula: net consulting income each quarter × 30% = estimated payment"},
-    {id:"15d",text:"Keep a separate savings account labeled 'Tax Reserve' — put 30% of every check here"},
-  ]},
-  {id:16,phase:4,title:"Roll Acorns IRA → Fidelity",urgency:"Month 1",impact:"Saves $36-60/yr in fees",impactVal:48,impactType:"annual",
-   what:"Acorns charges $3-5/month. Fidelity charges $0. The accounts grow the same way — stop paying fees.",
-   substeps:[
-    {id:"16a",text:"Log into Acorns → Settings → Rollover OR call 855-222-6734"},
-    {id:"16b",text:"Request direct rollover to Fidelity Traditional IRA — give them your Fidelity account number"},
-    {id:"16c",text:"Wait 5–10 business days for transfer to complete"},
-    {id:"16d",text:"At Fidelity: invest the transferred amount in FZROX immediately"},
-    {id:"16e",text:"Cancel Acorns Gold subscription after rollover completes"},
-  ]},
-  {id:17,phase:4,title:"Confirm XE RSA vesting schedule",urgency:"Month 1",impact:"$509 saved per vest (hold strategy)",impactVal:509,impactType:"per-event",
-   what:"RSAs vest as ordinary income (24% tax). Holding 12+ months converts profit to 15% capital gains.",
-   substeps:[
-    {id:"17a",text:"Log into Fidelity NetBenefits → Equity Awards → confirm vest dates"},
-    {id:"17b",text:"Confirm Fidelity is set to withhold shares to cover taxes at vesting"},
-    {id:"17c",text:"Oct 2026: XE lockup expires — sell 30 of 65 shares → emergency fund"},
-    {id:"17d",text:"Hold remaining shares 12+ months after each vest for long-term capital gains"},
-    {id:"17e",text:"Never let XE stock exceed 15% of your total net worth — diversify beyond that"},
-  ]},
-  {id:18,phase:4,title:"Open 529 college savings accounts",urgency:"Month 3+",impact:"Tax-free education growth",impactVal:0,impactType:"future",
-   what:"No NH state deduction (no income tax) but federal growth is tax-free for education. Prioritize youngest child.",
-   substeps:[
-    {id:"18a",text:"Fidelity.com → Open Account → 529 → Enter child's name, SSN, birth date"},
-    {id:"18b",text:"Select age-based portfolio (auto-adjusts risk as college approaches)"},
-    {id:"18c",text:"Focus youngest child first — more time = more compound growth"},
-    {id:"18d",text:"Contribute only after 401K match, HSA, Roth IRA are handled"},
-  ]},
-  {id:19,phase:5,title:"Open a taxable brokerage account",urgency:"After tax accounts are started",impact:"Unlimited wealth building",impactVal:0,impactType:"future",
-   what:"After maxing all tax-advantaged accounts, this is where the rest goes. No limits, accessible anytime.",
-   substeps:[
-    {id:"19a",text:"Fidelity.com → Open Account → Brokerage Account"},
-    {id:"19b",text:"Fund ONLY after: 401K match ✓, HSA started ✓, Roth IRA started ✓"},
-    {id:"19c",text:"Invest: 70% FZROX + 20% FZILX + 10% FXNAX (or go 100% FZROX if aggressive)"},
-    {id:"19d",text:"Set automatic monthly investment on payday"},
-    {id:"19e",text:"Never manually pick stocks. Never try to time the market."},
-  ]},
-  {id:20,phase:5,title:"Learn the market crash rule",urgency:"Read once, remember forever",impact:"Prevents catastrophic mistakes",impactVal:0,impactType:"protection",
-   what:"Most investing mistakes happen during crashes. Your only job when the market falls is: nothing.",
-   substeps:[
-    {id:"20a",text:"When market drops 20-50%: do nothing. Keep automatic investments running."},
-    {id:"20b",text:"Check investment accounts maximum once per month"},
-    {id:"20c",text:"Rebalance once per year (every January): sell winners, buy laggards back to target %"},
-    {id:"20d",text:"Tax-loss harvesting: if investment is down 10%+, sell → buy similar fund → claim loss on taxes"},
-  ]},
-  {id:21,phase:6,title:"Get term life insurance",urgency:"Month 1",impact:"Protects family of 5",impactVal:0,impactType:"protection",
-   what:"3 dependents + significant debt = you need this. 10x annual income minimum. 20-year term only.",
-   substeps:[
-    {id:"21a",text:"Go to policygenius.com — enter age, health, coverage amount ($1M+), term (20yr)"},
-    {id:"21b",text:"Compare quotes — choose lowest cost from A-rated company"},
-    {id:"21c",text:"Apply online, complete health questionnaire, schedule free medical exam"},
-    {id:"21d",text:"NEVER buy whole life, universal life, or 'investment' life insurance"},
-  ]},
-  {id:22,phase:6,title:"Check and add disability insurance",urgency:"Month 1",impact:"Protects your income",impactVal:0,impactType:"protection",
-   what:"You're 4x more likely to become disabled than to die during working years. Check if employers cover you.",
-   substeps:[
-    {id:"22a",text:"Check both XE and TP benefits for short-term and long-term disability coverage"},
-    {id:"22b",text:"Confirm: what % of salary, how long the waiting period, how long benefits last"},
-    {id:"22c",text:"If LTD is under 60% of salary: get private policy from Guardian or Principal"},
-  ]},
-  {id:23,phase:6,title:"Create your estate plan",urgency:"Month 1–3",impact:"Protects your children",impactVal:0,impactType:"protection",
-   what:"Family of 5 with minor children needs this immediately. Without a will, a court decides who raises your kids.",
-   substeps:[
-    {id:"23a",text:"Find NH estate planning attorney (free consultation, ~$500-1,500 total)"},
-    {id:"23b",text:"Get: Last Will and Testament with guardianship designation for all 3 children"},
-    {id:"23c",text:"Get: Healthcare Proxy — who makes medical decisions if you can't"},
-    {id:"23d",text:"Get: Durable Financial Power of Attorney"},
-    {id:"23e",text:"Add named beneficiaries to: 401K, IRA, life insurance, bank accounts"},
-  ]},
-  {id:24,phase:6,title:"Add umbrella insurance policy",urgency:"Month 2",impact:"$1M liability for ~$200/yr",impactVal:0,impactType:"protection",
-   what:"As your net worth grows you have more to lose from lawsuits. $200/year for $1M in protection.",
-   substeps:[
-    {id:"24a",text:"Call your current home/auto insurer: 'I want to add a $1M umbrella policy'"},
-    {id:"24b",text:"Confirm your auto liability coverage meets minimum (usually $300K bodily injury)"},
-    {id:"24c",text:"Get quotes from 2 other insurers — umbrella pricing varies widely"},
-  ]},
-  {id:25,phase:7,title:"Execute the debt snowball",urgency:"Every payday",impact:"$7,968/mo freed by Mar 2029",impactVal:7968,impactType:"by-march-2029",
-   what:"One rule: every freed minimum attacks the next target. No exceptions. No detours. No lifestyle upgrades.",
-   substeps:[
-    {id:"25a",text:"Current #1 target: Upstart ($39,197 @ 29.4%) — every surplus dollar goes here"},
-    {id:"25b",text:"On every payday: after bills auto-pay, send every remaining dollar to Upstart"},
-    {id:"25c",text:"When Upstart dies (Jul 2027): move to Barclay ($14,500 @ 29%)"},
-    {id:"25d",text:"When Barclay dies (Oct 2027): move to Amex ($14,784 @ 29%)"},
-    {id:"25e",text:"When Amex dies (Jan 2028): FULL ATTACK on SoFi ($57,889 @ 26%)"},
-    {id:"25f",text:"When SoFi dies (Sep 2028): Upgrade ($19,444 @ 17%) — the end is near"},
-    {id:"25g",text:"When Upgrade dies (Nov 2028): Best Egg ($26,596 @ 15%)"},
-    {id:"25h",text:"Mar 2029: ALL consumer debt gone. $7,968/month freed."},
-    {id:"25i",text:"0% debts (Citi, Citi AA): pay minimums only throughout — never pay extra"},
-  ]},
-  {id:26,phase:7,title:"Redirect freed payments after Mar 2029",urgency:"March 2029",impact:"$4,215+/mo to investing",impactVal:4215,impactType:"monthly",
-   what:"$7,968/month freed up. Redirect it in this exact order.",
-   substeps:[
-    {id:"26a",text:"First $1,958: fill any remaining 401K contribution gap to $23,500"},
-    {id:"26b",text:"Next $712: HSA maximum ($8,550 ÷ 12 = $712/mo)"},
-    {id:"26c",text:"Next $583: Backdoor Roth IRA ($7,000 ÷ 12 = $583/mo)"},
-    {id:"26d",text:"Next $500: top up emergency fund to $20,000 if not already there"},
-    {id:"26e",text:"Remaining ~$4,215: taxable brokerage — FZROX/FZILX — automatic monthly investment"},
-  ]},
-  {id:27,phase:7,title:"Monthly financial review — 15 minutes",urgency:"1st of every month",impact:"Keeps everything on track",impactVal:0,impactType:"habit",
-   what:"This is the only financial thinking you need once automation is set up.",
-   substeps:[
-    {id:"27a",text:"Check Bloom: did all bills auto-pay? Any NSF fees? Resolve immediately."},
-    {id:"27b",text:"Check snowball target balance — how much did you pay down this month?"},
-    {id:"27c",text:"Check emergency fund balance — growing on schedule?"},
-    {id:"27d",text:"Check investment accounts ONE time — are automatic investments running?"},
-    {id:"27e",text:"Calculate net worth: all assets minus all debts. Write it down. Watch it grow."},
-  ]},
-];
-
-const MONTHLY_IMPACT = STEPS.filter(s=>s.impactType==="monthly").reduce((a,s)=>a+s.impactVal,0);
-const ANNUAL_IMPACT  = STEPS.filter(s=>s.impactType==="annual").reduce((a,s)=>a+s.impactVal,0);
-
-// ─── STORAGE ─────────────────────────────────────────────────────────────────
-const STORAGE_KEY="wealth_guide_v2";
-function loadState(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}")}catch{return{}}}
-function saveState(s){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(s))}catch{}}
-
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
-function fmt(n){return n>=1000?`$${(n/1000).toFixed(n%1000===0?0:1)}K`:`$${n}`}
-function phaseOf(stepId){return PHASES.find(p=>p.steps&&false)||PHASES.find(p=>STEPS.find(s=>s.id===stepId)?.phase===p.id)}
-function getPhaseColor(phaseId){return PHASES.find(p=>p.id===phaseId)?.color||"#1A4A42"}
-function getPhaseLight(phaseId){return PHASES.find(p=>p.id===phaseId)?.light||"#EEF7F5"}
-
-// Progress ring SVG component
-function Ring({pct,size=120,stroke=10,color="#1A4A42",children}){
-  const r=size/2-stroke/2, circ=2*Math.PI*r, offset=circ*(1-pct);
-  return(
-    <div style={{position:"relative",width:size,height:size}}>
-      <svg width={size} height={size} style={{transform:"rotate(-90deg)"}}>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="#E5E5EA" strokeWidth={stroke}/>
-        <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke}
-          strokeDasharray={circ} strokeDashoffset={offset} strokeLinecap="round"
-          style={{transition:"stroke-dashoffset 0.6s ease"}}/>
-      </svg>
-      <div style={{position:"absolute",top:0,left:0,width:"100%",height:"100%",display:"flex",alignItems:"center",justifyContent:"center"}}>
-        {children}
-      </div>
-    </div>
-  );
-}
-
-// ─── MAIN APP ─────────────────────────────────────────────────────────────────
-function App(){
-  const [state,setState]=useState(loadState);
-  const [tab,setTab]=useState("home");
-  const [phase,setPhase]=useState(1);
-  const [openStep,setOpenStep]=useState(null);
-  const [showNote,setShowNote]=useState(null);
-  const [noteText,setNoteText]=useState("");
-  const [flash,setFlash]=useState(null);
-
-  useEffect(()=>saveState(state),[state]);
-
-  const toggleSub=(stepId,subId)=>{
-    const key=`${stepId}_${subId}`;
-    const now={...state,[key]:!state[key]};
-    setState(now);
-    // auto-complete step if all subs done
-    const step=STEPS.find(s=>s.id===stepId);
-    const allDone=step.substeps.every(ss=>now[`${stepId}_${ss.id}`]);
-    if(allDone&&!state[`done_${stepId}`]){
-      setState(p=>({...p,[`done_${stepId}`]:true,done_at_${stepId}:Date.now()}));
-      setFlash(stepId);
-      setTimeout(()=>setFlash(null),2000);
+<div id="root"><div style="padding:40px;text-align:center;font-family:sans-serif;color:#888">Loading Wealth Builder…</div></div>
+<script>
+const {
+  useState,
+  useEffect
+} = React;
+const TEAL = '#1A4A42',
+  TEAL2 = '#3D7A6E',
+  TEALLT = '#EEF7F5';
+const PHASES = [{
+  id: 1,
+  name: 'Execute Now',
+  e: '🔥',
+  c: '#B71C1C',
+  l: '#FFF5F5'
+}, {
+  id: 2,
+  name: 'Tax Setup',
+  e: '🧾',
+  c: '#1565C0',
+  l: '#EEF4FF'
+}, {
+  id: 3,
+  name: 'Your LLC',
+  e: '🏢',
+  c: '#5b4a8a',
+  l: '#F3EFFF'
+}, {
+  id: 4,
+  name: 'Retirement',
+  e: '🏦',
+  c: TEAL,
+  l: TEALLT
+}, {
+  id: 5,
+  name: 'Investing',
+  e: '📈',
+  c: '#1d5c2e',
+  l: '#EDFBF0'
+}, {
+  id: 6,
+  name: 'Protection',
+  e: '🛡️',
+  c: '#7F5000',
+  l: '#FFF8EE'
+}, {
+  id: 7,
+  name: 'Snowball',
+  e: '❄️',
+  c: '#1a1a2e',
+  l: '#F0F0FF'
+}];
+const pc = p => (PHASES.find(x => x.id === p) || PHASES[0]).c;
+const pl = p => (PHASES.find(x => x.id === p) || PHASES[0]).l;
+const STEPS = [{
+  id: 1,
+  p: 1,
+  t: 'Close the Figure HELOC',
+  u: 'This week',
+  imp: '+$1,388/mo freed',
+  iv: 1388,
+  it: 'monthly',
+  w: 'Take $47,293 cash. Pay Avant & Affirm on day one. Fund repairs.',
+  s: [{
+    i: 'a',
+    x: 'Go to figure.com → select "Access Cash" (not pay off debts)'
+  }, {
+    i: 'b',
+    x: 'Select 8.25% APR · 15-year fixed · 4.99% origination fee'
+  }, {
+    i: 'c',
+    x: 'Check both: Autopay (-0.25%) and Credit Union member (-0.15%)'
+  }, {
+    i: 'd',
+    x: 'Upload: county deed, government ID, name-change document'
+  }, {
+    i: 'e',
+    x: 'Respond to every Figure request within 24 hours — 14-day window'
+  }, {
+    i: 'f',
+    x: 'Day funds arrive → wire $24,359 to Avant (call for payoff quote first)'
+  }, {
+    i: 'g',
+    x: 'Day funds arrive → wire $6,525 to Affirm (call for payoff quote first)'
+  }, {
+    i: 'h',
+    x: 'Keep $16,409 for repairs + your $5K savings = $21,409 total'
+  }]
+}, {
+  id: 2,
+  p: 1,
+  t: 'Resolve name change with Figure',
+  u: 'Same day as Step 1',
+  imp: 'Prevents denial',
+  iv: 0,
+  it: 'protect',
+  w: 'Deed has old name. Disclose proactively — surprises cause denials, disclosures cause paperwork.',
+  s: [{
+    i: 'a',
+    x: 'Call Figure: "I have a name change since my deed — what docs do you need?"'
+  }, {
+    i: 'b',
+    x: 'Pull deed from your county NH registry of deeds (free, online)'
+  }, {
+    i: 'c',
+    x: 'Provide: marriage certificate OR divorce decree OR court order'
+  }, {
+    i: 'd',
+    x: 'If they need notarized affidavit: any UPS Store for $5–15'
+  }]
+}, {
+  id: 3,
+  p: 1,
+  t: 'Open High-Yield Savings Account',
+  u: '15 minutes',
+  imp: 'Earn 4.5% on savings',
+  iv: 675,
+  it: 'annual',
+  w: 'Emergency fund lives here. $15K earns $675/year. FDIC insured.',
+  s: [{
+    i: 'a',
+    x: 'Go to marcus.com or ally.com → Open Account → Savings'
+  }, {
+    i: 'b',
+    x: 'Link your LC Checking. Start with whatever you can.'
+  }, {
+    i: 'c',
+    x: 'Set auto-transfer: $250 every two weeks on payday'
+  }, {
+    i: 'd',
+    x: 'Name it "Emergency Fund — DO NOT TOUCH"'
+  }, {
+    i: 'e',
+    x: 'Target: $15,000 before investing elsewhere'
+  }]
+}, {
+  id: 4,
+  p: 1,
+  t: 'Fix W-4 withholding at both jobs',
+  u: '20 minutes',
+  imp: 'Avoids IRS penalties',
+  iv: 0,
+  it: 'protect',
+  w: 'Two W-2 jobs = likely under-withheld. Fix it now — free.',
+  s: [{
+    i: 'a',
+    x: 'Go to irs.gov/W4app — enter both incomes and 3 dependents'
+  }, {
+    i: 'b',
+    x: 'Note the extra per-paycheck withholding amount recommended'
+  }, {
+    i: 'c',
+    x: 'Submit updated W-4 to HR at XE with additional withholding in Step 4c'
+  }, {
+    i: 'd',
+    x: 'Submit updated W-4 to HR at TP — same process'
+  }]
+}, {
+  id: 5,
+  p: 1,
+  t: 'Confirm 401K match at XE and TP',
+  u: '30 minutes',
+  imp: 'Never leave free money',
+  iv: 0,
+  it: 'match',
+  w: 'Employer match = 50–100% instant return. Always capture the full match at both employers.',
+  s: [{
+    i: 'a',
+    x: 'Log into XE benefits portal — find 401K match percentage'
+  }, {
+    i: 'b',
+    x: 'Confirm you contribute enough to get the full XE match'
+  }, {
+    i: 'c',
+    x: 'Log into TP benefits portal — confirm full TP match too'
+  }, {
+    i: 'd',
+    x: 'Select Traditional (pre-tax) 401K while in the 24% bracket'
+  }, {
+    i: 'e',
+    x: 'Choose index funds with expense ratios below 0.10%'
+  }]
+}, {
+  id: 6,
+  p: 2,
+  t: 'Open and max an HSA',
+  u: 'Month 1',
+  imp: 'Saves $2,052/yr taxes',
+  iv: 2052,
+  it: 'annual',
+  w: 'Requires HDHP. Triple tax advantage: pre-tax in, grows tax-free, out tax-free for medical.',
+  s: [{
+    i: 'a',
+    x: 'Confirm health plan is HDHP (deductible ≥$1,650 individual / $3,300 family)'
+  }, {
+    i: 'b',
+    x: 'If yes: fidelity.com → Open Account → Health Savings Account'
+  }, {
+    i: 'c',
+    x: 'Contribute max: $8,550/yr family or $4,300/yr individual (2026)'
+  }, {
+    i: 'd',
+    x: 'CRITICAL: Invest HSA in FZROX — never leave in cash'
+  }, {
+    i: 'e',
+    x: 'Pay all medical bills out of pocket. Save every receipt forever.'
+  }, {
+    i: 'f',
+    x: 'Let HSA grow 20 years, then reimburse yourself for past bills'
+  }]
+}, {
+  id: 7,
+  p: 2,
+  t: 'Enroll in Dependent Care FSA',
+  u: 'Next open enrollment',
+  imp: 'Saves $1,200/yr taxes',
+  iv: 1200,
+  it: 'annual',
+  w: '$5,000/year pre-tax for childcare. You are spending this anyway — make it pre-tax.',
+  s: [{
+    i: 'a',
+    x: 'At open enrollment: elect max Dependent Care FSA = $5,000/year'
+  }, {
+    i: 'b',
+    x: 'Qualifying: after-school programs, summer camps, childcare for kids under 13'
+  }, {
+    i: 'c',
+    x: 'Submit receipts monthly through employer FSA portal'
+  }, {
+    i: 'd',
+    x: 'Only elect what you will spend — FSA is use-it-or-lose-it'
+  }]
+}, {
+  id: 8,
+  p: 2,
+  t: 'Open a Backdoor Roth IRA',
+  u: 'Month 1–2',
+  imp: 'Tax-free wealth forever',
+  iv: 7000,
+  it: 'annual',
+  w: 'At your income you are over the Roth limit. Backdoor route is legal. $7K/year grows tax-free.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → Traditional IRA (not Roth yet)'
+  }, {
+    i: 'b',
+    x: 'Contribute $7,000 to the Traditional IRA'
+  }, {
+    i: 'c',
+    x: 'Wait 1–3 business days for transfer to settle'
+  }, {
+    i: 'd',
+    x: 'DO NOT invest yet — leave as cash'
+  }, {
+    i: 'e',
+    x: 'Traditional IRA → Convert to Roth → Convert all → Confirm'
+  }, {
+    i: 'f',
+    x: 'Now invest: Roth IRA → Buy FZROX'
+  }, {
+    i: 'g',
+    x: 'Tell your CPA so they file Form 8606'
+  }, {
+    i: 'h',
+    x: 'Set calendar reminder Jan 1 each year to repeat'
+  }]
+}, {
+  id: 9,
+  p: 2,
+  t: 'Maximize 401K contributions',
+  u: 'Increase gradually',
+  imp: 'Up to $5,640/yr saved',
+  iv: 5640,
+  it: 'annual',
+  w: 'Increase toward $23,500 limit. Do it gradually as debt frees cash. Target: maxed by 2028.',
+  s: [{
+    i: 'a',
+    x: 'Calculate current annual 401K (contribution % × annual salary)'
+  }, {
+    i: 'b',
+    x: 'Calculate gap to $23,500'
+  }, {
+    i: 'c',
+    x: 'Increase contribution % by 1–2% every few months as snowball frees cash'
+  }, {
+    i: 'd',
+    x: 'Target fully maxed by 2028 when consumer debt is dead'
+  }, {
+    i: 'e',
+    x: 'Always choose index funds — expense ratio below 0.10%'
+  }]
+}, {
+  id: 10,
+  p: 3,
+  t: 'Read employment agreements FIRST',
+  u: 'Before any LLC step',
+  imp: 'Prevents job loss',
+  iv: 0,
+  it: 'protect',
+  w: 'Check non-compete clauses. Violating this risks losing your primary job.',
+  s: [{
+    i: 'a',
+    x: 'Pull employment agreements from both XE and TP'
+  }, {
+    i: 'b',
+    x: 'Search for: Non-compete, Intellectual Property, Outside Employment'
+  }, {
+    i: 'c',
+    x: 'Note what you CANNOT do (competitors, employer IP)'
+  }, {
+    i: 'd',
+    x: 'Note what you CAN do: web apps, digital products, non-energy consulting'
+  }, {
+    i: 'e',
+    x: 'If unclear: NH employment attorney 1-hour review ($150–300)'
+  }]
+}, {
+  id: 11,
+  p: 3,
+  t: 'Form LLC in New Hampshire',
+  u: 'Month 1',
+  imp: '$1,239+/yr deductions',
+  iv: 1239,
+  it: 'annual',
+  w: '$100 one-time. Deductions start the day LLC is formed — before any income.',
+  s: [{
+    i: 'a',
+    x: 'Check name at sos.nh.gov → Business → Business Name Search'
+  }, {
+    i: 'b',
+    x: 'File Articles of Organization at sos.nh.gov → File Documents → LLC → $100'
+  }, {
+    i: 'c',
+    x: 'Get free EIN at irs.gov → search "Apply for EIN" → LLC → print confirmation'
+  }, {
+    i: 'd',
+    x: 'Write operating agreement (free template online) — sign and keep in folder'
+  }, {
+    i: 'e',
+    x: 'Set calendar reminder: $100 annual report due each year'
+  }]
+}, {
+  id: 12,
+  p: 3,
+  t: 'Open business checking account',
+  u: 'Same week as LLC',
+  imp: 'Legal separation required',
+  iv: 0,
+  it: 'protect',
+  w: 'Personal and business money must NEVER mix. Most important LLC rule.',
+  s: [{
+    i: 'a',
+    x: 'Go to relayfi.com or mercury.com — both free for LLCs'
+  }, {
+    i: 'b',
+    x: 'Open with LLC name and EIN'
+  }, {
+    i: 'c',
+    x: 'Get a business debit card'
+  }, {
+    i: 'd',
+    x: 'All business expenses on business card. Personal on personal card. Always.'
+  }]
+}, {
+  id: 13,
+  p: 3,
+  t: 'Open a Solo 401K for the LLC',
+  u: 'Before Dec 31',
+  imp: 'Shelter up to $70K/yr',
+  iv: 0,
+  it: 'variable',
+  w: 'Must open by Dec 31 to use that tax year. Open now even before earning income.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → Self-Employed 401(k)'
+  }, {
+    i: 'b',
+    x: 'Enter LLC name and EIN'
+  }, {
+    i: 'c',
+    x: 'Enable both employee AND employer contributions'
+  }, {
+    i: 'd',
+    x: 'When income arrives: contribute up to $23,500 as employee first'
+  }, {
+    i: 'e',
+    x: 'Add 25% of net self-employment income as employer contribution'
+  }, {
+    i: 'f',
+    x: 'Invest inside Solo 401K: FZROX index fund'
+  }]
+}, {
+  id: 14,
+  p: 3,
+  t: 'Start tracking business expenses',
+  u: 'Day 1 of LLC',
+  imp: '$5,162/yr deductions',
+  iv: 5162,
+  it: 'annual',
+  w: 'Things you already pay become deductions. Every receipt matters.',
+  s: [{
+    i: 'a',
+    x: 'Sign up for Wave Accounting free at waveapps.com'
+  }, {
+    i: 'b',
+    x: 'Home office: measure dedicated work space → deduct $5/sqft/year'
+  }, {
+    i: 'c',
+    x: 'Internet: Fidium $50/mo × 75% business = $540/yr deduction'
+  }, {
+    i: 'd',
+    x: 'Phone: Google Fi $147/mo × 50% = $882/yr deduction'
+  }, {
+    i: 'e',
+    x: 'Claude AI ($240/yr), GitHub, professional memberships (ANS, ACS)'
+  }, {
+    i: 'f',
+    x: 'Computer: Section 179 — deduct full cost year one'
+  }, {
+    i: 'g',
+    x: 'Weekly activity log: date, what you worked on, time'
+  }, {
+    i: 'h',
+    x: 'Photograph every receipt immediately — upload to Wave'
+  }]
+}, {
+  id: 15,
+  p: 3,
+  t: 'Set up quarterly estimated taxes',
+  u: 'When LLC earns income',
+  imp: 'Avoids penalties',
+  iv: 0,
+  it: 'protect',
+  w: 'Self-employment has no withholding. Pay quarterly or the IRS charges penalties.',
+  s: [{
+    i: 'a',
+    x: 'Create account at irs.gov/payments (IRS Direct Pay — free)'
+  }, {
+    i: 'b',
+    x: 'Mark due dates: Apr 15, Jun 16, Sep 15, Jan 15'
+  }, {
+    i: 'c',
+    x: 'Estimate: net consulting income × 30% = quarterly payment'
+  }, {
+    i: 'd',
+    x: 'Keep a "Tax Reserve" savings account — put 30% of every check here'
+  }]
+}, {
+  id: 16,
+  p: 4,
+  t: 'Roll Acorns IRA to Fidelity',
+  u: 'Month 1',
+  imp: 'Saves $36–60/yr fees',
+  iv: 48,
+  it: 'annual',
+  w: 'Acorns charges $3–5/month. Fidelity is free. Same growth, no fees.',
+  s: [{
+    i: 'a',
+    x: 'Log into Acorns → Settings → Rollover OR call 855-222-6734'
+  }, {
+    i: 'b',
+    x: 'Request direct rollover to Fidelity Traditional IRA'
+  }, {
+    i: 'c',
+    x: 'Wait 5–10 business days for transfer'
+  }, {
+    i: 'd',
+    x: 'At Fidelity: invest in FZROX immediately'
+  }, {
+    i: 'e',
+    x: 'Cancel Acorns Gold subscription after transfer completes'
+  }]
+}, {
+  id: 17,
+  p: 4,
+  t: 'Confirm XE RSA vesting strategy',
+  u: 'Month 1',
+  imp: 'Saves $509/vest by holding',
+  iv: 509,
+  it: 'per-event',
+  w: 'RSAs vest as ordinary income (24%). Holding 12+ months converts profit to 15% capital gains.',
+  s: [{
+    i: 'a',
+    x: 'Fidelity NetBenefits → Equity Awards → confirm vest dates'
+  }, {
+    i: 'b',
+    x: 'Confirm Fidelity withholds shares to cover taxes at vesting'
+  }, {
+    i: 'c',
+    x: 'Oct 2026: lockup expires → sell 30 of 65 shares → emergency fund'
+  }, {
+    i: 'd',
+    x: 'Hold remaining shares 12+ months after vest for lower tax rate'
+  }, {
+    i: 'e',
+    x: 'Never let XE stock exceed 15% of your total net worth'
+  }]
+}, {
+  id: 18,
+  p: 4,
+  t: 'Open 529 college savings',
+  u: 'Month 3+',
+  imp: 'Tax-free education growth',
+  iv: 0,
+  it: 'future',
+  w: 'Federal growth tax-free for education. Youngest child first — more time = more growth.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → 529 → child name, SSN, birth date'
+  }, {
+    i: 'b',
+    x: 'Select age-based portfolio'
+  }, {
+    i: 'c',
+    x: 'Prioritize youngest child first'
+  }, {
+    i: 'd',
+    x: 'Contribute only after 401K match, HSA, Roth IRA are handled'
+  }]
+}, {
+  id: 19,
+  p: 5,
+  t: 'Open a taxable brokerage account',
+  u: 'After tax accounts started',
+  imp: 'Unlimited investing',
+  iv: 0,
+  it: 'future',
+  w: 'For money after maxing all tax-advantaged accounts. No limits, accessible anytime.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → Brokerage Account'
+  }, {
+    i: 'b',
+    x: 'Fund ONLY after: 401K match, HSA, Roth IRA are started'
+  }, {
+    i: 'c',
+    x: 'Invest: 70% FZROX + 20% FZILX + 10% FXNAX (or 100% FZROX)'
+  }, {
+    i: 'd',
+    x: 'Set automatic monthly investment on payday'
+  }, {
+    i: 'e',
+    x: 'Never pick individual stocks. Never time the market.'
+  }]
+}, {
+  id: 20,
+  p: 5,
+  t: 'Learn the market crash rule',
+  u: 'Read once, remember always',
+  imp: 'Prevents big mistakes',
+  iv: 0,
+  it: 'protect',
+  w: 'Most investing mistakes happen during crashes. Your only job when markets fall: nothing.',
+  s: [{
+    i: 'a',
+    x: 'When market drops 20–50%: do nothing. Keep investments running.'
+  }, {
+    i: 'b',
+    x: 'Check investments maximum once per month'
+  }, {
+    i: 'c',
+    x: 'Rebalance once per year every January back to target %'
+  }, {
+    i: 'd',
+    x: 'Tax-loss harvesting: if down 10%+, sell → buy similar → claim loss on taxes'
+  }]
+}, {
+  id: 21,
+  p: 6,
+  t: 'Get term life insurance',
+  u: 'Month 1',
+  imp: 'Protects your family of 5',
+  iv: 0,
+  it: 'protect',
+  w: '3 dependents + significant debt = need this now. 10x annual income. 20-year term only.',
+  s: [{
+    i: 'a',
+    x: 'Go to policygenius.com — enter age, health, $1M+ coverage, 20-year term'
+  }, {
+    i: 'b',
+    x: 'Compare quotes — choose lowest cost from A-rated company'
+  }, {
+    i: 'c',
+    x: 'Apply online, complete health questionnaire, schedule free medical exam'
+  }, {
+    i: 'd',
+    x: 'DO NOT buy whole life, universal life, or any investment life insurance'
+  }]
+}, {
+  id: 22,
+  p: 6,
+  t: 'Check disability insurance',
+  u: 'Month 1',
+  imp: 'Protects your income',
+  iv: 0,
+  it: 'protect',
+  w: 'You are 4x more likely to become disabled than to die during working years.',
+  s: [{
+    i: 'a',
+    x: 'Check XE and TP benefits for short-term and long-term disability'
+  }, {
+    i: 'b',
+    x: 'Confirm: % of salary covered, waiting period, how long benefits last'
+  }, {
+    i: 'c',
+    x: 'If LTD is under 60% of salary: get private policy from Guardian or Principal'
+  }]
+}, {
+  id: 23,
+  p: 6,
+  t: 'Create your estate plan',
+  u: 'Month 1–3',
+  imp: 'Protects your children',
+  iv: 0,
+  it: 'protect',
+  w: 'Without a will and guardianship, a court decides who raises your kids.',
+  s: [{
+    i: 'a',
+    x: 'Find NH estate planning attorney (free consult, $500–1,500 total)'
+  }, {
+    i: 'b',
+    x: 'Get: Last Will with guardianship for all 3 children'
+  }, {
+    i: 'c',
+    x: 'Get: Healthcare Proxy — who makes medical decisions if you cannot'
+  }, {
+    i: 'd',
+    x: 'Get: Durable Financial Power of Attorney'
+  }, {
+    i: 'e',
+    x: 'Add beneficiaries to: 401K, IRA, life insurance, bank accounts'
+  }]
+}, {
+  id: 24,
+  p: 6,
+  t: 'Add umbrella insurance',
+  u: 'Month 2',
+  imp: '$1M protection for ~$200/yr',
+  iv: 0,
+  it: 'protect',
+  w: 'As net worth grows you have more to protect. One of the best insurance values.',
+  s: [{
+    i: 'a',
+    x: 'Call home/auto insurer: "I want to add a $1M umbrella policy"'
+  }, {
+    i: 'b',
+    x: 'Confirm auto liability meets minimum ($300K bodily injury required)'
+  }, {
+    i: 'c',
+    x: 'Get quotes from 2 other insurers — pricing varies significantly'
+  }]
+}, {
+  id: 25,
+  p: 7,
+  t: 'Execute the debt snowball',
+  u: 'Every payday',
+  imp: '$7,968/mo freed Mar 2029',
+  iv: 7968,
+  it: 'by-date',
+  w: 'One rule: every freed minimum attacks the next target. No exceptions. No lifestyle upgrades.',
+  s: [{
+    i: 'a',
+    x: 'Current #1 target: Upstart ($39,197 @ 29.4%) — ALL surplus goes here'
+  }, {
+    i: 'b',
+    x: 'Every payday after bills: send every leftover dollar to Upstart'
+  }, {
+    i: 'c',
+    x: 'Upstart dead Jul 2027 → move to Barclay ($14,500 @ 29%)'
+  }, {
+    i: 'd',
+    x: 'Barclay dead Oct 2027 → move to Amex ($14,784 @ 29%)'
+  }, {
+    i: 'e',
+    x: 'Amex dead Jan 2028 → FULL ATTACK on SoFi ($57,889 @ 26%)'
+  }, {
+    i: 'f',
+    x: 'SoFi dead Sep 2028 → Upgrade ($19,444 @ 17%)'
+  }, {
+    i: 'g',
+    x: 'Upgrade dead Nov 2028 → Best Egg ($26,596 @ 15%)'
+  }, {
+    i: 'h',
+    x: 'Mar 2029: ALL consumer debt gone — $7,968/month freed'
+  }, {
+    i: 'i',
+    x: '0% debts (Citi, Citi AA): minimums only — never send extra'
+  }]
+}, {
+  id: 26,
+  p: 7,
+  t: 'Redirect freed payments after Mar 2029',
+  u: 'March 2029',
+  imp: '$4,215/mo to investing',
+  iv: 4215,
+  it: 'monthly',
+  w: '$7,968/month freed. Redirect in this exact order every month.',
+  s: [{
+    i: 'a',
+    x: 'First $1,958: fill 401K gap to $23,500/year'
+  }, {
+    i: 'b',
+    x: 'Next $712: HSA maximum ($8,550 / 12)'
+  }, {
+    i: 'c',
+    x: 'Next $583: Backdoor Roth IRA ($7,000 / 12)'
+  }, {
+    i: 'd',
+    x: 'Next $500: top up emergency fund to $20,000'
+  }, {
+    i: 'e',
+    x: 'Remaining ~$4,215: taxable brokerage — FZROX auto-invest monthly'
+  }]
+}, {
+  id: 27,
+  p: 7,
+  t: 'Monthly financial review (15 min)',
+  u: '1st of every month',
+  imp: 'Keeps everything on track',
+  iv: 0,
+  it: 'habit',
+  w: '15 minutes/month keeps everything on track once automation is set up.',
+  s: [{
+    i: 'a',
+    x: 'Open Bloom: did all bills auto-pay? Any NSF fees? Fix immediately.'
+  }, {
+    i: 'b',
+    x: 'Check snowball target balance — how much paid down this month?'
+  }, {
+    i: 'c',
+    x: 'Check emergency fund — growing on schedule?'
+  }, {
+    i: 'd',
+    x: 'Check investments ONE time — are auto transfers running?'
+  }, {
+    i: 'e',
+    x: 'Calculate net worth: all assets minus all debts. Write it down.'
+  }]
+}];
+const SK = 'wb_v4';
+const load = () => {
+  try {
+    return JSON.parse(localStorage.getItem(SK) || '{}');
+  } catch {
+    return {};
+  }
+};
+const save = s => {
+  try {
+    localStorage.setItem(SK, JSON.stringify(s));
+  } catch {}
+};
+function Ring({
+  pct,
+  size,
+  stroke,
+  color,
+  children
+}) {
+  const r = size / 2 - stroke / 2,
+    circ = 2 * Math.PI * r,
+    off = circ * (1 - pct);
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative',
+      width: size,
+      height: size,
+      flexShrink: 0
     }
-  };
-
-  const toggleStepDone=(stepId)=>{
-    const key=`done_${stepId}`;
-    const isDone=!state[key];
-    const updates={[key]:isDone};
-    if(isDone) updates[`done_at_${stepId}`]=Date.now();
-    setState(p=>({...p,...updates}));
-    if(isDone){setFlash(stepId);setTimeout(()=>setFlash(null),2000);}
-  };
-
-  const saveNote=(stepId)=>{
-    setState(p=>({...p,[`note_${stepId}`]:noteText}));
-    setShowNote(null);
-  };
-
-  // Computed stats
-  const doneCount=STEPS.filter(s=>state[`done_${s.id}`]).length;
-  const pct=doneCount/STEPS.length;
-  const phaseDone=(pid)=>STEPS.filter(s=>s.phase===pid&&state[`done_${s.id}`]).length;
-  const phaseTotal=(pid)=>STEPS.filter(s=>s.phase===pid).length;
-
-  const nextStep=STEPS.find(s=>!state[`done_${s.id}`]);
-  const freedMonthly=STEPS.filter(s=>state[`done_${s.id}`]&&s.impactType==="monthly").reduce((a,s)=>a+s.impactVal,0);
-  const savedAnnual=STEPS.filter(s=>state[`done_${s.id}`]&&s.impactType==="annual").reduce((a,s)=>a+s.impactVal,0);
-
-  const openNote=(stepId,e)=>{e.stopPropagation();setNoteText(state[`note_${stepId}`]||"");setShowNote(stepId)};
-
-  return(
-    <div style={{maxWidth:480,margin:"0 auto",position:"relative",minHeight:"100vh"}}>
-      {/* Flash celebration */}
-      {flash&&(
-        <div className="pop" style={{position:"fixed",top:"50%",left:"50%",transform:"translate(-50%,-50%)",
-          background:"#1A4A42",color:"#fff",borderRadius:20,padding:"20px 32px",
-          textAlign:"center",zIndex:999,fontSize:18,fontWeight:700,boxShadow:"0 20px 60px rgba(0,0,0,.3)"}}>
-          ✅ Step Complete!<br/>
-          <span style={{fontSize:13,fontWeight:400,opacity:.85}}>Great work. Keep going.</span>
-        </div>
-      )}
-
-      {/* Note modal */}
-      {showNote&&(
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",display:"flex",alignItems:"flex-end",zIndex:200}}
-          onClick={()=>setShowNote(null)}>
-          <div style={{background:"#fff",borderRadius:"20px 20px 0 0",padding:20,width:"100%",maxWidth:480,margin:"0 auto"}}
-            onClick={e=>e.stopPropagation()}>
-            <div style={{fontWeight:700,fontSize:15,marginBottom:12}}>📝 Notes for Step {showNote}</div>
-            <textarea value={noteText} onChange={e=>setNoteText(e.target.value)}
-              style={{width:"100%",minHeight:100,border:"1.5px solid #E5E5EA",borderRadius:10,padding:10,
-              fontSize:13,fontFamily:"inherit",resize:"vertical"}}
-              placeholder="Add your notes here..."/>
-            <div style={{display:"flex",gap:10,marginTop:12}}>
-              <button onClick={()=>setShowNote(null)} style={{flex:1,padding:"10px 0",border:"1.5px solid #E5E5EA",borderRadius:10,background:"#fff",fontSize:13,cursor:"pointer"}}>Cancel</button>
-              <button onClick={()=>saveNote(showNote)} style={{flex:1,padding:"10px 0",background:"#1A4A42",color:"#fff",border:"none",borderRadius:10,fontSize:13,fontWeight:600,cursor:"pointer"}}>Save Note</button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Screens */}
-      {tab==="home"&&<HomeScreen pct={pct} doneCount={doneCount} nextStep={nextStep}
-        freedMonthly={freedMonthly} savedAnnual={savedAnnual} phaseDone={phaseDone} phaseTotal={phaseTotal}
-        setTab={setTab} setPhase={setPhase}/>}
-
-      {tab==="steps"&&<StepsScreen phase={phase} setPhase={setPhase} state={state}
-        openStep={openStep} setOpenStep={setOpenStep} toggleSub={toggleSub}
-        toggleStepDone={toggleStepDone} openNote={openNote} phaseDone={phaseDone} phaseTotal={phaseTotal}/>}
-
-      {tab==="wins"&&<WinsScreen state={state} freedMonthly={freedMonthly} savedAnnual={savedAnnual}/>}
-
-      {/* Bottom nav */}
-      <nav className="bottom-nav">
-        {[
-          {id:"home",icon:"🏠",label:"Home"},
-          {id:"steps",icon:"📋",label:"Steps"},
-          {id:"wins",icon:"🏆",label:"Wins"},
-        ].map(n=>(
-          <button key={n.id} className={`nav-btn`} onClick={()=>setTab(n.id)}
-            style={{color:tab===n.id?"#1A4A42":"#999"}}>
-            <span className="icon">{n.icon}</span>
-            <span className="label" style={{fontWeight:tab===n.id?700:500}}>{n.label}</span>
-          </button>
-        ))}
-      </nav>
-    </div>
-  );
+  }, /*#__PURE__*/React.createElement("svg", {
+    width: size,
+    height: size,
+    style: {
+      transform: 'rotate(-90deg)',
+      display: 'block'
+    }
+  }, /*#__PURE__*/React.createElement("circle", {
+    cx: size / 2,
+    cy: size / 2,
+    r: r,
+    fill: "none",
+    stroke: "#E5E5EA",
+    strokeWidth: stroke
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: size / 2,
+    cy: size / 2,
+    r: r,
+    fill: "none",
+    stroke: color,
+    strokeWidth: stroke,
+    strokeDasharray: circ,
+    strokeDashoffset: off,
+    strokeLinecap: "round",
+    style: {
+      transition: 'stroke-dashoffset 0.5s ease'
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  }, children));
 }
-
-// ─── HOME SCREEN ─────────────────────────────────────────────────────────────
-function HomeScreen({pct,doneCount,nextStep,freedMonthly,savedAnnual,phaseDone,phaseTotal,setTab,setPhase}){
-  return(
-    <div className="screen">
-      {/* Header */}
-      <div style={{background:"linear-gradient(160deg,#1A4A42,#2d6a5f)",padding:"24px 20px 20px",color:"#fff"}}>
-        <div style={{fontSize:12,opacity:.7,marginBottom:2,letterSpacing:.05}}>WEALTH BUILDER</div>
-        <div style={{fontSize:22,fontWeight:700,marginBottom:16}}>Your Progress</div>
-        <div style={{display:"flex",alignItems:"center",gap:20}}>
-          <Ring pct={pct} size={100} stroke={9} color="#7EC8B8">
-            <div style={{textAlign:"center"}}>
-              <div style={{fontSize:22,fontWeight:800}}>{Math.round(pct*100)}%</div>
-              <div style={{fontSize:9,opacity:.7,letterSpacing:.05}}>DONE</div>
-            </div>
-          </Ring>
-          <div style={{flex:1}}>
-            <div style={{fontSize:13,opacity:.8,marginBottom:6}}>{doneCount} of {STEPS.length} steps complete</div>
-            <div style={{background:"rgba(255,255,255,.15)",borderRadius:10,padding:"10px 14px"}}>
-              <div style={{fontSize:11,opacity:.7,marginBottom:1}}>Freed monthly</div>
-              <div style={{fontSize:20,fontWeight:700,color:"#7EC8B8"}}>${freedMonthly.toLocaleString()}<span style={{fontSize:12,fontWeight:400,opacity:.8}}>/mo</span></div>
-            </div>
-            <div style={{background:"rgba(255,255,255,.1)",borderRadius:10,padding:"8px 14px",marginTop:6}}>
-              <div style={{fontSize:11,opacity:.7,marginBottom:1}}>Annual tax savings</div>
-              <div style={{fontSize:16,fontWeight:700}}>${savedAnnual.toLocaleString()}<span style={{fontSize:11,fontWeight:400,opacity:.8}}>/yr</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Next Action */}
-      {nextStep&&(
-        <div style={{margin:"16px 16px 0"}}>
-          <div style={{fontSize:11,fontWeight:700,letterSpacing:.06,color:"#888",marginBottom:8}}>NEXT ACTION</div>
-          <div onClick={()=>{setPhase(nextStep.phase);setTab("steps")}}
-            style={{background:"#fff",borderRadius:14,padding:16,boxShadow:"0 2px 8px rgba(0,0,0,.08)",cursor:"pointer",
-            borderLeft:`4px solid ${getPhaseColor(nextStep.phase)}`}}>
-            <div style={{display:"flex",align:"center",justifyContent:"space-between",marginBottom:6}}>
-              <div style={{display:"flex",alignItems:"center",gap:8}}>
-                <div style={{width:28,height:28,borderRadius:8,background:getPhaseColor(nextStep.phase),color:"#fff",
-                  display:"flex",alignItems:"center",justifyContent:"center",fontWeight:800,fontSize:12}}>
-                  {nextStep.id}
-                </div>
-                <div>
-                  <div style={{fontWeight:700,fontSize:14}}>{nextStep.title}</div>
-                  <div style={{fontSize:11,color:"#888"}}>{nextStep.urgency}</div>
-                </div>
-              </div>
-              <div style={{color:"#ccc",fontSize:18}}>›</div>
-            </div>
-            <div style={{fontSize:12,color:"#555",lineHeight:1.5}}>{nextStep.what}</div>
-            {nextStep.impactVal>0&&(
-              <div style={{marginTop:8,display:"inline-block",background:getPhaseLight(nextStep.phase),
-                color:getPhaseColor(nextStep.phase),borderRadius:8,padding:"4px 10px",fontSize:11,fontWeight:600}}>
-                {nextStep.impact}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Phase overview */}
-      <div style={{padding:"16px 16px 0"}}>
-        <div style={{fontSize:11,fontWeight:700,letterSpacing:.06,color:"#888",marginBottom:8}}>ALL PHASES</div>
-        {PHASES.map(p=>{
-          const done=phaseDone(p.id), total=phaseTotal(p.id), phasePct=done/total;
-          return(
-            <div key={p.id} onClick={()=>{setPhase(p.id);setTab("steps")}}
-              style={{background:"#fff",borderRadius:12,padding:"12px 14px",marginBottom:8,
-              cursor:"pointer",display:"flex",alignItems:"center",gap:12,
-              boxShadow:"0 1px 4px rgba(0,0,0,.06)"}}>
-              <div style={{fontSize:20}}>{p.emoji}</div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontWeight:600,fontSize:13,marginBottom:4}}>{p.name}</div>
-                <div style={{background:"#F0F0F0",borderRadius:4,height:4,overflow:"hidden"}}>
-                  <div style={{width:`${phasePct*100}%`,height:"100%",background:p.color,borderRadius:4,transition:"width .4s"}}/>
-                </div>
-              </div>
-              <div style={{fontSize:12,fontWeight:600,color:done===total?"#375623":"#888",flexShrink:0}}>
-                {done===total?"✅":""}{done}/{total}
-              </div>
-              <div style={{color:"#ccc",fontSize:16}}>›</div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Pot of gold at end */}
-      <div style={{margin:"16px",background:"linear-gradient(135deg,#1A4A42,#2d6a5f)",borderRadius:16,
-        padding:20,color:"#fff",textAlign:"center"}}>
-        <div style={{fontSize:28,marginBottom:4}}>🏁</div>
-        <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>March 2029</div>
-        <div style={{fontSize:12,opacity:.85,marginBottom:12}}>All consumer debt gone · $7,968/month freed</div>
-        <div style={{display:"flex",justifyContent:"center",gap:16}}>
-          <div style={{textAlign:"center"}}>
-            <div style={{fontSize:18,fontWeight:700,color:"#7EC8B8"}}>$2.5M</div>
-            <div style={{fontSize:10,opacity:.7}}>at 20yr investing</div>
-          </div>
-          <div style={{width:1,background:"rgba(255,255,255,.2)"}}/>
-          <div style={{textAlign:"center"}}>
-            <div style={{fontSize:18,fontWeight:700,color:"#7EC8B8"}}>2032</div>
-            <div style={{fontSize:10,opacity:.7}}>exit TerraPower</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+function App() {
+  const [st, setSt] = useState(load);
+  const [tab, setTab] = useState('home');
+  const [pid, setPid] = useState(1);
+  const [open, setOpen] = useState(null);
+  const [noteFor, setNoteFor] = useState(null);
+  const [noteTxt, setNoteTxt] = useState('');
+  const [flash, setFlash] = useState(false);
+  useEffect(() => save(st), [st]);
+  const dk = id => 'd_' + id;
+  const tk = id => 't_' + id;
+  const sk = (sid, ssid) => sid + '_' + ssid;
+  const nk = id => 'n_' + id;
+  const isDone = id => !!st[dk(id)];
+  const subDone = (sid, ssid) => !!st[sk(sid, ssid)];
+  function toggleSub(sid, ssid) {
+    const key = sk(sid, ssid);
+    const next = {
+      ...st,
+      [key]: !st[key]
+    };
+    setSt(next);
+    const step = STEPS.find(s => s.id === sid);
+    if (step.s.every(ss => next[sk(sid, ss.i)]) && !next[dk(sid)]) {
+      const upd = {};
+      upd[dk(sid)] = true;
+      upd[tk(sid)] = Date.now();
+      setSt(p => Object.assign({}, p, upd));
+      setFlash(true);
+      setTimeout(() => setFlash(false), 2200);
+    }
+  }
+  function toggleDone(sid) {
+    const nowDone = !st[dk(sid)];
+    const upd = {};
+    upd[dk(sid)] = nowDone;
+    if (nowDone) upd[tk(sid)] = Date.now();
+    setSt(p => Object.assign({}, p, upd));
+    if (nowDone) {
+      setFlash(true);
+      setTimeout(() => setFlash(false), 2200);
+    }
+  }
+  function openNote(sid, e) {
+    e.stopPropagation();
+    setNoteTxt(st[nk(sid)] || '');
+    setNoteFor(sid);
+  }
+  function saveNote() {
+    const upd = {};
+    upd[nk(noteFor)] = noteTxt;
+    setSt(p => Object.assign({}, p, upd));
+    setNoteFor(null);
+  }
+  const doneCount = STEPS.filter(s => isDone(s.id)).length;
+  const pct = doneCount / STEPS.length;
+  const next = STEPS.find(s => !isDone(s.id));
+  const freedMo = STEPS.filter(s => isDone(s.id) && s.it === 'monthly').reduce((a, s) => a + s.iv, 0);
+  const savedAn = STEPS.filter(s => isDone(s.id) && s.it === 'annual').reduce((a, s) => a + s.iv, 0);
+  const pDone = p => STEPS.filter(s => s.p === p && isDone(s.id)).length;
+  const pTotal = p => STEPS.filter(s => s.p === p).length;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 480,
+      margin: '0 auto',
+      position: 'relative'
+    }
+  }, flash && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'fixed',
+      top: '38%',
+      left: '50%',
+      transform: 'translate(-50%,-50%)',
+      background: TEAL,
+      color: '#fff',
+      borderRadius: 20,
+      padding: '20px 32px',
+      textAlign: 'center',
+      zIndex: 999,
+      boxShadow: '0 16px 48px rgba(0,0,0,.3)',
+      animation: 'pop .35s ease',
+      minWidth: 190
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 32,
+      marginBottom: 6
+    }
+  }, "\u2705"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 16
+    }
+  }, "Step Complete!"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      opacity: .75,
+      marginTop: 3
+    }
+  }, "Keep going.")), noteFor && /*#__PURE__*/React.createElement("div", {
+    onClick: () => setNoteFor(null),
+    style: {
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(0,0,0,.5)',
+      display: 'flex',
+      alignItems: 'flex-end',
+      zIndex: 500
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    onClick: e => e.stopPropagation(),
+    style: {
+      background: '#fff',
+      borderRadius: '20px 20px 0 0',
+      padding: 20,
+      width: '100%',
+      maxWidth: 480,
+      margin: '0 auto'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 15,
+      marginBottom: 12
+    }
+  }, "\uD83D\uDCDD Notes \u2014 Step ", noteFor), /*#__PURE__*/React.createElement("textarea", {
+    value: noteTxt,
+    onChange: e => setNoteTxt(e.target.value),
+    autoFocus: true,
+    placeholder: "Add your notes here...",
+    style: {
+      width: '100%',
+      minHeight: 100,
+      border: '1.5px solid #E5E5EA',
+      borderRadius: 10,
+      padding: '10px 12px',
+      fontSize: 14,
+      fontFamily: 'inherit',
+      resize: 'vertical',
+      outline: 'none'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 10,
+      marginTop: 12
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setNoteFor(null),
+    style: {
+      flex: 1,
+      padding: '12px 0',
+      border: '1.5px solid #E5E5EA',
+      borderRadius: 12,
+      background: '#fff',
+      fontSize: 14,
+      cursor: 'pointer'
+    }
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    onClick: saveNote,
+    style: {
+      flex: 1,
+      padding: '12px 0',
+      background: TEAL,
+      color: '#fff',
+      border: 'none',
+      borderRadius: 12,
+      fontSize: 14,
+      fontWeight: 600,
+      cursor: 'pointer'
+    }
+  }, "Save")))), tab === 'home' && /*#__PURE__*/React.createElement(Home, {
+    pct: pct,
+    done: doneCount,
+    tot: STEPS.length,
+    next: next,
+    freedMo: freedMo,
+    savedAn: savedAn,
+    pDone: pDone,
+    pTotal: pTotal,
+    setTab: setTab,
+    setPid: setPid
+  }), tab === 'steps' && /*#__PURE__*/React.createElement(Steps, {
+    pid: pid,
+    setPid: setPid,
+    st: st,
+    open: open,
+    setOpen: setOpen,
+    isDone: isDone,
+    subDone: subDone,
+    toggleSub: toggleSub,
+    toggleDone: toggleDone,
+    openNote: openNote,
+    pDone: pDone,
+    pTotal: pTotal
+  }), tab === 'wins' && /*#__PURE__*/React.createElement(Wins, {
+    st: st,
+    isDone: isDone,
+    freedMo: freedMo,
+    savedAn: savedAn,
+    doneCount: doneCount,
+    tot: STEPS.length
+  }), /*#__PURE__*/React.createElement("nav", {
+    className: "bottom-nav"
+  }, [{
+    id: 'home',
+    icon: '🏠',
+    lbl: 'Home'
+  }, {
+    id: 'steps',
+    icon: '📋',
+    lbl: 'Steps'
+  }, {
+    id: 'wins',
+    icon: '🏆',
+    lbl: 'Wins'
+  }].map(n => /*#__PURE__*/React.createElement("button", {
+    key: n.id,
+    className: "nav-btn",
+    onClick: () => setTab(n.id),
+    style: {
+      color: tab === n.id ? TEAL : '#999'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "nav-icon"
+  }, n.icon), /*#__PURE__*/React.createElement("span", {
+    className: "nav-lbl",
+    style: {
+      fontWeight: tab === n.id ? 700 : 500
+    }
+  }, n.lbl)))));
 }
-
-// ─── STEPS SCREEN ─────────────────────────────────────────────────────────────
-function StepsScreen({phase,setPhase,state,openStep,setOpenStep,toggleSub,toggleStepDone,openNote,phaseDone,phaseTotal}){
-  const phaseSteps=STEPS.filter(s=>s.phase===phase);
-  const currentPhase=PHASES.find(p=>p.id===phase);
-
-  return(
-    <div className="screen">
-      {/* Phase tabs */}
-      <div style={{overflowX:"auto",display:"flex",background:"#fff",borderBottom:"1px solid #F0F0F0",
-        WebkitOverflowScrolling:"touch",scrollbarWidth:"none"}}>
-        {PHASES.map(p=>{
-          const done=phaseDone(p.id),total=phaseTotal(p.id);
-          const active=p.id===phase;
-          return(
-            <button key={p.id} onClick={()=>setPhase(p.id)}
-              style={{flexShrink:0,padding:"10px 14px",background:"none",border:"none",cursor:"pointer",
-              borderBottom:active?`3px solid ${p.color}`:"3px solid transparent",
-              color:active?p.color:"#888",fontWeight:active?700:500,fontSize:11,
-              display:"flex",flexDirection:"column",alignItems:"center",gap:2,minWidth:60}}>
-              <span style={{fontSize:18}}>{p.emoji}</span>
-              <span style={{fontSize:9,letterSpacing:.03}}>{done}/{total}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Phase header */}
-      <div style={{padding:"14px 16px 8px",background:currentPhase.light}}>
-        <div style={{fontWeight:700,fontSize:16,color:currentPhase.color}}>{currentPhase.emoji} {currentPhase.name}</div>
-        <div style={{fontSize:12,color:"#666",marginTop:2}}>{phaseDone(phase)} of {phaseTotal(phase)} steps complete</div>
-      </div>
-
-      {/* Steps */}
-      {phaseSteps.map(step=>{
-        const isDone=!!state[`done_${step.id}`];
-        const subsDone=step.substeps.filter(ss=>state[`${step.id}_${ss.id}`]).length;
-        const subsPct=subsDone/step.substeps.length;
-        const isOpen=openStep===step.id;
-        const hasNote=!!state[`note_${step.id}`];
-        const color=getPhaseColor(step.phase);
-        const light=getPhaseLight(step.phase);
-
-        return(
-          <div key={step.id} className="step-card" style={{opacity:isDone?.85:1}}>
-            {/* Header */}
-            <div className="step-header" onClick={()=>setOpenStep(isOpen?null:step.id)}
-              style={{background:isDone?light:"#fff"}}>
-              <div style={{width:34,height:34,borderRadius:10,background:isDone?color:"#E5E5EA",
-                display:"flex",alignItems:"center",justifyContent:"center",
-                fontWeight:800,fontSize:13,color:isDone?"#fff":"#999",flexShrink:0}}>
-                {isDone?"✓":step.id}
-              </div>
-              <div style={{flex:1,minWidth:0}}>
-                <div style={{fontWeight:600,fontSize:14,color:isDone?color:"#1C1C1E",
-                  textDecoration:isDone?"line-through":"none",marginBottom:3}}>
-                  {step.title}
-                </div>
-                <div style={{display:"flex",gap:6,flexWrap:"wrap",alignItems:"center"}}>
-                  {step.impactVal>0&&(
-                    <span style={{fontSize:10,fontWeight:700,background:light,color:color,
-                      padding:"2px 7px",borderRadius:10}}>
-                      {step.impact}
-                    </span>
-                  )}
-                  {!isDone&&subsDone>0&&(
-                    <span style={{fontSize:10,color:"#888"}}>{subsDone}/{step.substeps.length} done</span>
-                  )}
-                  {hasNote&&<span style={{fontSize:10}}>📝</span>}
-                </div>
-              </div>
-              <div style={{color:"#ccc",fontSize:16,flexShrink:0,transition:"transform .2s",
-                transform:isOpen?"rotate(90deg)":"rotate(0deg)"}}>›</div>
-            </div>
-
-            {/* Body */}
-            {isOpen&&(
-              <div className="step-body slideup">
-                {/* Progress bar */}
-                {subsPct>0&&(
-                  <div style={{height:3,background:"#F0F0F0",borderRadius:2,marginBottom:14,overflow:"hidden"}}>
-                    <div style={{width:`${subsPct*100}%`,height:"100%",background:color,borderRadius:2,transition:"width .3s"}}/>
-                  </div>
-                )}
-
-                {/* What/why */}
-                <div style={{background:"#F9F9F9",borderRadius:10,padding:"10px 12px",marginBottom:12,fontSize:12,color:"#555",lineHeight:1.6}}>
-                  {step.what}
-                </div>
-
-                {/* Sub-steps */}
-                <div style={{marginBottom:12}}>
-                  {step.substeps.map((ss,i)=>{
-                    const done=!!state[`${step.id}_${ss.id}`];
-                    const letter=String.fromCharCode(65+i);
-                    return(
-                      <div key={ss.id} className="sub-step" onClick={()=>toggleSub(step.id,ss.id)}
-                        style={{cursor:"pointer",background:done?"#F0FFF4":"transparent",borderRadius:done?8:0,
-                        padding:done?"8px 8px":"8px 0",transition:"all .2s"}}>
-                        <div className={`cb ${done?"done":""}`}
-                          style={{borderColor:done?color:"#ddd",background:done?color:"transparent"}}>
-                          {done&&<span style={{color:"#fff",fontSize:12,fontWeight:700}}>✓</span>}
-                        </div>
-                        <div style={{flex:1}}>
-                          <div style={{fontSize:10,fontWeight:700,color:color,marginBottom:1}}>{letter}</div>
-                          <div style={{fontSize:13,color:done?"#2E7D32":"#333",
-                            textDecoration:done?"line-through":"none",lineHeight:1.5,fontWeight:done?400:400}}>
-                            {ss.text}
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {/* Actions */}
-                <div style={{display:"flex",gap:8}}>
-                  <button onClick={()=>toggleStepDone(step.id)}
-                    style={{flex:2,padding:"10px 0",borderRadius:10,border:"none",cursor:"pointer",fontWeight:600,
-                    fontSize:13,background:isDone?"#E5E5EA":color,color:isDone?"#555":"#fff",transition:"all .2s"}}>
-                    {isDone?"Mark Incomplete":"✓ Mark Complete"}
-                  </button>
-                  <button onClick={(e)=>openNote(step.id,e)}
-                    style={{flex:1,padding:"10px 0",borderRadius:10,border:"1.5px solid #E5E5EA",
-                    background:"#fff",cursor:"pointer",fontSize:13,color:"#555"}}>
-                    📝 Note
-                  </button>
-                </div>
-
-                {/* Existing note */}
-                {state[`note_${step.id}`]&&(
-                  <div style={{marginTop:10,background:"#FFFBF0",border:"1px solid #FFE082",borderRadius:10,
-                    padding:"10px 12px",fontSize:12,color:"#5D4037",lineHeight:1.5}}>
-                    <div style={{fontSize:10,fontWeight:700,marginBottom:4,color:"#8D6E63"}}>YOUR NOTE</div>
-                    {state[`note_${step.id}`]}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        );
-      })}
-      <div style={{height:8}}/>
-    </div>
-  );
+function Home({
+  pct,
+  done,
+  tot,
+  next,
+  freedMo,
+  savedAn,
+  pDone,
+  pTotal,
+  setTab,
+  setPid
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "scroll"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'linear-gradient(160deg,#1A4A42,#2d6a5f)',
+      padding: '28px 20px 24px',
+      color: '#fff'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      letterSpacing: .08,
+      opacity: .6,
+      marginBottom: 4
+    }
+  }, "WEALTH BUILDER"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 800,
+      marginBottom: 18
+    }
+  }, "Your Progress"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 20
+    }
+  }, /*#__PURE__*/React.createElement(Ring, {
+    pct: pct,
+    size: 104,
+    stroke: 9,
+    color: "#7EC8B8"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 900,
+      lineHeight: 1
+    }
+  }, Math.round(pct * 100), "%"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      opacity: .6,
+      letterSpacing: .06,
+      marginTop: 2
+    }
+  }, "DONE"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      opacity: .7,
+      marginBottom: 10
+    }
+  }, done, " of ", tot, " steps"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'rgba(255,255,255,.14)',
+      borderRadius: 12,
+      padding: '10px 14px',
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      opacity: .6,
+      marginBottom: 1
+    }
+  }, "Freed monthly"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 22,
+      fontWeight: 800,
+      color: '#7EC8B8'
+    }
+  }, "$", freedMo.toLocaleString(), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      fontWeight: 400,
+      opacity: .7
+    }
+  }, "/mo"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'rgba(255,255,255,.1)',
+      borderRadius: 12,
+      padding: '10px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      opacity: .6,
+      marginBottom: 1
+    }
+  }, "Tax saved/yr"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 18,
+      fontWeight: 700
+    }
+  }, "$", savedAn.toLocaleString(), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      fontWeight: 400,
+      opacity: .7
+    }
+  }, "/yr")))))), next && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '14px 16px 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: .08,
+      color: '#888',
+      marginBottom: 8
+    }
+  }, "NEXT ACTION"), /*#__PURE__*/React.createElement("div", {
+    onClick: () => {
+      setPid(next.p);
+      setTab('steps');
+    },
+    style: {
+      background: '#fff',
+      borderRadius: 16,
+      padding: 16,
+      cursor: 'pointer',
+      borderLeft: '4px solid ' + pc(next.p),
+      boxShadow: '0 2px 10px rgba(0,0,0,.07)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 10,
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 32,
+      height: 32,
+      borderRadius: 9,
+      background: pc(next.p),
+      color: '#fff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontWeight: 800,
+      fontSize: 13,
+      flexShrink: 0
+    }
+  }, next.id), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 15
+    }
+  }, next.t), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#888'
+    }
+  }, next.u)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#ccc',
+      fontSize: 20
+    }
+  }, "\u203A")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: '#555',
+      lineHeight: 1.6
+    }
+  }, next.w), next.iv > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 10,
+      display: 'inline-block',
+      background: pl(next.p),
+      color: pc(next.p),
+      borderRadius: 8,
+      padding: '4px 10px',
+      fontSize: 11,
+      fontWeight: 600
+    }
+  }, next.imp))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '16px 16px 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: .08,
+      color: '#888',
+      marginBottom: 8
+    }
+  }, "ALL PHASES"), PHASES.map(ph => {
+    const d = pDone(ph.id),
+      t = pTotal(ph.id);
+    return /*#__PURE__*/React.createElement("div", {
+      key: ph.id,
+      onClick: () => {
+        setPid(ph.id);
+        setTab('steps');
+      },
+      style: {
+        background: '#fff',
+        borderRadius: 12,
+        padding: '12px 14px',
+        marginBottom: 8,
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        boxShadow: '0 1px 4px rgba(0,0,0,.05)'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 20
+      }
+    }, ph.e), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 600,
+        fontSize: 13,
+        marginBottom: 5
+      }
+    }, ph.name), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: '#F0F0F0',
+        borderRadius: 4,
+        height: 4,
+        overflow: 'hidden'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: d / t * 100 + '%',
+        height: '100%',
+        background: ph.c,
+        borderRadius: 4,
+        transition: 'width .4s'
+      }
+    }))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        fontWeight: 700,
+        color: d === t ? '#2E7D32' : '#888',
+        flexShrink: 0
+      }
+    }, d === t ? '✅' : '', d, "/", t), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: '#ccc',
+        fontSize: 18
+      }
+    }, "\u203A"));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      margin: '16px 16px 8px',
+      background: 'linear-gradient(135deg,#1A4A42,#2d6a5f)',
+      borderRadius: 16,
+      padding: 20,
+      color: '#fff',
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 28,
+      marginBottom: 6
+    }
+  }, "\uD83C\uDFC1"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 800,
+      fontSize: 17
+    }
+  }, "March 2029"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      opacity: .8,
+      margin: '4px 0 14px'
+    }
+  }, "All consumer debt gone \xB7 $7,968/month freed"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'center',
+      gap: 20
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 800,
+      color: '#7EC8B8'
+    }
+  }, "$2.5M"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      opacity: .6
+    }
+  }, "20yr investing")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 1,
+      background: 'rgba(255,255,255,.2)'
+    }
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 800,
+      color: '#7EC8B8'
+    }
+  }, "2032"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      opacity: .6
+    }
+  }, "Leave TerraPower")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 8
+    }
+  }));
 }
-
-// ─── WINS SCREEN ─────────────────────────────────────────────────────────────
-function WinsScreen({state,freedMonthly,savedAnnual}){
-  const completedSteps=STEPS.filter(s=>state[`done_${s.id}`])
-    .sort((a,b)=>(state[`done_at_${b.id}`]||0)-(state[`done_at_${a.id}`]||0));
-  const remaining=STEPS.filter(s=>!state[`done_${s.id}`]);
-
-  return(
-    <div className="screen">
-      {/* Impact banner */}
-      <div style={{background:"linear-gradient(135deg,#1A4A42,#2d6a5f)",padding:"20px",color:"#fff",marginBottom:16}}>
-        <div style={{fontSize:12,opacity:.7,letterSpacing:.05,marginBottom:8}}>YOUR TOTAL IMPACT SO FAR</div>
-        <div style={{display:"flex",gap:16}}>
-          <div style={{flex:1,background:"rgba(255,255,255,.12)",borderRadius:12,padding:"12px 14px"}}>
-            <div style={{fontSize:11,opacity:.7,marginBottom:2}}>Monthly freed</div>
-            <div style={{fontSize:22,fontWeight:800,color:"#7EC8B8"}}>${freedMonthly.toLocaleString()}</div>
-            <div style={{fontSize:10,opacity:.6}}>/month</div>
-          </div>
-          <div style={{flex:1,background:"rgba(255,255,255,.12)",borderRadius:12,padding:"12px 14px"}}>
-            <div style={{fontSize:11,opacity:.7,marginBottom:2}}>Annual tax saved</div>
-            <div style={{fontSize:22,fontWeight:800,color:"#7EC8B8"}}>${savedAnnual.toLocaleString()}</div>
-            <div style={{fontSize:10,opacity:.6}}>/year</div>
-          </div>
-        </div>
-        <div style={{marginTop:12,fontSize:13,opacity:.85,textAlign:"center"}}>
-          {completedSteps.length} steps complete · {remaining.length} remaining
-        </div>
-      </div>
-
-      {completedSteps.length===0&&(
-        <div style={{textAlign:"center",padding:"60px 20px",color:"#999"}}>
-          <div style={{fontSize:48,marginBottom:12}}>🎯</div>
-          <div style={{fontWeight:600,fontSize:16,marginBottom:6}}>No wins yet</div>
-          <div style={{fontSize:13}}>Complete your first step to see it here</div>
-        </div>
-      )}
-
-      {completedSteps.length>0&&(
-        <div style={{padding:"0 16px"}}>
-          <div style={{fontSize:11,fontWeight:700,letterSpacing:.06,color:"#888",marginBottom:10}}>COMPLETED ✓</div>
-          {completedSteps.map(step=>{
-            const date=state[`done_at_${step.id}`]?new Date(state[`done_at_${step.id}`]).toLocaleDateString():"";
-            const color=getPhaseColor(step.phase);
-            const light=getPhaseLight(step.phase);
-            return(
-              <div key={step.id} style={{background:"#fff",borderRadius:12,padding:"12px 14px",
-                marginBottom:8,borderLeft:`3px solid ${color}`,boxShadow:"0 1px 3px rgba(0,0,0,.06)"}}>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <div style={{width:28,height:28,borderRadius:8,background:color,
-                    display:"flex",alignItems:"center",justifyContent:"center",
-                    fontWeight:800,fontSize:11,color:"#fff",flexShrink:0}}>✓</div>
-                  <div style={{flex:1}}>
-                    <div style={{fontWeight:600,fontSize:13,color:color}}>{step.title}</div>
-                    {date&&<div style={{fontSize:11,color:"#aaa",marginTop:1}}>Completed {date}</div>}
-                  </div>
-                  {step.impactVal>0&&(
-                    <div style={{background:light,color:color,fontSize:10,fontWeight:700,
-                      padding:"3px 8px",borderRadius:8,flexShrink:0}}>{step.impact}</div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {remaining.length>0&&(
-        <div style={{padding:"16px 16px 0"}}>
-          <div style={{fontSize:11,fontWeight:700,letterSpacing:.06,color:"#888",marginBottom:10}}>UP NEXT</div>
-          {remaining.slice(0,5).map(step=>{
-            const color=getPhaseColor(step.phase);
-            return(
-              <div key={step.id} style={{background:"#F9F9F9",borderRadius:12,padding:"10px 14px",
-                marginBottom:6,opacity:.7,borderLeft:`3px solid #E5E5EA`}}>
-                <div style={{display:"flex",alignItems:"center",gap:8}}>
-                  <span style={{fontSize:11,fontWeight:700,color:"#bbb",width:20}}>#{step.id}</span>
-                  <span style={{fontSize:13,color:"#666",flex:1}}>{step.title}</span>
-                </div>
-              </div>
-            );
-          })}
-          {remaining.length>5&&(
-            <div style={{textAlign:"center",fontSize:12,color:"#999",padding:"8px 0"}}>
-              +{remaining.length-5} more steps remaining
-            </div>
-          )}
-        </div>
-      )}
-      <div style={{height:8}}/>
-    </div>
-  );
+function Steps({
+  pid,
+  setPid,
+  st,
+  open,
+  setOpen,
+  isDone,
+  subDone,
+  toggleSub,
+  toggleDone,
+  openNote,
+  pDone,
+  pTotal
+}) {
+  const ph = PHASES.find(p => p.id === pid);
+  const steps = STEPS.filter(s => s.p === pid);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "scroll"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      overflowX: 'auto',
+      background: '#fff',
+      borderBottom: '1px solid #F0F0F0',
+      WebkitOverflowScrolling: 'touch',
+      scrollbarWidth: 'none',
+      position: 'sticky',
+      top: 0,
+      zIndex: 10
+    }
+  }, PHASES.map(p => {
+    const a = p.id === pid;
+    return /*#__PURE__*/React.createElement("button", {
+      key: p.id,
+      onClick: () => setPid(p.id),
+      style: {
+        flexShrink: 0,
+        padding: '10px 12px',
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        borderBottom: a ? '3px solid ' + p.c : '3px solid transparent',
+        color: a ? p.c : '#999',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 2,
+        minWidth: 54
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 18
+      }
+    }, p.e), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 9,
+        fontWeight: 600
+      }
+    }, pDone(p.id), "/", pTotal(p.id)));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 16px 6px',
+      background: ph.l
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 16,
+      color: ph.c
+    }
+  }, ph.e, " ", ph.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: '#666'
+    }
+  }, pDone(pid), " of ", pTotal(pid), " complete")), steps.map(step => {
+    const done = isDone(step.id);
+    const sdone = step.s.filter(ss => subDone(step.id, ss.i)).length;
+    const spct = sdone / step.s.length;
+    const isOpen = open === step.id;
+    const col = pc(step.p),
+      light = pl(step.p);
+    const hasNote = !!st['n_' + step.id];
+    return /*#__PURE__*/React.createElement("div", {
+      key: step.id,
+      style: {
+        background: '#fff',
+        margin: '8px 16px',
+        borderRadius: 14,
+        overflow: 'hidden',
+        boxShadow: '0 1px 4px rgba(0,0,0,.06)',
+        opacity: done ? .88 : 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: () => setOpen(isOpen ? null : step.id),
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12,
+        padding: '14px 16px',
+        cursor: 'pointer',
+        background: done ? light : '#fff',
+        userSelect: 'none'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 34,
+        height: 34,
+        borderRadius: 10,
+        flexShrink: 0,
+        background: done ? col : '#EBEBEB',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 800,
+        fontSize: 13,
+        color: done ? '#fff' : '#999'
+      }
+    }, done ? '✓' : step.id), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        minWidth: 0
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 600,
+        fontSize: 14,
+        color: done ? col : '#1C1C1E',
+        textDecoration: done ? 'line-through' : 'none',
+        marginBottom: 3
+      }
+    }, step.t), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 6,
+        flexWrap: 'wrap',
+        alignItems: 'center'
+      }
+    }, step.iv > 0 && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        fontWeight: 700,
+        background: light,
+        color: col,
+        padding: '2px 7px',
+        borderRadius: 8
+      }
+    }, step.imp), !done && sdone > 0 && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        color: '#aaa'
+      }
+    }, sdone, "/", step.s.length, " steps"), hasNote && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10
+      }
+    }, "\uD83D\uDCDD"))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: '#ccc',
+        fontSize: 18,
+        flexShrink: 0,
+        transition: 'transform .2s',
+        transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)'
+      }
+    }, "\u203A")), isOpen && /*#__PURE__*/React.createElement("div", {
+      className: "fadein",
+      style: {
+        padding: '0 16px 16px'
+      }
+    }, spct > 0 && /*#__PURE__*/React.createElement("div", {
+      style: {
+        height: 3,
+        background: '#F0F0F0',
+        borderRadius: 2,
+        marginBottom: 14,
+        overflow: 'hidden'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: spct * 100 + '%',
+        height: '100%',
+        background: col,
+        borderRadius: 2,
+        transition: 'width .3s'
+      }
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: '#F9F9F9',
+        borderRadius: 10,
+        padding: '10px 12px',
+        marginBottom: 12,
+        fontSize: 12,
+        color: '#555',
+        lineHeight: 1.65
+      }
+    }, step.w), step.s.map((ss, idx) => {
+      const sd = subDone(step.id, ss.i);
+      return /*#__PURE__*/React.createElement("div", {
+        key: ss.i,
+        onClick: () => toggleSub(step.id, ss.i),
+        style: {
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: 10,
+          padding: '8px 0',
+          borderBottom: '1px solid #F5F5F5',
+          cursor: 'pointer',
+          background: sd ? '#F0FFF4' : 'transparent',
+          borderRadius: sd ? 8 : 0,
+          paddingLeft: sd ? 8 : 0,
+          transition: 'all .15s'
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: 22,
+          height: 22,
+          borderRadius: 6,
+          marginTop: 1,
+          flexShrink: 0,
+          border: '2px solid ' + (sd ? col : '#DDD'),
+          background: sd ? col : 'transparent',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'all .15s'
+        }
+      }, sd && /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: '#fff',
+          fontSize: 12,
+          fontWeight: 700
+        }
+      }, "\u2713")), /*#__PURE__*/React.createElement("div", {
+        style: {
+          flex: 1
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 10,
+          fontWeight: 700,
+          color: col,
+          marginBottom: 1
+        }
+      }, String.fromCharCode(65 + idx)), /*#__PURE__*/React.createElement("div", {
+        style: {
+          fontSize: 13,
+          color: sd ? '#2E7D32' : '#333',
+          textDecoration: sd ? 'line-through' : 'none',
+          lineHeight: 1.5
+        }
+      }, ss.x)));
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 8,
+        marginTop: 14
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => toggleDone(step.id),
+      style: {
+        flex: 2,
+        padding: '11px 0',
+        borderRadius: 11,
+        border: 'none',
+        cursor: 'pointer',
+        fontWeight: 600,
+        fontSize: 13,
+        background: done ? '#EBEBEB' : col,
+        color: done ? '#555' : '#fff'
+      }
+    }, done ? 'Mark Incomplete' : '✓ Mark Complete'), /*#__PURE__*/React.createElement("button", {
+      onClick: e => openNote(step.id, e),
+      style: {
+        flex: 1,
+        padding: '11px 0',
+        borderRadius: 11,
+        border: '1.5px solid #E5E5EA',
+        background: '#fff',
+        cursor: 'pointer',
+        fontSize: 13,
+        color: '#555'
+      }
+    }, "\uD83D\uDCDD")), st['n_' + step.id] && /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 10,
+        background: '#FFFBF0',
+        border: '1px solid #FFE082',
+        borderRadius: 10,
+        padding: '10px 12px',
+        fontSize: 12,
+        color: '#5D4037',
+        lineHeight: 1.6
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 700,
+        marginBottom: 3,
+        color: '#8D6E63'
+      }
+    }, "YOUR NOTE"), st['n_' + step.id])));
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 8
+    }
+  }));
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+function Wins({
+  st,
+  isDone,
+  freedMo,
+  savedAn,
+  doneCount,
+  tot
+}) {
+  const done = STEPS.filter(s => isDone(s.id)).sort((a, b) => (st['t_' + b.id] || 0) - (st['t_' + a.id] || 0));
+  const rem = STEPS.filter(s => !isDone(s.id));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "scroll"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'linear-gradient(135deg,#1A4A42,#2d6a5f)',
+      padding: '20px 20px 24px',
+      color: '#fff'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      letterSpacing: .08,
+      opacity: .6,
+      marginBottom: 10
+    }
+  }, "YOUR IMPACT SO FAR"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 12,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      background: 'rgba(255,255,255,.13)',
+      borderRadius: 12,
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      opacity: .6,
+      marginBottom: 2
+    }
+  }, "Freed monthly"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 800,
+      color: '#7EC8B8'
+    }
+  }, "$", freedMo.toLocaleString())), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      background: 'rgba(255,255,255,.13)',
+      borderRadius: 12,
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      opacity: .6,
+      marginBottom: 2
+    }
+  }, "Tax saved/yr"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 800,
+      color: '#7EC8B8'
+    }
+  }, "$", savedAn.toLocaleString()))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      opacity: .75,
+      textAlign: 'center'
+    }
+  }, doneCount, " complete \xB7 ", tot - doneCount, " remaining")), done.length === 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      padding: '60px 20px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 52,
+      marginBottom: 12
+    }
+  }, "\uD83C\uDFAF"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 17,
+      marginBottom: 6
+    }
+  }, "No wins yet"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: '#888'
+    }
+  }, "Complete your first step to see it here")), done.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '16px 16px 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: .08,
+      color: '#888',
+      marginBottom: 10
+    }
+  }, "COMPLETED \u2705"), done.map(step => {
+    const d = st['t_' + step.id] ? new Date(st['t_' + step.id]).toLocaleDateString() : '';
+    const col = pc(step.p),
+      light = pl(step.p);
+    return /*#__PURE__*/React.createElement("div", {
+      key: step.id,
+      style: {
+        background: '#fff',
+        borderRadius: 12,
+        padding: '12px 14px',
+        marginBottom: 8,
+        borderLeft: '3px solid ' + col,
+        boxShadow: '0 1px 3px rgba(0,0,0,.05)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 28,
+        height: 28,
+        borderRadius: 8,
+        background: col,
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontWeight: 800,
+        fontSize: 12,
+        color: '#fff'
+      }
+    }, "\u2713"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 600,
+        fontSize: 13,
+        color: col
+      }
+    }, step.t), d && /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: '#aaa',
+        marginTop: 1
+      }
+    }, "Completed ", d)), step.iv > 0 && /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: light,
+        color: col,
+        fontSize: 10,
+        fontWeight: 700,
+        padding: '3px 8px',
+        borderRadius: 8,
+        flexShrink: 0
+      }
+    }, step.imp)));
+  })), rem.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '16px 16px 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      letterSpacing: .08,
+      color: '#888',
+      marginBottom: 10
+    }
+  }, "UP NEXT"), rem.slice(0, 5).map(step => /*#__PURE__*/React.createElement("div", {
+    key: step.id,
+    style: {
+      background: '#F9F9F9',
+      borderRadius: 10,
+      padding: '10px 14px',
+      marginBottom: 6,
+      display: 'flex',
+      gap: 8,
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#ccc',
+      minWidth: 20
+    }
+  }, "#", step.id), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      color: '#777'
+    }
+  }, step.t))), rem.length > 5 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      fontSize: 12,
+      color: '#aaa',
+      padding: '8px 0'
+    }
+  }, "+", rem.length - 5, " more remaining")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 8
+    }
+  }));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 </body>
 </html>
