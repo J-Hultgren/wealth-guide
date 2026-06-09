@@ -10,19 +10,12 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F5F5F7;color:#1C1C1E}
 #root{min-height:100vh}
-.scroll{overflow-y:auto;padding-bottom:76px;min-height:100vh}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e8e8e8;display:flex;height:66px;z-index:100}
-.nav-btn{flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
-.nav-icon{font-size:22px}
-.nav-lbl{font-size:10px;font-weight:600}
 @keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.pop{animation:pop .35s ease forwards}
-.fadein{animation:fadein .25s ease forwards}
 </style>
 </head>
 <body>
-<div id="root"><div style="padding:40px;text-align:center;font-family:sans-serif;color:#888">Loading Wealth Builder…</div></div>
+<div id="root"><div style="padding:40px;text-align:center;font-family:sans-serif;color:#888">Loading...</div></div>
 <script>
 const {
   useState,
@@ -33,79 +26,88 @@ const TEAL = '#1A4A42',
   TEALLT = '#EEF7F5';
 const PHASES = [{
   id: 1,
-  name: 'Execute Now',
+  name: 'This Week',
+  sub: 'June 2026',
   e: '🔥',
-  c: '#B71C1C',
+  c: '#C62828',
   l: '#FFF5F5'
 }, {
   id: 2,
-  name: 'Tax Setup',
-  e: '🧾',
+  name: 'This Month',
+  sub: 'July 2026',
+  e: '⚡',
   c: '#1565C0',
   l: '#EEF4FF'
 }, {
   id: 3,
-  name: 'Your LLC',
-  e: '🏢',
+  name: 'Aug–Sep 2026',
+  sub: 'Months 2–3',
+  e: '🏗️',
   c: '#5b4a8a',
   l: '#F3EFFF'
 }, {
   id: 4,
-  name: 'Retirement',
-  e: '🏦',
-  c: TEAL,
-  l: TEALLT
+  name: 'Oct 2026',
+  sub: 'RSA Unlock',
+  e: '🔑',
+  c: '#E65100',
+  l: '#FFF3E0'
 }, {
   id: 5,
-  name: 'Investing',
-  e: '📈',
+  name: 'Nov–Dec 2026',
+  sub: 'Months 5–6',
+  e: '📋',
+  c: '#1A4A42',
+  l: '#EEF7F5'
+}, {
+  id: 6,
+  name: '2027–2028',
+  sub: 'Ongoing',
+  e: '❄️',
   c: '#1d5c2e',
   l: '#EDFBF0'
 }, {
-  id: 6,
-  name: 'Protection',
-  e: '🛡️',
+  id: 7,
+  name: 'March 2029',
+  sub: 'Finish Line',
+  e: '🏁',
   c: '#7F5000',
   l: '#FFF8EE'
-}, {
-  id: 7,
-  name: 'Snowball',
-  e: '❄️',
-  c: '#1a1a2e',
-  l: '#F0F0FF'
 }];
 const pc = p => (PHASES.find(x => x.id === p) || PHASES[0]).c;
 const pl = p => (PHASES.find(x => x.id === p) || PHASES[0]).l;
-const STEPS = [{
+const STEPS = [
+// ── PHASE 1: THIS WEEK ────────────────────────────────────────────────────
+{
   id: 1,
   p: 1,
   t: 'Close the Figure HELOC',
-  u: 'This week',
+  u: '⚠️ 14-day window — do TODAY',
   imp: '+$1,388/mo freed',
   iv: 1388,
   it: 'monthly',
-  w: 'Take $47,293 cash. Pay Avant & Affirm on day one. Fund repairs.',
+  w: 'Take $47,293 cash. Pay Avant & Affirm on closing day. Keep $16,409 for repairs.',
   s: [{
     i: 'a',
-    x: 'Go to figure.com → select "Access Cash" (not pay off debts)'
+    x: 'Log into figure.com/account/heloc → select "Access Cash"'
   }, {
     i: 'b',
     x: 'Select 8.25% APR · 15-year fixed · 4.99% origination fee'
   }, {
     i: 'c',
-    x: 'Check both: Autopay (-0.25%) and Credit Union member (-0.15%)'
+    x: 'Check BOTH boxes: Autopay (−0.25%) and Credit Union member (−0.15%)'
   }, {
     i: 'd',
     x: 'Upload: county deed, government ID, name-change document'
   }, {
     i: 'e',
-    x: 'Respond to every Figure request within 24 hours — 14-day window'
+    x: 'Respond to every Figure request within 24 hours — window is running'
   }, {
     i: 'f',
-    x: 'Day funds arrive → wire $24,359 to Avant (call for payoff quote first)'
+    x: 'Day funds arrive → call Avant for payoff amount → wire $24,359'
   }, {
     i: 'g',
-    x: 'Day funds arrive → wire $6,525 to Affirm (call for payoff quote first)'
+    x: 'Day funds arrive → call Affirm for payoff amount → wire $6,525'
   }, {
     i: 'h',
     x: 'Keep $16,409 for repairs + your $5K savings = $21,409 total'
@@ -118,85 +120,128 @@ const STEPS = [{
   imp: 'Prevents denial',
   iv: 0,
   it: 'protect',
-  w: 'Deed has old name. Disclose proactively — surprises cause denials, disclosures cause paperwork.',
+  w: 'Your deed has an old name. Call Figure proactively — surprises cause denials.',
   s: [{
     i: 'a',
     x: 'Call Figure: "I have a name change since my deed — what docs do you need?"'
   }, {
     i: 'b',
-    x: 'Pull deed from your county NH registry of deeds (free, online)'
+    x: 'Pull deed free from your NH county registry of deeds (search online)'
   }, {
     i: 'c',
     x: 'Provide: marriage certificate OR divorce decree OR court order'
   }, {
     i: 'd',
-    x: 'If they need notarized affidavit: any UPS Store for $5–15'
+    x: 'If they need notarized affidavit: any UPS Store does it for $5–15'
   }]
 }, {
   id: 3,
   p: 1,
   t: 'Open High-Yield Savings Account',
-  u: '15 minutes',
-  imp: 'Earn 4.5% on savings',
+  u: '15 minutes — do this week',
+  imp: '4.5% on your savings',
   iv: 675,
   it: 'annual',
-  w: 'Emergency fund lives here. $15K earns $675/year. FDIC insured.',
+  w: 'Emergency fund lives here. $15K earns $675/year. FDIC insured. Set and forget.',
   s: [{
     i: 'a',
     x: 'Go to marcus.com or ally.com → Open Account → Savings'
   }, {
     i: 'b',
-    x: 'Link your LC Checking. Start with whatever you can.'
+    x: 'Link your LC Checking. Start with any amount.'
   }, {
     i: 'c',
     x: 'Set auto-transfer: $250 every two weeks on payday'
   }, {
     i: 'd',
-    x: 'Name it "Emergency Fund — DO NOT TOUCH"'
+    x: 'Nickname it "Emergency Fund — DO NOT TOUCH"'
   }, {
     i: 'e',
-    x: 'Target: $15,000 before investing elsewhere'
+    x: 'Target: $15,000 minimum before you invest anywhere else'
   }]
 }, {
   id: 4,
   p: 1,
   t: 'Fix W-4 withholding at both jobs',
-  u: '20 minutes',
+  u: '20 minutes — do this week',
   imp: 'Avoids IRS penalties',
   iv: 0,
   it: 'protect',
-  w: 'Two W-2 jobs = likely under-withheld. Fix it now — free.',
+  w: 'Two W-2 jobs means you are almost certainly under-withheld. Free fix.',
   s: [{
     i: 'a',
-    x: 'Go to irs.gov/W4app — enter both incomes and 3 dependents'
+    x: 'Go to irs.gov/W4app — enter both job incomes and 3 dependents'
   }, {
     i: 'b',
-    x: 'Note the extra per-paycheck withholding amount recommended'
+    x: 'Note the extra per-paycheck withholding amount it recommends'
   }, {
     i: 'c',
-    x: 'Submit updated W-4 to HR at XE with additional withholding in Step 4c'
+    x: 'Request W-4 form from HR at XE → fill in additional withholding in Step 4c'
   }, {
     i: 'd',
-    x: 'Submit updated W-4 to HR at TP — same process'
+    x: 'Same process at TP → submit to HR'
   }]
-}, {
+},
+// ── PHASE 2: THIS MONTH ───────────────────────────────────────────────────
+{
   id: 5,
-  p: 1,
-  t: 'Confirm 401K match at XE and TP',
-  u: '30 minutes',
-  imp: 'Never leave free money',
+  p: 2,
+  t: 'Get term life insurance',
+  u: 'July 2026 — do within 30 days',
+  imp: 'Protects your family of 5',
   iv: 0,
-  it: 'match',
-  w: 'Employer match = 50–100% instant return. Always capture the full match at both employers.',
+  it: 'protect',
+  w: '3 kids + heavy debt = you need this now. 20-year term, $1M+ minimum. Takes 1 month to issue.',
   s: [{
     i: 'a',
-    x: 'Log into XE benefits portal — find 401K match percentage'
+    x: 'Go to policygenius.com → enter age, health, $1M+ coverage, 20-year term'
   }, {
     i: 'b',
-    x: 'Confirm you contribute enough to get the full XE match'
+    x: 'Compare quotes from A-rated companies — choose lowest cost'
   }, {
     i: 'c',
-    x: 'Log into TP benefits portal — confirm full TP match too'
+    x: 'Apply online, complete health questionnaire, schedule free medical exam'
+  }, {
+    i: 'd',
+    x: 'DO NOT buy whole life, universal life, or any "investment" life insurance'
+  }]
+}, {
+  id: 6,
+  p: 2,
+  t: 'Check and add disability insurance',
+  u: 'July 2026',
+  imp: 'Protects your income',
+  iv: 0,
+  it: 'protect',
+  w: 'You are 4x more likely to become disabled than to die during working years.',
+  s: [{
+    i: 'a',
+    x: 'Check both XE and TP benefits portals for short-term and long-term disability'
+  }, {
+    i: 'b',
+    x: 'Confirm: what % of salary covered, waiting period, how long benefits last'
+  }, {
+    i: 'c',
+    x: 'If LTD is under 60% of salary: get private policy from Guardian or Principal'
+  }]
+}, {
+  id: 7,
+  p: 2,
+  t: 'Confirm 401K match at XE and TP',
+  u: 'July 2026',
+  imp: 'Free money — never skip',
+  iv: 0,
+  it: 'match',
+  w: 'Employer match = 50–100% instant return. Always get the full match at both jobs.',
+  s: [{
+    i: 'a',
+    x: 'Log into XE benefits portal → find 401K match percentage'
+  }, {
+    i: 'b',
+    x: 'Confirm you contribute enough to capture the FULL XE match'
+  }, {
+    i: 'c',
+    x: 'Log into TP benefits portal → confirm full TP match too'
   }, {
     i: 'd',
     x: 'Select Traditional (pre-tax) 401K while in the 24% bracket'
@@ -205,64 +250,200 @@ const STEPS = [{
     x: 'Choose index funds with expense ratios below 0.10%'
   }]
 }, {
-  id: 6,
+  id: 8,
   p: 2,
-  t: 'Open and max an HSA',
-  u: 'Month 1',
-  imp: 'Saves $2,052/yr taxes',
+  t: 'Check HSA eligibility and open if eligible',
+  u: 'July 2026',
+  imp: 'Saves $2,052/yr in taxes',
   iv: 2052,
   it: 'annual',
-  w: 'Requires HDHP. Triple tax advantage: pre-tax in, grows tax-free, out tax-free for medical.',
+  w: 'Triple tax advantage — best account in existence. Requires an HDHP health plan.',
   s: [{
     i: 'a',
-    x: 'Confirm health plan is HDHP (deductible ≥$1,650 individual / $3,300 family)'
+    x: 'Confirm your health plan is an HDHP (deductible ≥$1,650 individual / $3,300 family)'
   }, {
     i: 'b',
     x: 'If yes: fidelity.com → Open Account → Health Savings Account'
   }, {
     i: 'c',
-    x: 'Contribute max: $8,550/yr family or $4,300/yr individual (2026)'
+    x: 'Max contribution: $8,550/yr family or $4,300/yr individual (2026)'
   }, {
     i: 'd',
     x: 'CRITICAL: Invest HSA in FZROX — never leave in cash'
   }, {
     i: 'e',
     x: 'Pay all medical bills out of pocket. Save every receipt forever.'
-  }, {
-    i: 'f',
-    x: 'Let HSA grow 20 years, then reimburse yourself for past bills'
   }]
-}, {
-  id: 7,
-  p: 2,
-  t: 'Enroll in Dependent Care FSA',
-  u: 'Next open enrollment',
-  imp: 'Saves $1,200/yr taxes',
-  iv: 1200,
-  it: 'annual',
-  w: '$5,000/year pre-tax for childcare. You are spending this anyway — make it pre-tax.',
+},
+// ── PHASE 3: AUG–SEP 2026 ────────────────────────────────────────────────
+{
+  id: 9,
+  p: 3,
+  t: 'Read your employment agreements',
+  u: 'August 2026 — BEFORE forming LLC',
+  imp: 'Prevents job loss',
+  iv: 0,
+  it: 'protect',
+  w: 'Check non-compete clauses before consulting or running any business. Do this first.',
   s: [{
     i: 'a',
-    x: 'At open enrollment: elect max Dependent Care FSA = $5,000/year'
+    x: 'Pull employment agreements from both XE and TP — check your offer letter folder'
   }, {
     i: 'b',
-    x: 'Qualifying: after-school programs, summer camps, childcare for kids under 13'
+    x: 'Search for: Non-compete, Intellectual Property, Outside Employment, Conflicts of Interest'
   }, {
     i: 'c',
-    x: 'Submit receipts monthly through employer FSA portal'
+    x: 'Note what you CANNOT do: competitors, employer IP, nuclear-adjacent consulting'
   }, {
     i: 'd',
-    x: 'Only elect what you will spend — FSA is use-it-or-lose-it'
+    x: 'Note what you CAN do: web apps, digital products, non-energy consulting, teaching'
+  }, {
+    i: 'e',
+    x: 'If unclear: NH employment attorney 1-hour review = $150–300, worth it'
   }]
 }, {
-  id: 8,
-  p: 2,
+  id: 10,
+  p: 3,
+  t: 'Form LLC in New Hampshire',
+  u: 'August 2026',
+  imp: '$1,239+/yr in deductions',
+  iv: 1239,
+  it: 'annual',
+  w: '$100 one-time. Business deductions start the day the LLC is formed — before any income.',
+  s: [{
+    i: 'a',
+    x: 'Check name at sos.nh.gov → Business → Business Name Search'
+  }, {
+    i: 'b',
+    x: 'File Articles of Organization: sos.nh.gov → File Documents → LLC → pay $100'
+  }, {
+    i: 'c',
+    x: 'Get free EIN at irs.gov → search "Apply for EIN" → LLC → print confirmation page'
+  }, {
+    i: 'd',
+    x: 'Write operating agreement (free template online) — sign and file in a folder'
+  }, {
+    i: 'e',
+    x: 'Set calendar reminder: $100 annual report due each year in NH'
+  }]
+}, {
+  id: 11,
+  p: 3,
+  t: 'Open business checking account',
+  u: 'August 2026 — same week as LLC',
+  imp: 'Required legal separation',
+  iv: 0,
+  it: 'protect',
+  w: 'Personal and business money must NEVER mix. This is the most important LLC rule.',
+  s: [{
+    i: 'a',
+    x: 'Go to relayfi.com or mercury.com — both free for LLCs, no minimums'
+  }, {
+    i: 'b',
+    x: 'Open with LLC name and EIN — takes 10 minutes'
+  }, {
+    i: 'c',
+    x: 'Get a business debit card for the account'
+  }, {
+    i: 'd',
+    x: 'All business expenses on business card. All personal expenses on personal card. Always.'
+  }]
+}, {
+  id: 12,
+  p: 3,
+  t: 'Open a Solo 401K for the LLC',
+  u: 'Before Dec 31, 2026 — urgent',
+  imp: 'Shelter up to $70K/yr',
+  iv: 0,
+  it: 'variable',
+  w: 'MUST be opened by Dec 31 to use for the 2026 tax year. Open it now even with $0 income.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → Self-Employed 401(k)'
+  }, {
+    i: 'b',
+    x: 'Enter LLC name and EIN when prompted'
+  }, {
+    i: 'c',
+    x: 'Enable both employee AND employer contribution types'
+  }, {
+    i: 'd',
+    x: 'When consulting income arrives: contribute up to $23,500 as employee first'
+  }, {
+    i: 'e',
+    x: 'Add 25% of net self-employment income as employer contribution on top'
+  }, {
+    i: 'f',
+    x: 'Invest inside Solo 401K in FZROX index fund'
+  }]
+}, {
+  id: 13,
+  p: 3,
+  t: 'Start tracking business expenses',
+  u: 'August 2026 — day 1 of LLC',
+  imp: '$5,162/yr deductions',
+  iv: 5162,
+  it: 'annual',
+  w: 'Things you already pay — internet, phone, Claude AI, memberships — are now deductions.',
+  s: [{
+    i: 'a',
+    x: 'Sign up for Wave Accounting free at waveapps.com'
+  }, {
+    i: 'b',
+    x: 'Home office: measure your dedicated work space → deduct $5 per sqft per year'
+  }, {
+    i: 'c',
+    x: 'Internet: Fidium $50/mo × 75% business use = $540/yr deduction'
+  }, {
+    i: 'd',
+    x: 'Phone: Google Fi $147/mo × 50% business use = $882/yr deduction'
+  }, {
+    i: 'e',
+    x: 'Claude AI $240/yr, GitHub, ANS/ACS professional memberships — all deductible'
+  }, {
+    i: 'f',
+    x: 'Computer: Section 179 — deduct the full cost in year one'
+  }, {
+    i: 'g',
+    x: 'Log business activity weekly: date, what you did, time spent'
+  }, {
+    i: 'h',
+    x: 'Photograph every receipt immediately and upload to Wave'
+  }]
+}, {
+  id: 14,
+  p: 3,
+  t: 'Roll Acorns IRA → Fidelity',
+  u: 'August–September 2026',
+  imp: 'Saves $36–60/yr in fees',
+  iv: 48,
+  it: 'annual',
+  w: 'Acorns charges $3–5/month. Fidelity charges nothing. Same investments, zero fees.',
+  s: [{
+    i: 'a',
+    x: 'Log into Acorns → Settings → Rollover (OR call 855-222-6734)'
+  }, {
+    i: 'b',
+    x: 'Request a direct rollover to Fidelity Traditional IRA — give them your Fidelity account number'
+  }, {
+    i: 'c',
+    x: 'Wait 5–10 business days for transfer to complete'
+  }, {
+    i: 'd',
+    x: 'At Fidelity: invest transferred amount in FZROX immediately'
+  }, {
+    i: 'e',
+    x: 'Cancel Acorns Gold subscription after the transfer fully completes'
+  }]
+}, {
+  id: 15,
+  p: 3,
   t: 'Open a Backdoor Roth IRA',
-  u: 'Month 1–2',
+  u: 'September 2026',
   imp: 'Tax-free wealth forever',
   iv: 7000,
   it: 'annual',
-  w: 'At your income you are over the Roth limit. Backdoor route is legal. $7K/year grows tax-free.',
+  w: 'You are over the Roth income limit. The backdoor route is 100% legal. $7K/year grows tax-free.',
   s: [{
     i: 'a',
     x: 'fidelity.com → Open Account → Traditional IRA (not Roth yet)'
@@ -271,379 +452,136 @@ const STEPS = [{
     x: 'Contribute $7,000 to the Traditional IRA'
   }, {
     i: 'c',
-    x: 'Wait 1–3 business days for transfer to settle'
+    x: 'Wait 1–3 business days for transfer to fully settle'
   }, {
     i: 'd',
-    x: 'DO NOT invest yet — leave as cash'
+    x: 'DO NOT invest it yet — leave it as cash'
   }, {
     i: 'e',
-    x: 'Traditional IRA → Convert to Roth → Convert all → Confirm'
+    x: 'Traditional IRA → Convert to Roth → Convert entire amount → Confirm'
   }, {
     i: 'f',
-    x: 'Now invest: Roth IRA → Buy FZROX'
+    x: 'Now invest it: Roth IRA → Buy FZROX (Fidelity Zero Total Market)'
   }, {
     i: 'g',
-    x: 'Tell your CPA so they file Form 8606'
+    x: 'Tell your CPA to file Form 8606 — prevents the IRS double-taxing you'
   }, {
     i: 'h',
-    x: 'Set calendar reminder Jan 1 each year to repeat'
+    x: 'Set calendar reminder: January 1 each year → repeat this step'
   }]
-}, {
-  id: 9,
-  p: 2,
-  t: 'Maximize 401K contributions',
-  u: 'Increase gradually',
-  imp: 'Up to $5,640/yr saved',
-  iv: 5640,
-  it: 'annual',
-  w: 'Increase toward $23,500 limit. Do it gradually as debt frees cash. Target: maxed by 2028.',
-  s: [{
-    i: 'a',
-    x: 'Calculate current annual 401K (contribution % × annual salary)'
-  }, {
-    i: 'b',
-    x: 'Calculate gap to $23,500'
-  }, {
-    i: 'c',
-    x: 'Increase contribution % by 1–2% every few months as snowball frees cash'
-  }, {
-    i: 'd',
-    x: 'Target fully maxed by 2028 when consumer debt is dead'
-  }, {
-    i: 'e',
-    x: 'Always choose index funds — expense ratio below 0.10%'
-  }]
-}, {
-  id: 10,
-  p: 3,
-  t: 'Read employment agreements FIRST',
-  u: 'Before any LLC step',
-  imp: 'Prevents job loss',
-  iv: 0,
-  it: 'protect',
-  w: 'Check non-compete clauses. Violating this risks losing your primary job.',
-  s: [{
-    i: 'a',
-    x: 'Pull employment agreements from both XE and TP'
-  }, {
-    i: 'b',
-    x: 'Search for: Non-compete, Intellectual Property, Outside Employment'
-  }, {
-    i: 'c',
-    x: 'Note what you CANNOT do (competitors, employer IP)'
-  }, {
-    i: 'd',
-    x: 'Note what you CAN do: web apps, digital products, non-energy consulting'
-  }, {
-    i: 'e',
-    x: 'If unclear: NH employment attorney 1-hour review ($150–300)'
-  }]
-}, {
-  id: 11,
-  p: 3,
-  t: 'Form LLC in New Hampshire',
-  u: 'Month 1',
-  imp: '$1,239+/yr deductions',
-  iv: 1239,
-  it: 'annual',
-  w: '$100 one-time. Deductions start the day LLC is formed — before any income.',
-  s: [{
-    i: 'a',
-    x: 'Check name at sos.nh.gov → Business → Business Name Search'
-  }, {
-    i: 'b',
-    x: 'File Articles of Organization at sos.nh.gov → File Documents → LLC → $100'
-  }, {
-    i: 'c',
-    x: 'Get free EIN at irs.gov → search "Apply for EIN" → LLC → print confirmation'
-  }, {
-    i: 'd',
-    x: 'Write operating agreement (free template online) — sign and keep in folder'
-  }, {
-    i: 'e',
-    x: 'Set calendar reminder: $100 annual report due each year'
-  }]
-}, {
-  id: 12,
-  p: 3,
-  t: 'Open business checking account',
-  u: 'Same week as LLC',
-  imp: 'Legal separation required',
-  iv: 0,
-  it: 'protect',
-  w: 'Personal and business money must NEVER mix. Most important LLC rule.',
-  s: [{
-    i: 'a',
-    x: 'Go to relayfi.com or mercury.com — both free for LLCs'
-  }, {
-    i: 'b',
-    x: 'Open with LLC name and EIN'
-  }, {
-    i: 'c',
-    x: 'Get a business debit card'
-  }, {
-    i: 'd',
-    x: 'All business expenses on business card. Personal on personal card. Always.'
-  }]
-}, {
-  id: 13,
-  p: 3,
-  t: 'Open a Solo 401K for the LLC',
-  u: 'Before Dec 31',
-  imp: 'Shelter up to $70K/yr',
-  iv: 0,
-  it: 'variable',
-  w: 'Must open by Dec 31 to use that tax year. Open now even before earning income.',
-  s: [{
-    i: 'a',
-    x: 'fidelity.com → Open Account → Self-Employed 401(k)'
-  }, {
-    i: 'b',
-    x: 'Enter LLC name and EIN'
-  }, {
-    i: 'c',
-    x: 'Enable both employee AND employer contributions'
-  }, {
-    i: 'd',
-    x: 'When income arrives: contribute up to $23,500 as employee first'
-  }, {
-    i: 'e',
-    x: 'Add 25% of net self-employment income as employer contribution'
-  }, {
-    i: 'f',
-    x: 'Invest inside Solo 401K: FZROX index fund'
-  }]
-}, {
-  id: 14,
-  p: 3,
-  t: 'Start tracking business expenses',
-  u: 'Day 1 of LLC',
-  imp: '$5,162/yr deductions',
-  iv: 5162,
-  it: 'annual',
-  w: 'Things you already pay become deductions. Every receipt matters.',
-  s: [{
-    i: 'a',
-    x: 'Sign up for Wave Accounting free at waveapps.com'
-  }, {
-    i: 'b',
-    x: 'Home office: measure dedicated work space → deduct $5/sqft/year'
-  }, {
-    i: 'c',
-    x: 'Internet: Fidium $50/mo × 75% business = $540/yr deduction'
-  }, {
-    i: 'd',
-    x: 'Phone: Google Fi $147/mo × 50% = $882/yr deduction'
-  }, {
-    i: 'e',
-    x: 'Claude AI ($240/yr), GitHub, professional memberships (ANS, ACS)'
-  }, {
-    i: 'f',
-    x: 'Computer: Section 179 — deduct full cost year one'
-  }, {
-    i: 'g',
-    x: 'Weekly activity log: date, what you worked on, time'
-  }, {
-    i: 'h',
-    x: 'Photograph every receipt immediately — upload to Wave'
-  }]
-}, {
-  id: 15,
-  p: 3,
-  t: 'Set up quarterly estimated taxes',
-  u: 'When LLC earns income',
-  imp: 'Avoids penalties',
-  iv: 0,
-  it: 'protect',
-  w: 'Self-employment has no withholding. Pay quarterly or the IRS charges penalties.',
-  s: [{
-    i: 'a',
-    x: 'Create account at irs.gov/payments (IRS Direct Pay — free)'
-  }, {
-    i: 'b',
-    x: 'Mark due dates: Apr 15, Jun 16, Sep 15, Jan 15'
-  }, {
-    i: 'c',
-    x: 'Estimate: net consulting income × 30% = quarterly payment'
-  }, {
-    i: 'd',
-    x: 'Keep a "Tax Reserve" savings account — put 30% of every check here'
-  }]
-}, {
+},
+// ── PHASE 4: OCTOBER 2026 ─────────────────────────────────────────────────
+{
   id: 16,
   p: 4,
-  t: 'Roll Acorns IRA to Fidelity',
-  u: 'Month 1',
-  imp: 'Saves $36–60/yr fees',
-  iv: 48,
-  it: 'annual',
-  w: 'Acorns charges $3–5/month. Fidelity is free. Same growth, no fees.',
+  t: 'XE lockup expires — sell 30 shares',
+  u: 'October 2026 — KEY DATE',
+  imp: 'Emergency fund to $8K+',
+  iv: 0,
+  it: 'protect',
+  w: 'You have 65 shares. Sell 30 at lockup expiry. Keep 35. Use proceeds to build emergency fund.',
   s: [{
     i: 'a',
-    x: 'Log into Acorns → Settings → Rollover OR call 855-222-6734'
+    x: 'Log into Fidelity NetBenefits → Equity Awards → confirm Oct 2026 lockup expiry date'
   }, {
     i: 'b',
-    x: 'Request direct rollover to Fidelity Traditional IRA'
+    x: 'On lockup expiry day: go to Fidelity → sell 30 shares at market price'
   }, {
     i: 'c',
-    x: 'Wait 5–10 business days for transfer'
+    x: 'Transfer proceeds to your HYSA → emergency fund jumps to $8,000+'
   }, {
     i: 'd',
-    x: 'At Fidelity: invest in FZROX immediately'
+    x: 'Hold remaining 35 shares — next vest is June 2027 (~195 more shares)'
   }, {
     i: 'e',
-    x: 'Cancel Acorns Gold subscription after transfer completes'
+    x: 'Set calendar reminder: June 2027 RSA vest → top up emergency fund to $15,000'
   }]
 }, {
   id: 17,
   p: 4,
-  t: 'Confirm XE RSA vesting strategy',
-  u: 'Month 1',
+  t: 'Confirm RSA vesting tax strategy',
+  u: 'October 2026',
   imp: 'Saves $509/vest by holding',
   iv: 509,
   it: 'per-event',
-  w: 'RSAs vest as ordinary income (24%). Holding 12+ months converts profit to 15% capital gains.',
+  w: 'RSAs vest as ordinary income (24% tax). Hold 12+ months to convert gains to 15% capital gains rate.',
   s: [{
     i: 'a',
-    x: 'Fidelity NetBenefits → Equity Awards → confirm vest dates'
+    x: 'Fidelity NetBenefits → Equity Awards → confirm all 4 vest dates (Jun 2026, 2027, 2028, 2029)'
   }, {
     i: 'b',
-    x: 'Confirm Fidelity withholds shares to cover taxes at vesting'
+    x: 'Confirm Fidelity auto-withholds shares to cover taxes at each vest'
   }, {
     i: 'c',
-    x: 'Oct 2026: lockup expires → sell 30 of 65 shares → emergency fund'
+    x: 'For shares you keep: hold at least 12 months after vesting to qualify for 15% rate'
   }, {
     i: 'd',
-    x: 'Hold remaining shares 12+ months after vest for lower tax rate'
-  }, {
-    i: 'e',
-    x: 'Never let XE stock exceed 15% of your total net worth'
+    x: 'Never let XE stock exceed 15% of your total net worth — diversify if it does'
   }]
-}, {
+},
+// ── PHASE 5: NOV–DEC 2026 ────────────────────────────────────────────────
+{
   id: 18,
-  p: 4,
-  t: 'Open 529 college savings',
-  u: 'Month 3+',
-  imp: 'Tax-free education growth',
-  iv: 0,
-  it: 'future',
-  w: 'Federal growth tax-free for education. Youngest child first — more time = more growth.',
+  p: 5,
+  t: 'Enroll in Dependent Care FSA',
+  u: 'Nov–Dec 2026 open enrollment',
+  imp: 'Saves $1,200/yr in taxes',
+  iv: 1200,
+  it: 'annual',
+  w: '$5,000/year pre-tax for childcare. You are spending this anyway — make it pre-tax.',
   s: [{
     i: 'a',
-    x: 'fidelity.com → Open Account → 529 → child name, SSN, birth date'
+    x: 'During open enrollment: elect maximum Dependent Care FSA = $5,000/year'
   }, {
     i: 'b',
-    x: 'Select age-based portfolio'
+    x: 'Qualifying expenses: after-school programs, summer camps, childcare for kids under 13'
   }, {
     i: 'c',
-    x: 'Prioritize youngest child first'
+    x: 'Submit receipts each month through your employer FSA portal for reimbursement'
   }, {
     i: 'd',
-    x: 'Contribute only after 401K match, HSA, Roth IRA are handled'
+    x: 'Only elect what you will actually spend — it is use-it-or-lose-it every year'
   }]
 }, {
   id: 19,
   p: 5,
-  t: 'Open a taxable brokerage account',
-  u: 'After tax accounts started',
-  imp: 'Unlimited investing',
-  iv: 0,
-  it: 'future',
-  w: 'For money after maxing all tax-advantaged accounts. No limits, accessible anytime.',
+  t: 'Increase 401K contributions',
+  u: 'November 2026',
+  imp: 'Up to $5,640/yr tax saved',
+  iv: 5640,
+  it: 'annual',
+  w: 'Increase gradually as debt frees up cash. Target: fully maxed ($23,500) by 2028.',
   s: [{
     i: 'a',
-    x: 'fidelity.com → Open Account → Brokerage Account'
+    x: 'Calculate current annual 401K total: contribution % × annual salary'
   }, {
     i: 'b',
-    x: 'Fund ONLY after: 401K match, HSA, Roth IRA are started'
+    x: 'Calculate gap to $23,500 — that is how much more you can contribute'
   }, {
     i: 'c',
-    x: 'Invest: 70% FZROX + 20% FZILX + 10% FXNAX (or 100% FZROX)'
+    x: 'Increase contribution % by 1–2% this month, repeat every few months'
   }, {
     i: 'd',
-    x: 'Set automatic monthly investment on payday'
+    x: 'Target: fully maxed by late 2028 when most consumer debt is dead'
   }, {
     i: 'e',
-    x: 'Never pick individual stocks. Never time the market.'
+    x: 'Always choose index funds inside the 401K — expense ratio under 0.10%'
   }]
 }, {
   id: 20,
   p: 5,
-  t: 'Learn the market crash rule',
-  u: 'Read once, remember always',
-  imp: 'Prevents big mistakes',
-  iv: 0,
-  it: 'protect',
-  w: 'Most investing mistakes happen during crashes. Your only job when markets fall: nothing.',
-  s: [{
-    i: 'a',
-    x: 'When market drops 20–50%: do nothing. Keep investments running.'
-  }, {
-    i: 'b',
-    x: 'Check investments maximum once per month'
-  }, {
-    i: 'c',
-    x: 'Rebalance once per year every January back to target %'
-  }, {
-    i: 'd',
-    x: 'Tax-loss harvesting: if down 10%+, sell → buy similar → claim loss on taxes'
-  }]
-}, {
-  id: 21,
-  p: 6,
-  t: 'Get term life insurance',
-  u: 'Month 1',
-  imp: 'Protects your family of 5',
-  iv: 0,
-  it: 'protect',
-  w: '3 dependents + significant debt = need this now. 10x annual income. 20-year term only.',
-  s: [{
-    i: 'a',
-    x: 'Go to policygenius.com — enter age, health, $1M+ coverage, 20-year term'
-  }, {
-    i: 'b',
-    x: 'Compare quotes — choose lowest cost from A-rated company'
-  }, {
-    i: 'c',
-    x: 'Apply online, complete health questionnaire, schedule free medical exam'
-  }, {
-    i: 'd',
-    x: 'DO NOT buy whole life, universal life, or any investment life insurance'
-  }]
-}, {
-  id: 22,
-  p: 6,
-  t: 'Check disability insurance',
-  u: 'Month 1',
-  imp: 'Protects your income',
-  iv: 0,
-  it: 'protect',
-  w: 'You are 4x more likely to become disabled than to die during working years.',
-  s: [{
-    i: 'a',
-    x: 'Check XE and TP benefits for short-term and long-term disability'
-  }, {
-    i: 'b',
-    x: 'Confirm: % of salary covered, waiting period, how long benefits last'
-  }, {
-    i: 'c',
-    x: 'If LTD is under 60% of salary: get private policy from Guardian or Principal'
-  }]
-}, {
-  id: 23,
-  p: 6,
   t: 'Create your estate plan',
-  u: 'Month 1–3',
-  imp: 'Protects your children',
+  u: 'November–December 2026',
+  imp: 'Protects your 3 children',
   iv: 0,
   it: 'protect',
-  w: 'Without a will and guardianship, a court decides who raises your kids.',
+  w: 'Without a will and guardianship designation, a court decides who raises your kids.',
   s: [{
     i: 'a',
-    x: 'Find NH estate planning attorney (free consult, $500–1,500 total)'
+    x: 'Find an NH estate planning attorney (most offer free consultations, $500–1,500 total)'
   }, {
     i: 'b',
-    x: 'Get: Last Will with guardianship for all 3 children'
+    x: 'Get: Last Will and Testament with guardianship for all 3 children'
   }, {
     i: 'c',
     x: 'Get: Healthcare Proxy — who makes medical decisions if you cannot'
@@ -652,116 +590,192 @@ const STEPS = [{
     x: 'Get: Durable Financial Power of Attorney'
   }, {
     i: 'e',
-    x: 'Add beneficiaries to: 401K, IRA, life insurance, bank accounts'
+    x: 'Add named beneficiaries to ALL accounts: 401K, IRA, life insurance, bank accounts'
   }]
 }, {
-  id: 24,
-  p: 6,
-  t: 'Add umbrella insurance',
-  u: 'Month 2',
+  id: 21,
+  p: 5,
+  t: 'Add umbrella insurance policy',
+  u: 'November 2026',
   imp: '$1M protection for ~$200/yr',
   iv: 0,
   it: 'protect',
-  w: 'As net worth grows you have more to protect. One of the best insurance values.',
+  w: 'As your net worth grows you have more to protect from lawsuits. One of the best insurance values.',
   s: [{
     i: 'a',
-    x: 'Call home/auto insurer: "I want to add a $1M umbrella policy"'
+    x: 'Call your current home and auto insurer: "I want to add a $1M umbrella policy"'
   }, {
     i: 'b',
-    x: 'Confirm auto liability meets minimum ($300K bodily injury required)'
+    x: 'Confirm your auto liability meets minimum ($300K bodily injury typically required)'
   }, {
     i: 'c',
-    x: 'Get quotes from 2 other insurers — pricing varies significantly'
+    x: 'Get quotes from 2 other insurers — umbrella pricing varies widely'
   }]
 }, {
-  id: 25,
-  p: 7,
+  id: 22,
+  p: 5,
+  t: 'Set up quarterly estimated taxes',
+  u: 'When LLC earns first dollar',
+  imp: 'Avoids IRS penalties',
+  iv: 0,
+  it: 'protect',
+  w: 'Self-employment income has no withholding. Pay quarterly or the IRS charges penalties.',
+  s: [{
+    i: 'a',
+    x: 'Create free account at irs.gov/payments (IRS Direct Pay)'
+  }, {
+    i: 'b',
+    x: 'Mark recurring calendar reminders: Apr 15, Jun 16, Sep 15, Jan 15'
+  }, {
+    i: 'c',
+    x: 'Formula: net consulting income each quarter × 30% = payment amount'
+  }, {
+    i: 'd',
+    x: 'Keep a "Tax Reserve" savings account — put 30% of every consulting check here immediately'
+  }]
+},
+// ── PHASE 6: 2027–2028 ───────────────────────────────────────────────────
+{
+  id: 23,
+  p: 6,
   t: 'Execute the debt snowball',
-  u: 'Every payday',
-  imp: '$7,968/mo freed Mar 2029',
+  u: 'Every payday until March 2029',
+  imp: '$7,968/mo freed by Mar 2029',
   iv: 7968,
   it: 'by-date',
   w: 'One rule: every freed minimum attacks the next target. No exceptions. No lifestyle upgrades.',
   s: [{
     i: 'a',
-    x: 'Current #1 target: Upstart ($39,197 @ 29.4%) — ALL surplus goes here'
+    x: '#1 NOW: Upstart ($39,197 @ 29.4%) — every surplus dollar goes here today'
   }, {
     i: 'b',
-    x: 'Every payday after bills: send every leftover dollar to Upstart'
+    x: 'Every payday after bills auto-pay: send every remaining dollar to current target'
   }, {
     i: 'c',
-    x: 'Upstart dead Jul 2027 → move to Barclay ($14,500 @ 29%)'
+    x: 'Jul 2027: Upstart dead (+$1,301/mo freed) → immediately move attack to Barclay'
   }, {
     i: 'd',
-    x: 'Barclay dead Oct 2027 → move to Amex ($14,784 @ 29%)'
+    x: 'Oct 2027: Barclay dead (+$600/mo freed) → move to Amex'
   }, {
     i: 'e',
-    x: 'Amex dead Jan 2028 → FULL ATTACK on SoFi ($57,889 @ 26%)'
+    x: 'Jan 2028: Amex dead (+$500/mo freed) → FULL ATTACK on SoFi ($57,889)'
   }, {
     i: 'f',
-    x: 'SoFi dead Sep 2028 → Upgrade ($19,444 @ 17%)'
+    x: 'Sep 2028: SoFi dead (+$1,699/mo freed) → move to Upgrade'
   }, {
     i: 'g',
-    x: 'Upgrade dead Nov 2028 → Best Egg ($26,596 @ 15%)'
+    x: 'Nov 2028: Upgrade dead (+$525/mo freed) → move to Best Egg'
   }, {
     i: 'h',
-    x: 'Mar 2029: ALL consumer debt gone — $7,968/month freed'
+    x: 'Mar 2029: ALL consumer debt gone — $7,968/month freed forever'
   }, {
     i: 'i',
-    x: '0% debts (Citi, Citi AA): minimums only — never send extra'
+    x: 'Citi and Citi AA (0%): pay minimums only the whole time — never send extra'
   }]
 }, {
-  id: 26,
-  p: 7,
-  t: 'Redirect freed payments after Mar 2029',
-  u: 'March 2029',
-  imp: '$4,215/mo to investing',
-  iv: 4215,
-  it: 'monthly',
-  w: '$7,968/month freed. Redirect in this exact order every month.',
-  s: [{
-    i: 'a',
-    x: 'First $1,958: fill 401K gap to $23,500/year'
-  }, {
-    i: 'b',
-    x: 'Next $712: HSA maximum ($8,550 / 12)'
-  }, {
-    i: 'c',
-    x: 'Next $583: Backdoor Roth IRA ($7,000 / 12)'
-  }, {
-    i: 'd',
-    x: 'Next $500: top up emergency fund to $20,000'
-  }, {
-    i: 'e',
-    x: 'Remaining ~$4,215: taxable brokerage — FZROX auto-invest monthly'
-  }]
-}, {
-  id: 27,
-  p: 7,
-  t: 'Monthly financial review (15 min)',
-  u: '1st of every month',
+  id: 24,
+  p: 6,
+  t: 'Monthly financial review (15 minutes)',
+  u: '1st of every month — forever',
   imp: 'Keeps everything on track',
   iv: 0,
   it: 'habit',
-  w: '15 minutes/month keeps everything on track once automation is set up.',
+  w: '15 minutes on the 1st of each month keeps everything automated and on track.',
   s: [{
     i: 'a',
-    x: 'Open Bloom: did all bills auto-pay? Any NSF fees? Fix immediately.'
+    x: 'Open Bloom: did all bills auto-pay? Any NSF fees? Resolve immediately.'
   }, {
     i: 'b',
-    x: 'Check snowball target balance — how much paid down this month?'
+    x: 'Log into snowball target (Upstart, then Barclay, etc.) — how much did you pay down?'
   }, {
     i: 'c',
-    x: 'Check emergency fund — growing on schedule?'
+    x: 'Check HYSA emergency fund — is the $250 auto-transfer happening?'
   }, {
     i: 'd',
-    x: 'Check investments ONE time — are auto transfers running?'
+    x: 'Check Fidelity — are your automatic investments running? ONE look only.'
   }, {
     i: 'e',
-    x: 'Calculate net worth: all assets minus all debts. Write it down.'
+    x: 'Calculate net worth: add all assets, subtract all debts. Write it down. Watch it grow.'
+  }]
+}, {
+  id: 25,
+  p: 6,
+  t: 'Open 529 college savings accounts',
+  u: '2027 — after Jun RSA vest',
+  imp: 'Tax-free education growth',
+  iv: 0,
+  it: 'future',
+  w: 'Federal growth is tax-free for education. Youngest child first — more time = more growth.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → 529 → enter child name, SSN, date of birth'
+  }, {
+    i: 'b',
+    x: 'Select age-based portfolio (auto-adjusts risk as college approaches)'
+  }, {
+    i: 'c',
+    x: 'Youngest child first — most time to grow'
+  }, {
+    i: 'd',
+    x: 'Contribute only after 401K match, HSA, and Roth IRA are handled first'
+  }]
+}, {
+  id: 26,
+  p: 6,
+  t: 'Open taxable brokerage account',
+  u: '2027–2028 when cash flow allows',
+  imp: 'Unlimited wealth building',
+  iv: 0,
+  it: 'future',
+  w: 'For money after maxing all tax-advantaged accounts. No limits. Accessible any time.',
+  s: [{
+    i: 'a',
+    x: 'fidelity.com → Open Account → Brokerage Account (10 minutes, free)'
+  }, {
+    i: 'b',
+    x: 'Fund ONLY after 401K match, HSA, and Roth IRA contributions are all happening'
+  }, {
+    i: 'c',
+    x: 'Invest: 70% FZROX + 20% FZILX + 10% FXNAX (or 100% FZROX at your age)'
+  }, {
+    i: 'd',
+    x: 'Set automatic monthly investment on payday — never manually time the market'
+  }, {
+    i: 'e',
+    x: 'When market drops 20–50%: do nothing. Keep automatic investments running.'
+  }]
+},
+// ── PHASE 7: MARCH 2029 ──────────────────────────────────────────────────
+{
+  id: 27,
+  p: 7,
+  t: 'All consumer debt gone — redirect $7,968/mo',
+  u: 'March 2029 — the finish line',
+  imp: '$4,215/mo to investing',
+  iv: 4215,
+  it: 'monthly',
+  w: 'Every minimum you have been paying for years is now yours. Redirect in this exact order.',
+  s: [{
+    i: 'a',
+    x: 'First $1,958: fill any remaining 401K gap to $23,500/year'
+  }, {
+    i: 'b',
+    x: 'Next $712: HSA to maximum ($8,550 ÷ 12 = $712/month)'
+  }, {
+    i: 'c',
+    x: 'Next $583: Backdoor Roth IRA ($7,000 ÷ 12 = $583/month)'
+  }, {
+    i: 'd',
+    x: 'Next $500: top up emergency fund to $20,000 if not there yet'
+  }, {
+    i: 'e',
+    x: 'Remaining ~$4,215: taxable brokerage — FZROX auto-invested monthly'
+  }, {
+    i: 'f',
+    x: '$4,215/month at 8% for 20 years = $2.5 million. This is how wealth is built.'
   }]
 }];
-const SK = 'wb_v4';
+const SK = 'wb_v5';
 const load = () => {
   try {
     return JSON.parse(localStorage.getItem(SK) || '{}');
@@ -837,34 +851,29 @@ function App() {
   const [noteTxt, setNoteTxt] = useState('');
   const [flash, setFlash] = useState(false);
   useEffect(() => save(st), [st]);
-  const dk = id => 'd_' + id;
-  const tk = id => 't_' + id;
-  const sk = (sid, ssid) => sid + '_' + ssid;
-  const nk = id => 'n_' + id;
-  const isDone = id => !!st[dk(id)];
-  const subDone = (sid, ssid) => !!st[sk(sid, ssid)];
+  const isDone = id => !!st['d' + id];
+  const subDone = (sid, ssid) => !!st[sid + '_' + ssid];
   function toggleSub(sid, ssid) {
-    const key = sk(sid, ssid);
-    const next = {
-      ...st,
+    const key = sid + '_' + ssid;
+    const next = Object.assign({}, st, {
       [key]: !st[key]
-    };
+    });
     setSt(next);
     const step = STEPS.find(s => s.id === sid);
-    if (step.s.every(ss => next[sk(sid, ss.i)]) && !next[dk(sid)]) {
+    if (step.s.every(ss => next[sid + '_' + ss.i]) && !next['d' + sid]) {
       const upd = {};
-      upd[dk(sid)] = true;
-      upd[tk(sid)] = Date.now();
+      upd['d' + sid] = true;
+      upd['t' + sid] = Date.now();
       setSt(p => Object.assign({}, p, upd));
       setFlash(true);
       setTimeout(() => setFlash(false), 2200);
     }
   }
   function toggleDone(sid) {
-    const nowDone = !st[dk(sid)];
+    const nowDone = !st['d' + sid];
     const upd = {};
-    upd[dk(sid)] = nowDone;
-    if (nowDone) upd[tk(sid)] = Date.now();
+    upd['d' + sid] = nowDone;
+    if (nowDone) upd['t' + sid] = Date.now();
     setSt(p => Object.assign({}, p, upd));
     if (nowDone) {
       setFlash(true);
@@ -873,12 +882,12 @@ function App() {
   }
   function openNote(sid, e) {
     e.stopPropagation();
-    setNoteTxt(st[nk(sid)] || '');
+    setNoteTxt(st['n' + sid] || '');
     setNoteFor(sid);
   }
   function saveNote() {
     const upd = {};
-    upd[nk(noteFor)] = noteTxt;
+    upd['n' + noteFor] = noteTxt;
     setSt(p => Object.assign({}, p, upd));
     setNoteFor(null);
   }
@@ -908,8 +917,8 @@ function App() {
       textAlign: 'center',
       zIndex: 999,
       boxShadow: '0 16px 48px rgba(0,0,0,.3)',
-      animation: 'pop .35s ease',
-      minWidth: 190
+      minWidth: 190,
+      animation: 'pop .35s ease'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1031,7 +1040,19 @@ function App() {
     doneCount: doneCount,
     tot: STEPS.length
   }), /*#__PURE__*/React.createElement("nav", {
-    className: "bottom-nav"
+    style: {
+      position: 'fixed',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      background: '#fff',
+      borderTop: '1px solid #e8e8e8',
+      display: 'flex',
+      height: 66,
+      zIndex: 100,
+      maxWidth: 480,
+      margin: '0 auto'
+    }
   }, [{
     id: 'home',
     icon: '🏠',
@@ -1046,16 +1067,26 @@ function App() {
     lbl: 'Wins'
   }].map(n => /*#__PURE__*/React.createElement("button", {
     key: n.id,
-    className: "nav-btn",
     onClick: () => setTab(n.id),
     style: {
+      flex: 1,
+      border: 'none',
+      background: 'none',
+      cursor: 'pointer',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 3,
       color: tab === n.id ? TEAL : '#999'
     }
   }, /*#__PURE__*/React.createElement("span", {
-    className: "nav-icon"
-  }, n.icon), /*#__PURE__*/React.createElement("span", {
-    className: "nav-lbl",
     style: {
+      fontSize: 22
+    }
+  }, n.icon), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10,
       fontWeight: tab === n.id ? 700 : 500
     }
   }, n.lbl)))));
@@ -1073,7 +1104,11 @@ function Home({
   setPid
 }) {
   return /*#__PURE__*/React.createElement("div", {
-    className: "scroll"
+    style: {
+      overflowY: 'auto',
+      paddingBottom: 76,
+      minHeight: '100vh'
+    }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       background: 'linear-gradient(160deg,#1A4A42,#2d6a5f)',
@@ -1237,7 +1272,8 @@ function Home({
   }, next.t), /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 11,
-      color: '#888'
+      color: '#888',
+      marginTop: 1
     }
   }, next.u)), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -1273,9 +1309,10 @@ function Home({
       color: '#888',
       marginBottom: 8
     }
-  }, "ALL PHASES"), PHASES.map(ph => {
+  }, "YOUR TIMELINE"), PHASES.map(ph => {
     const d = pDone(ph.id),
-      t = pTotal(ph.id);
+      t = pTotal(ph.id),
+      complete = d === t && t > 0;
     return /*#__PURE__*/React.createElement("div", {
       key: ph.id,
       onClick: () => {
@@ -1304,11 +1341,22 @@ function Home({
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        fontWeight: 600,
-        fontSize: 13,
-        marginBottom: 5
+        display: 'flex',
+        alignItems: 'baseline',
+        gap: 6,
+        marginBottom: 4
       }
-    }, ph.name), /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 700,
+        fontSize: 13
+      }
+    }, ph.name), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        color: '#aaa'
+      }
+    }, ph.sub)), /*#__PURE__*/React.createElement("div", {
       style: {
         background: '#F0F0F0',
         borderRadius: 4,
@@ -1327,10 +1375,10 @@ function Home({
       style: {
         fontSize: 12,
         fontWeight: 700,
-        color: d === t ? '#2E7D32' : '#888',
+        color: complete ? '#2E7D32' : '#888',
         flexShrink: 0
       }
-    }, d === t ? '✅' : '', d, "/", t), /*#__PURE__*/React.createElement("div", {
+    }, complete ? '✅' : '', d, "/", t), /*#__PURE__*/React.createElement("div", {
       style: {
         color: '#ccc',
         fontSize: 18
@@ -1417,7 +1465,11 @@ function Steps({
   const ph = PHASES.find(p => p.id === pid);
   const steps = STEPS.filter(s => s.p === pid);
   return /*#__PURE__*/React.createElement("div", {
-    className: "scroll"
+    style: {
+      overflowY: 'auto',
+      paddingBottom: 76,
+      minHeight: '100vh'
+    }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: 'flex',
@@ -1437,7 +1489,7 @@ function Steps({
       onClick: () => setPid(p.id),
       style: {
         flexShrink: 0,
-        padding: '10px 12px',
+        padding: '8px 12px',
         background: 'none',
         border: 'none',
         cursor: 'pointer',
@@ -1447,21 +1499,27 @@ function Steps({
         flexDirection: 'column',
         alignItems: 'center',
         gap: 2,
-        minWidth: 54
+        minWidth: 52
       }
     }, /*#__PURE__*/React.createElement("span", {
       style: {
-        fontSize: 18
+        fontSize: 17
       }
     }, p.e), /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: 9,
-        fontWeight: 600
+        fontWeight: 600,
+        whiteSpace: 'nowrap'
+      }
+    }, p.name.split(' ')[0]), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 8,
+        color: '#aaa'
       }
     }, pDone(p.id), "/", pTotal(p.id)));
   })), /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: '12px 16px 6px',
+      padding: '12px 16px 8px',
       background: ph.l
     }
   }, /*#__PURE__*/React.createElement("div", {
@@ -1475,14 +1533,14 @@ function Steps({
       fontSize: 12,
       color: '#666'
     }
-  }, pDone(pid), " of ", pTotal(pid), " complete")), steps.map(step => {
+  }, ph.sub, " \xB7 ", pDone(pid), " of ", pTotal(pid), " complete")), steps.map(step => {
     const done = isDone(step.id);
     const sdone = step.s.filter(ss => subDone(step.id, ss.i)).length;
     const spct = sdone / step.s.length;
     const isOpen = open === step.id;
     const col = pc(step.p),
       light = pl(step.p);
-    const hasNote = !!st['n_' + step.id];
+    const hasNote = !!st['n' + step.id];
     return /*#__PURE__*/React.createElement("div", {
       key: step.id,
       style: {
@@ -1533,6 +1591,12 @@ function Steps({
       }
     }, step.t), /*#__PURE__*/React.createElement("div", {
       style: {
+        fontSize: 11,
+        color: '#888',
+        marginBottom: 3
+      }
+    }, step.u), /*#__PURE__*/React.createElement("div", {
+      style: {
         display: 'flex',
         gap: 6,
         flexWrap: 'wrap',
@@ -1552,7 +1616,7 @@ function Steps({
         fontSize: 10,
         color: '#aaa'
       }
-    }, sdone, "/", step.s.length, " steps"), hasNote && /*#__PURE__*/React.createElement("span", {
+    }, sdone, "/", step.s.length, " done"), hasNote && /*#__PURE__*/React.createElement("span", {
       style: {
         fontSize: 10
       }
@@ -1565,9 +1629,9 @@ function Steps({
         transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)'
       }
     }, "\u203A")), isOpen && /*#__PURE__*/React.createElement("div", {
-      className: "fadein",
       style: {
-        padding: '0 16px 16px'
+        padding: '0 16px 16px',
+        animation: 'fadein .25s ease'
       }
     }, spct > 0 && /*#__PURE__*/React.createElement("div", {
       style: {
@@ -1682,7 +1746,7 @@ function Steps({
         fontSize: 13,
         color: '#555'
       }
-    }, "\uD83D\uDCDD")), st['n_' + step.id] && /*#__PURE__*/React.createElement("div", {
+    }, "\uD83D\uDCDD")), st['n' + step.id] && /*#__PURE__*/React.createElement("div", {
       style: {
         marginTop: 10,
         background: '#FFFBF0',
@@ -1700,7 +1764,7 @@ function Steps({
         marginBottom: 3,
         color: '#8D6E63'
       }
-    }, "YOUR NOTE"), st['n_' + step.id])));
+    }, "YOUR NOTE"), st['n' + step.id])));
   }), /*#__PURE__*/React.createElement("div", {
     style: {
       height: 8
@@ -1715,10 +1779,14 @@ function Wins({
   doneCount,
   tot
 }) {
-  const done = STEPS.filter(s => isDone(s.id)).sort((a, b) => (st['t_' + b.id] || 0) - (st['t_' + a.id] || 0));
+  const done = STEPS.filter(s => isDone(s.id)).sort((a, b) => (st['t' + b.id] || 0) - (st['t' + a.id] || 0));
   const rem = STEPS.filter(s => !isDone(s.id));
   return /*#__PURE__*/React.createElement("div", {
-    className: "scroll"
+    style: {
+      overflowY: 'auto',
+      paddingBottom: 76,
+      minHeight: '100vh'
+    }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
       background: 'linear-gradient(135deg,#1A4A42,#2d6a5f)',
@@ -1816,7 +1884,7 @@ function Wins({
       marginBottom: 10
     }
   }, "COMPLETED \u2705"), done.map(step => {
-    const d = st['t_' + step.id] ? new Date(st['t_' + step.id]).toLocaleDateString() : '';
+    const d = st['t' + step.id] ? new Date(st['t' + step.id]).toLocaleDateString() : '';
     const col = pc(step.p),
       light = pl(step.p);
     return /*#__PURE__*/React.createElement("div", {
@@ -1906,12 +1974,17 @@ function Wins({
       color: '#ccc',
       minWidth: 20
     }
-  }, "#", step.id), /*#__PURE__*/React.createElement("span", {
+  }, "#", step.id), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: {
       fontSize: 13,
       color: '#777'
     }
-  }, step.t))), rem.length > 5 && /*#__PURE__*/React.createElement("div", {
+  }, step.t), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: '#bbb'
+    }
+  }, step.u)))), rem.length > 5 && /*#__PURE__*/React.createElement("div", {
     style: {
       textAlign: 'center',
       fontSize: 12,
