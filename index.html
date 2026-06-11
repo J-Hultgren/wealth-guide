@@ -10,10 +10,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 #root{min-height:100vh}
 @keyframes pop{0%{transform:translate(-50%,-50%) scale(.6);opacity:0}70%{transform:translate(-50%,-50%) scale(1.08)}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
 ::-webkit-scrollbar{display:none}
+input[type=range]{height:6px}
 </style>
 </head>
 <body>
-<div id="root"><div style="padding:40px;text-align:center;color:#888;font-family:sans-serif">Loading...</div></div>
+<div id="root"><div style="padding:40px;text-align:center;color:#888">Loading...</div></div>
 <script>/**
  * @license React
  * react.production.min.js
@@ -344,16 +345,16 @@ const PHASES = [{
   l: C.redlt
 }, {
   id: 2,
-  n: 'Jul–Dec 2026',
-  s: 'Upstart Kill',
+  n: 'Jul–Aug 2026',
+  s: 'Upstart + LLC',
   e: '🎯',
   c: C.blue,
   l: C.bluelt
 }, {
   id: 3,
-  n: 'Jan–Sep 2027',
-  s: 'Roth Starts',
-  e: '⚡',
+  n: 'Sep–Dec 2026',
+  s: 'Enroll + Setup',
+  e: '📋',
   c: C.purple,
   l: C.purplelt
 }, {
@@ -365,15 +366,15 @@ const PHASES = [{
   l: C.orangelt
 }, {
   id: 5,
-  n: 'Nov–Dec 2026',
-  s: 'Open Enroll',
-  e: '📋',
+  n: 'Jan–Sep 2027',
+  s: 'Roth Starts',
+  e: '⚡',
   c: C.teal,
   l: C.teallt
 }, {
   id: 6,
-  n: 'Oct 2027–Oct 2028',
-  s: 'SoFi Kill',
+  n: 'Oct 2027–Nov 2028',
+  s: 'Snowball',
   e: '💪',
   c: C.green,
   l: C.greenlt
@@ -701,7 +702,7 @@ const STEPS = [
 // ─── PHASE 3: JAN–SEP 2027 (ROTH STARTS, BARCLAY+AMEX DIE) ─────────────────
 {
   id: 13,
-  p: 3,
+  p: 5,
   t: 'Upstart DEAD — start Jessa Backdoor Roth',
   u: 'February 2027',
   imp: '$7,000/yr tax-free forever',
@@ -733,7 +734,7 @@ const STEPS = [
   }]
 }, {
   id: 14,
-  p: 3,
+  p: 5,
   t: 'Barclay DEAD → stack on Amex → start Jason Roth',
   u: 'May 2027',
   imp: '$600/mo freed + Jason Roth begins',
@@ -759,7 +760,7 @@ const STEPS = [
   }]
 }, {
   id: 15,
-  p: 3,
+  p: 2,
   t: 'Read employment agreements → Form NH LLC',
   u: 'August 2026 (begin in Phase 2)',
   imp: 'Unlocks $20K+/yr in tax strategies',
@@ -788,7 +789,7 @@ const STEPS = [
   }]
 }, {
   id: 16,
-  p: 3,
+  p: 2,
   t: 'Open Solo 401K for LLC (before Dec 31, 2026)',
   u: 'August 2026 — HARD DEADLINE',
   imp: 'Shelter up to $70K/yr from consulting',
@@ -811,7 +812,7 @@ const STEPS = [
   }]
 }, {
   id: 17,
-  p: 3,
+  p: 2,
   t: 'Augusta Rule — rent home to LLC',
   u: 'After LLC formed',
   imp: '$2,800-4,200/yr tax-free income',
@@ -840,7 +841,7 @@ const STEPS = [
   }]
 }, {
   id: 18,
-  p: 3,
+  p: 2,
   t: 'Hire children through LLC',
   u: 'After LLC formed',
   imp: '$15,330/yr tax savings',
@@ -922,7 +923,7 @@ const STEPS = [
 // ─── PHASE 5: NOV–DEC 2026 (OPEN ENROLLMENT) ────────────────────────────────
 {
   id: 21,
-  p: 5,
+  p: 3,
   t: 'XE open enrollment: Jessa FSA Health $3,300',
   u: 'XE open enrollment (Nov)',
   imp: 'Saves $1,390/yr net (fed + FICA)',
@@ -948,7 +949,7 @@ const STEPS = [
   }]
 }, {
   id: 22,
-  p: 5,
+  p: 3,
   t: 'XE open enrollment: Jason FSA Health $3,300',
   u: 'XE open enrollment (Nov) — Jason enrolls separately',
   imp: 'Saves another $1,390/yr',
@@ -968,7 +969,7 @@ const STEPS = [
   }]
 }, {
   id: 23,
-  p: 5,
+  p: 3,
   t: 'XE open enrollment: FSA Dependent Care $5,000',
   u: 'XE open enrollment — ONE of you enrolls',
   imp: 'Saves $2,133/yr (fed + FICA)',
@@ -994,7 +995,7 @@ const STEPS = [
   }]
 }, {
   id: 24,
-  p: 5,
+  p: 3,
   t: 'TP open enrollment: 401K if offered',
   u: 'TP open enrollment',
   imp: 'Uses remaining 401K room',
@@ -1020,7 +1021,7 @@ const STEPS = [
   }]
 }, {
   id: 25,
-  p: 5,
+  p: 3,
   t: 'Estate plan — NH attorney',
   u: 'November-December 2026',
   imp: 'Protects 3 children',
@@ -1728,7 +1729,1884 @@ const DEBTS = [{
   m: 2500,
   note: 'Never pay extra — cheapest money you will ever have'
 }];
-const SK = 'wb_v9';
+
+// ── PLAYBOOK DATA ───────────────────────────────────────────────────────────
+
+const W4_IMPACT = {
+  current_takehome: 20568,
+  changes: [{
+    label: 'Current avg take-home (before fixes)',
+    amount: 20568,
+    delta: 0,
+    note: 'Baseline from spreadsheet actuals'
+  }, {
+    label: 'W-4 fix — extra withholding (est.)',
+    amount: -450,
+    delta: -450,
+    note: 'IRS calculator determines exact amount. Prevents $8K+ April surprise. Run irs.gov/W4app to get your exact number.'
+  }, {
+    label: 'Life insurance premium',
+    amount: -120,
+    delta: -120,
+    note: 'Jessa $2M + Jason $1.5M term policies'
+  }, {
+    label: 'FSA Health Jessa $3,300 — net cash benefit',
+    amount: +96,
+    delta: 96,
+    note: 'Medical spending you already do becomes pre-tax. Saves $1,390/yr vs paying from after-tax.'
+  }, {
+    label: 'FSA Dep Care $5,000 — net cash benefit',
+    amount: +178,
+    delta: 178,
+    note: 'Childcare you already pay becomes pre-tax. Net $178/mo more purchasing power.'
+  }],
+  net_takehome: 20272,
+  net_surplus: 3992
+};
+const PHASE_TRANSITIONS = [{
+  debt: 'Upstart',
+  date: 'February 2027',
+  freed: 1301,
+  color: '#C62828',
+  day_of: ['Log into Upstart → request payoff confirmation letter (save to email)', 'Screenshot the $0 balance for your records', 'Cancel the Upstart autopay from your bank account', 'DO NOT close the Upstart account yet — wait 6 months to confirm $0', 'Call Experian/Equifax/TransUnion: request Upstart shows "Paid in Full" on your credit report'],
+  same_payday: ['Jessa: transfer $583 to Fidelity Traditional IRA → wait 3 days → convert to Roth IRA → buy FZROX', 'Set a recurring monthly transfer of $583 to Fidelity Traditional IRA', 'New attack target: Barclay. Add Barclay as your extra payment destination.', 'New surplus: $1,301 freed + $3,992 ongoing = $5,293 total. Minus $583 Roth = $4,710 → Barclay.', 'Update Bloom app: Upstart removed, Barclay is new target'],
+  this_week: ['Verify on your credit report that Upstart shows $0 balance', 'Calculate your new net worth — you just eliminated $39K+ in debt!', 'Write down your new monthly surplus — feels different now']
+}, {
+  debt: 'Barclay',
+  date: 'May 2027',
+  freed: 600,
+  color: '#C62828',
+  day_of: ['Call Barclay → request payoff confirmation letter', 'Screenshot $0 balance', 'Cancel Barclay autopay from bank'],
+  same_payday: ['Jason: start his Backdoor Roth $583/mo (Traditional IRA → convert → Roth → FZROX)', 'New attack: $600 freed + $4,710 Barclay surplus = $5,310 → Amex', 'Both Roth IRAs now running: $1,166/mo total', 'Update Bloom: Barclay removed, Amex is new target'],
+  this_week: ['Credit report check: Barclay $0', 'Net worth calculation']
+}, {
+  debt: 'Amex',
+  date: 'August 2027',
+  freed: 500,
+  color: '#C62828',
+  day_of: ['Call Amex → confirm payoff → request closure letter (keep account open — age of credit)', 'Screenshot $0 balance', 'Cancel Amex autopay'],
+  same_payday: ['New attack: $500 freed + Amex attack pool = SoFi. This is the big one.', 'SoFi attack pool: $2,401 freed + $3,992 surplus - $1,166 Roths = $5,227 → SoFi', 'Note: SoFi will take ~8 months even with this — stay the course'],
+  this_week: ['Credit report', 'Net worth update', 'Confirm Roth IRAs invested in FZROX']
+}, {
+  debt: 'SoFi',
+  date: 'April 2028',
+  freed: 1699,
+  color: '#1565C0',
+  day_of: ['Contact SoFi → payoff confirmation letter', 'Cancel SoFi autopay', 'THIS IS A MAJOR MILESTONE — SoFi was your largest high-interest debt'],
+  same_payday: ['$1,699 freed → attack Upgrade ($19,444 @ 17%)', 'New surplus: $4,100 freed + $3,992 ongoing - $1,166 Roths = $6,926 → Upgrade', 'Upgrade dies in ~3 months at this rate'],
+  this_week: ['Credit report', 'Major net worth recalculation — significant jump', 'Review 401K: are you on track for $23,500 combined?']
+}, {
+  debt: 'Upgrade',
+  date: 'July 2028',
+  freed: 525,
+  color: '#1A4A42',
+  day_of: ['Upgrade payoff confirmation', 'Cancel autopay'],
+  same_payday: ['$525 freed → attack Best Egg ($26,596 @ 15%)', 'New pool: $4,625 freed + $3,992 - $1,166 Roths = $7,451 → Best Egg', 'Best Egg dies in ~3 months'],
+  this_week: ['Credit report', 'Net worth update']
+}, {
+  debt: 'Best Egg',
+  date: 'October 2028',
+  freed: 915,
+  color: '#2E7D32',
+  day_of: ['Best Egg payoff confirmation', 'THIS IS THE FINISH LINE FOR HIGH-INTEREST DEBT', 'Screenshot. Frame it. You are done with high-interest consumer debt.'],
+  same_payday: ['NOW max both 401Ks: Jessa → change XE contribution to 12.5% of salary ($23,500/yr)', 'NOW max Jason 401K: change to 13.7% of salary ($23,500/yr)', 'Continue both Backdoor Roths ($1,166/mo)', 'Remaining ~$5,290/mo → Fidelity Individual → buy FZROX automatically', 'Set up auto-invest in Fidelity for the $5,290 monthly amount', 'Only remaining debt: Citi AA ($325/mo) and Citi ($233/mo) at 0% — pay minimums only'],
+  this_week: ['Update all three 401K elections immediately', 'Open Fidelity taxable brokerage account if not yet open', 'Set up monthly auto-invest', 'Calculate your new monthly investment rate: $9,149/mo', 'Project forward: $9,149/mo at 8% for 20 years = $3.1 million']
+}];
+const TAX_CALENDAR = [{
+  month: 'January',
+  items: [{
+    urgent: true,
+    item: 'Jan 1: Jessa Backdoor Roth — transfer $7,000 to Fidelity Traditional IRA → wait 3 days → convert to Roth → invest in FZROX',
+    starts: '2027'
+  }, {
+    urgent: true,
+    item: 'Jan 1: Jason Backdoor Roth — same process with his separate accounts',
+    starts: '2027'
+  }, {
+    urgent: false,
+    item: 'Jan 15: Q4 LLC estimated tax payment due (if LLC active) — pay at irs.gov/payments',
+    starts: '2026 if LLC active'
+  }, {
+    urgent: false,
+    item: 'Watch for W-2s from XE and TP — must arrive by Jan 31. If missing: call HR immediately.',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Review prior year return: did Schedule 3 Line 11 show the SS overpayment credit (~$10,453)? If not: amend.',
+    starts: 'Every year'
+  }]
+}, {
+  month: 'February–March',
+  items: [{
+    urgent: false,
+    item: 'Gather ALL tax documents: Jessa W-2 (XE), Jessa W-2 (TP), Jason W-2 (XE)',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Gather: 1099-B from Fidelity (any RSA sales, stock sales)',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Gather: 1099-INT from Fidelity HYSA (interest earned)',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Gather: LLC records from Wave Accounting (all income and expenses)',
+    starts: 'When LLC active'
+  }, {
+    urgent: false,
+    item: 'Gather: childrenʼs W-2s from Gusto if kids are on LLC payroll',
+    starts: 'When LLC active'
+  }]
+}, {
+  month: 'April 15',
+  items: [{
+    urgent: true,
+    item: 'File taxes OR file extension (Form 4868 at irs.gov) — extension gives 6 months more to FILE but NOT to pay',
+    starts: 'Every year'
+  }, {
+    urgent: true,
+    item: 'Q1 LLC estimated tax payment due: LLC net income × 30% ÷ 4 — pay at irs.gov/payments',
+    starts: 'When LLC active'
+  }, {
+    urgent: true,
+    item: 'If you owe: make payment now to stop interest accruing. Interest rate: ~7-8% on unpaid balance.',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'TurboTax checklist: enter EACH W-2 separately (never combine) → verify Schedule 3 Line 11 = SS overpayment credit',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Form 8606: required every year you do Backdoor Roth — confirms non-deductible contribution, prevents double taxation',
+    starts: '2027+'
+  }, {
+    urgent: false,
+    item: 'Schedule C: LLC income and expenses — TurboTax Business section',
+    starts: 'When LLC active'
+  }]
+}, {
+  month: 'June 13',
+  items: [{
+    urgent: true,
+    item: 'ANNUAL RSA VEST: 194-195 shares vest at XE. Confirm in Fidelity NetBenefits. Verify sell-to-cover tax withholding is set. Note vest price as your cost basis.',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'RSA decision: hold 12+ months for 15% LTCG rate OR sell now if cash needed. If holding: set calendar reminder for 12 months from today.',
+    starts: 'Every year'
+  }, {
+    urgent: true,
+    item: 'Jun 16: Q2 LLC estimated tax payment due — pay at irs.gov/payments',
+    starts: 'When LLC active'
+  }]
+}, {
+  month: 'September',
+  items: [{
+    urgent: true,
+    item: 'Sep 15: Q3 LLC estimated tax payment due — pay at irs.gov/payments',
+    starts: 'When LLC active'
+  }, {
+    urgent: false,
+    item: 'Annual insurance review: are all policies in force? Any coverage gaps? Any better rates available?',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Review all account beneficiaries: 401K (both), Roth IRA (both), life insurance (both), HYSA',
+    starts: 'Every year'
+  }]
+}, {
+  month: 'November',
+  items: [{
+    urgent: true,
+    item: 'XE OPEN ENROLLMENT: Re-elect FSA Health $3,300 (Jessa) — this MUST be re-elected every year or it lapses',
+    starts: 'Every year'
+  }, {
+    urgent: true,
+    item: 'XE OPEN ENROLLMENT: Re-elect FSA Health $3,300 (Jason) — separate enrollment',
+    starts: 'Every year'
+  }, {
+    urgent: true,
+    item: 'XE OPEN ENROLLMENT: Re-elect FSA Dependent Care $5,000 (Jessa only, Jason waives)',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'TP OPEN ENROLLMENT: Verify 401K contribution and any supplemental disability election',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Review life insurance needs — as debt decreases, may be able to reduce coverage eventually',
+    starts: 'Every year'
+  }]
+}, {
+  month: 'December',
+  items: [{
+    urgent: true,
+    item: 'Dec 31 HARD DEADLINE: Solo 401K must be ESTABLISHED this year to contribute for this tax year — even if you contribute later',
+    starts: '2026 (first year)'
+  }, {
+    urgent: true,
+    item: 'Dec 31: Review 401K contributions — are you on track to hit $23,500 each? If room left: increase last few paychecks.',
+    starts: 'Every year'
+  }, {
+    urgent: false,
+    item: 'Dec 31: Augusta Rule count — used all 14 rental days this year? Document all with signed rental agreements.',
+    starts: 'When LLC active'
+  }, {
+    urgent: false,
+    item: 'Dec 31: LLC expense review — any equipment to buy for §179 deduction? Any invoices to pay before year-end?',
+    starts: 'When LLC active'
+  }, {
+    urgent: false,
+    item: 'Dec 31: Childrenʼs wages — all timesheets signed? All payments from Relay (not personal account)? Gusto payroll up to date?',
+    starts: 'When LLC active'
+  }, {
+    urgent: false,
+    item: 'Year-end: Update your net worth statement. Compare to prior year. You are making progress.',
+    starts: 'Every year'
+  }]
+}];
+const PAYDAY_ROUTINE = {
+  title: 'Every Payday Routine (Jul 2026 → Oct 2028)',
+  steps: [{
+    n: 1,
+    action: 'Check checking balance right now',
+    detail: 'Log into your LC Checking (XE paychecks) and SCU Checking (TP paychecks). What is the balance?'
+  }, {
+    n: 2,
+    action: 'Confirm all bills auto-cleared',
+    detail: 'Open Bloom. Did all autopayments go through? Any NSF fees? Fix immediately — call the creditor same day.'
+  }, {
+    n: 3,
+    action: 'Calculate what to send',
+    detail: 'Formula: [Checking balance] − [$2,500 living buffer] = Send to Upstart. Example: $6,200 balance − $2,500 = $3,700 extra payment today.'
+  }, {
+    n: 4,
+    action: 'Make extra payment NOW',
+    detail: 'Log into your current attack target (Upstart now). Find "Make a payment" → select "Pay extra principal" → enter the full calculated amount. Do NOT wait.'
+  }, {
+    n: 5,
+    action: '5-paycheck month? Send ALL extra',
+    detail: 'If this is a 5-paycheck TP month (+$2,505) or 5-paycheck both month (+$4,440): that entire extra amount goes to attack target same day. Every. Single. Dollar.'
+  }, {
+    n: 6,
+    action: 'Log it in Bloom',
+    detail: 'Record the extra payment in your Bloom app so your budget reflects actual vs planned.'
+  }]
+};
+const EMERGENCY_PROTOCOL = [{
+  level: 'Minor Emergency ($500-$2,000)',
+  color: '#E65100',
+  steps: ['Use HYSA — withdraw what you need', 'If HYSA drops below $3,000: pause Upstart extra payments for 1-2 months to rebuild', 'Resume attack as soon as HYSA is back above $4,000', 'Do NOT put the expense on a credit card — you are trying to get OFF credit cards']
+}, {
+  level: 'Major Emergency ($2,000-$8,000)',
+  color: '#C62828',
+  steps: ['Use HYSA first (entire balance if needed)', 'Pause ALL extra debt payments — pay minimums only across all debts', 'Redirect FULL surplus ($3,992/mo) to rebuild HYSA first', 'Once HYSA rebuilt to $5,000: resume attack', 'Call creditors proactively if you must delay a payment — most have hardship programs', 'Never go 30 days late — that destroys your credit score']
+}, {
+  level: 'Job Loss (XE or TP)',
+  color: '#922b21',
+  steps: ['File for unemployment same day as termination', '⚠️ CRITICAL: 401K loan ($28,239) — if you leave XE, the full loan balance becomes due within 60-90 days. If you cannot pay it: it is treated as a distribution, taxed as income + 10% early withdrawal penalty = ~$12,700 lost to taxes. PLAN FOR THIS.', 'COBRA health insurance: covers family but costs ~$2,000-3,000/mo. Must enroll within 60 days of losing coverage.', 'Assess: can you survive on one salary? For how long?', 'Pause ALL extra payments. Minimums only. Triage.', 'Call each creditor: explain situation, ask about hardship/forbearance options', 'Do NOT touch the UTMA accounts (children\'s money)', 'Do NOT take early 401K withdrawal — taxes + penalty = lose 45%']
+}, {
+  level: '401K Loan Risk — Leaving XE',
+  color: '#5b4a8a',
+  steps: ['You have $28,239 outstanding 401K loan at XE', 'If you leave XE for any reason: loan typically due in full within 60-90 days (check your plan documents)', 'If not repaid: IRS treats as taxable distribution — $28,239 × 35% = $9,884 tax + $2,824 (10% penalty if under 59.5) = $12,708 lost', 'Mitigation: before leaving XE (ever), pay down this loan aggressively OR have $28,239 cash available to repay immediately', 'IRC §72(p) — loan offset rules. Plan documents govern exact timeline.']
+}];
+function Playbook() {
+  const [sec, setSec] = React.useState('payday');
+  const [openTrans, setOpenTrans] = React.useState(null);
+  const [openMonth, setOpenMonth] = React.useState(null);
+  const secs = [{
+    id: 'payday',
+    l: 'Payday'
+  }, {
+    id: 'trans',
+    l: 'Transitions'
+  }, {
+    id: 'calendar',
+    l: 'Tax Cal'
+  }, {
+    id: 'cashflow',
+    l: 'Cash Flow'
+  }, {
+    id: 'emergency',
+    l: 'Emergency'
+  }];
+  const adjSurplus = W4_IMPACT.changes.reduce((a, c) => a + c.delta, W4_IMPACT.current_takehome) - 10182 - 6098;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      paddingBottom: 72,
+      overflowY: 'auto',
+      minHeight: '100vh'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'linear-gradient(135deg,#1A4A42,#0f2d28)',
+      padding: '18px 16px',
+      color: '#fff'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      letterSpacing: .1,
+      opacity: .6,
+      marginBottom: 4
+    }
+  }, "IDIOT-PROOF IMPLEMENTATION GUIDE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 800,
+      fontSize: 20,
+      marginBottom: 2
+    }
+  }, "Playbook"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      opacity: .7
+    }
+  }, "Exact steps for every situation \u2014 payday to year-end")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      overflowX: 'auto',
+      background: '#fff',
+      borderBottom: '1px solid #F0F0F0',
+      position: 'sticky',
+      top: 0,
+      zIndex: 10,
+      scrollbarWidth: 'none'
+    }
+  }, secs.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s.id,
+    onClick: () => setSec(s.id),
+    style: {
+      flexShrink: 0,
+      padding: '10px 12px',
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      borderBottom: `3px solid ${sec === s.id ? '#1A4A42' : 'transparent'}`,
+      color: sec === s.id ? '#1A4A42' : '#999',
+      fontWeight: sec === s.id ? 700 : 500,
+      fontSize: 11,
+      whiteSpace: 'nowrap'
+    }
+  }, s.l))), sec === 'payday' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#EEF7F5',
+      borderRadius: 12,
+      padding: '12px 14px',
+      marginBottom: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 13,
+      color: '#1A4A42',
+      marginBottom: 4
+    }
+  }, PAYDAY_ROUTINE.title), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#555'
+    }
+  }, "Do this on EVERY payday \u2014 both XE and TP paydays. Takes 5 minutes.")), PAYDAY_ROUTINE.steps.map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.n,
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 8,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)',
+      display: 'flex',
+      gap: 12,
+      alignItems: 'flex-start'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 32,
+      height: 32,
+      borderRadius: 10,
+      background: '#1A4A42',
+      color: '#fff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontWeight: 800,
+      fontSize: 14,
+      flexShrink: 0
+    }
+  }, s.n), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 13,
+      color: '#1C1C1E',
+      marginBottom: 4
+    }
+  }, s.action), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: '#555',
+      lineHeight: 1.65
+    }
+  }, s.detail)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#FFF0F0',
+      borderRadius: 12,
+      padding: '12px 14px',
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 12,
+      color: '#C62828',
+      marginBottom: 6
+    }
+  }, "\u274C NEVER DO THESE ON PAYDAY"), ['Spend extra money before paying attack target', 'Wait until end of month to send payment', 'Split the surplus across multiple debts', 'Put anything into savings/investment accounts until Upstart is dead (Feb 2027)', 'Use extra money for a purchase you\'ve been wanting'].map((x, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      fontSize: 12,
+      color: '#922b21',
+      marginBottom: 4
+    }
+  }, "\u2022 ", x)))), sec === 'trans' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#EEF7F5',
+      borderRadius: 12,
+      padding: '10px 12px',
+      marginBottom: 10,
+      fontSize: 12,
+      color: '#1A4A42',
+      lineHeight: 1.65
+    }
+  }, /*#__PURE__*/React.createElement("strong", null, "When each debt hits $0, these are the exact steps to take \u2014 that day, that payday, and that week."), " Do not skip these or you leave money on the table."), PHASE_TRANSITIONS.map(t => {
+    const isO = openTrans === t.debt;
+    return /*#__PURE__*/React.createElement("div", {
+      key: t.debt,
+      style: {
+        background: '#fff',
+        borderRadius: 12,
+        marginBottom: 8,
+        overflow: 'hidden',
+        boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: () => setOpenTrans(isO ? null : t.debt),
+      style: {
+        padding: '12px 14px',
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderLeft: `4px solid ${t.color}`
+      }
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 700,
+        fontSize: 14
+      }
+    }, t.debt, " hits $0"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: '#888'
+      }
+    }, t.date, " \xB7 $", t.freed.toLocaleString(), "/mo freed")), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: '#ccc',
+        fontSize: 18,
+        transition: 'transform .2s',
+        transform: isO ? 'rotate(90deg)' : 'none'
+      }
+    }, "\u203A")), isO && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '0 14px 14px'
+      }
+    }, [{
+      title: '🎯 The day it hits $0',
+      items: t.day_of
+    }, {
+      title: '💰 Same payday — do these',
+      items: t.same_payday
+    }, {
+      title: '📋 That week',
+      items: t.this_week
+    }].map(section => /*#__PURE__*/React.createElement("div", {
+      key: section.title,
+      style: {
+        marginBottom: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        fontWeight: 700,
+        color: t.color,
+        marginBottom: 6
+      }
+    }, section.title), section.items.map((item, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'flex',
+        gap: 8,
+        marginBottom: 6,
+        alignItems: 'flex-start'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 18,
+        height: 18,
+        borderRadius: 5,
+        background: t.color,
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 9,
+        fontWeight: 700,
+        flexShrink: 0,
+        marginTop: 1
+      }
+    }, i + 1), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: '#333',
+        lineHeight: 1.6,
+        flex: 1
+      }
+    }, item)))))));
+  })), sec === 'calendar' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#FFF0F0',
+      border: '1px solid #FFCDD2',
+      borderRadius: 12,
+      padding: '10px 12px',
+      marginBottom: 10,
+      fontSize: 12,
+      color: '#C62828',
+      lineHeight: 1.65
+    }
+  }, /*#__PURE__*/React.createElement("strong", null, "Missing a quarterly LLC tax payment costs 7-8% interest + potential underpayment penalty. Put these dates in your phone as recurring annual reminders today.")), TAX_CALENDAR.map(mo => {
+    const isO = openMonth === mo.month;
+    const hasUrgent = mo.items.some(i => i.urgent);
+    return /*#__PURE__*/React.createElement("div", {
+      key: mo.month,
+      style: {
+        background: '#fff',
+        borderRadius: 12,
+        marginBottom: 8,
+        overflow: 'hidden',
+        boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: () => setOpenMonth(isO ? null : mo.month),
+      style: {
+        padding: '12px 14px',
+        cursor: 'pointer',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderLeft: `4px solid ${hasUrgent ? '#C62828' : '#1A4A42'}`
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 8,
+        alignItems: 'center'
+      }
+    }, hasUrgent && /*#__PURE__*/React.createElement("span", {
+      style: {
+        background: '#FFF0F0',
+        color: '#C62828',
+        fontSize: 9,
+        fontWeight: 700,
+        padding: '2px 6px',
+        borderRadius: 5
+      }
+    }, "DEADLINES"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 700,
+        fontSize: 14
+      }
+    }, mo.month)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: '#ccc',
+        fontSize: 18,
+        transition: 'transform .2s',
+        transform: isO ? 'rotate(90deg)' : 'none'
+      }
+    }, "\u203A")), isO && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '0 14px 14px'
+      }
+    }, mo.items.map((item, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'flex',
+        gap: 8,
+        marginBottom: 8,
+        alignItems: 'flex-start',
+        padding: '6px',
+        borderRadius: 8,
+        background: item.urgent ? '#FFF0F0' : '#F9F9F9'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        flexShrink: 0,
+        marginTop: 1
+      }
+    }, item.urgent ? '⚠️' : '✓'), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: item.urgent ? '#C62828' : '#333',
+        lineHeight: 1.6,
+        fontWeight: item.urgent ? 600 : 400
+      }
+    }, item.item), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: '#aaa',
+        marginTop: 2
+      }
+    }, item.starts))))));
+  })), sec === 'cashflow' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#EEF7F5',
+      borderRadius: 12,
+      padding: '10px 12px',
+      marginBottom: 10,
+      fontSize: 12,
+      color: '#1A4A42',
+      lineHeight: 1.65
+    }
+  }, "Each financial decision changes your actual take-home pay. Here is exactly what each change does to your monthly cash."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      color: '#888',
+      letterSpacing: .08,
+      marginBottom: 8
+    }
+  }, "TAKE-HOME IMPACT \u2014 EACH CHANGE"), W4_IMPACT.changes.map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      background: '#fff',
+      borderRadius: 10,
+      padding: '12px 14px',
+      marginBottom: 6,
+      boxShadow: '0 1px 3px rgba(0,0,0,.05)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      paddingRight: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      color: '#1C1C1E'
+    }
+  }, c.label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: '#888',
+      marginTop: 2,
+      lineHeight: 1.5
+    }
+  }, c.note)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 800,
+      color: c.delta >= 0 ? '#2E7D32' : '#C62828',
+      flexShrink: 0
+    }
+  }, c.delta === 0 ? `$${c.amount.toLocaleString()}` : (c.delta > 0 ? '+' : '') + `$${c.delta.toLocaleString()}`)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#1A4A42',
+      borderRadius: 12,
+      padding: '14px',
+      marginTop: 4,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: 6
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#fff',
+      fontWeight: 700,
+      fontSize: 14
+    }
+  }, "Adjusted monthly income"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#7EC8B8',
+      fontWeight: 800,
+      fontSize: 16
+    }
+  }, "$", W4_IMPACT.net_takehome.toLocaleString())), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: 'rgba(255,255,255,.7)',
+      fontSize: 12
+    }
+  }, "Living expenses"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#EF9A9A',
+      fontSize: 12
+    }
+  }, "-$10,182")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: 'rgba(255,255,255,.7)',
+      fontSize: 12
+    }
+  }, "Debt minimums"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#EF9A9A',
+      fontSize: 12
+    }
+  }, "-$6,098")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      paddingTop: 8,
+      borderTop: '1px solid rgba(255,255,255,.2)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#fff',
+      fontWeight: 700,
+      fontSize: 14
+    }
+  }, "Adjusted monthly surplus"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: '#7EC8B8',
+      fontWeight: 800,
+      fontSize: 18
+    }
+  }, "$", adjSurplus.toLocaleString())), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: 'rgba(255,255,255,.5)',
+      marginTop: 4
+    }
+  }, "Note: W-4 fix estimate is ~$450/mo. Use irs.gov/W4app for your exact number.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      color: '#888',
+      letterSpacing: .08,
+      marginBottom: 8
+    }
+  }, "SURPLUS AS EACH DEBT DIES"), [{
+    label: 'Now — Upstart attack',
+    surplus: 3992,
+    note: 'After all fixes applied'
+  }, {
+    label: 'Feb 2027 — Upstart dead',
+    surplus: 5293,
+    note: '+$1,301 freed (minus $583 Roth = $4,710 to Barclay)'
+  }, {
+    label: 'May 2027 — Barclay dead',
+    surplus: 5893,
+    note: '+$600 freed (both Roths now $1,166/mo)'
+  }, {
+    label: 'Aug 2027 — Amex dead',
+    surplus: 6393,
+    note: '+$500 freed'
+  }, {
+    label: 'Apr 2028 — SoFi dead',
+    surplus: 8092,
+    note: '+$1,699 freed — big jump'
+  }, {
+    label: 'Jul 2028 — Upgrade dead',
+    surplus: 8617,
+    note: '+$525 freed'
+  }, {
+    label: 'Oct 2028 — Best Egg DEAD',
+    surplus: 9149,
+    note: 'ALL high-interest debt gone — $9,149/mo to wealth'
+  }].map((r, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      background: '#fff',
+      borderRadius: 8,
+      padding: '10px 12px',
+      marginBottom: 5,
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      boxShadow: '0 1px 2px rgba(0,0,0,.04)',
+      borderLeft: `3px solid ${i === 6 ? '#2E7D32' : i >= 4 ? '#1A4A42' : '#ccc'}`
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      fontWeight: i === 6 ? 700 : 500,
+      color: i === 6 ? '#2E7D32' : '#333'
+    }
+  }, r.label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: '#aaa'
+    }
+  }, r.note)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 700,
+      color: i === 6 ? '#2E7D32' : '#1A4A42'
+    }
+  }, "$", r.surplus.toLocaleString(), "/mo")))), sec === 'emergency' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#FFF0F0',
+      border: '1px solid #FFCDD2',
+      borderRadius: 12,
+      padding: '10px 12px',
+      marginBottom: 10,
+      fontSize: 12,
+      color: '#C62828',
+      lineHeight: 1.65
+    }
+  }, /*#__PURE__*/React.createElement("strong", null, "The 401K loan risk is real."), " You have $28,239 outstanding at XE. If you leave XE for any reason, this comes due. Without repayment: ~$12,700 lost to taxes and penalties. Know this before you make any job changes."), EMERGENCY_PROTOCOL.map(ep => /*#__PURE__*/React.createElement("div", {
+    key: ep.level,
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      marginBottom: 10,
+      overflow: 'hidden',
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: ep.color,
+      padding: '10px 14px',
+      color: '#fff'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 13
+    }
+  }, ep.level)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px'
+    }
+  }, ep.steps.map((s, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: 'flex',
+      gap: 8,
+      marginBottom: 8,
+      alignItems: 'flex-start'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 18,
+      height: 18,
+      borderRadius: 5,
+      background: ep.color,
+      color: '#fff',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: 9,
+      fontWeight: 700,
+      flexShrink: 0,
+      marginTop: 1
+    }
+  }, i + 1), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: '#333',
+      lineHeight: 1.6,
+      flex: 1
+    }
+  }, s)))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#F3EFFF',
+      borderRadius: 12,
+      padding: '12px 14px',
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 12,
+      color: '#5b4a8a',
+      marginBottom: 6
+    }
+  }, "\uD83D\uDCCB Monthly Checklist (1st of each month)"), ['All autopayments cleared? Check Bloom for any NSF or late fees', 'Current attack target balance — is it declining as expected?', 'Vanguard 401K: both contributions ran this month?', 'Fidelity: HYSA balance stable? Roth accounts invested?', 'LLC (if active): expenses logged in Wave? Any invoices outstanding?', 'Net worth: sum all assets minus all debts — write it down, watch it grow'].map((c, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: 'flex',
+      gap: 8,
+      marginBottom: 6,
+      alignItems: 'flex-start'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#5b4a8a',
+      flexShrink: 0,
+      fontSize: 12
+    }
+  }, "\u2610"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: '#333',
+      lineHeight: 1.5
+    }
+  }, c))))));
+}
+
+// ── RSA DECISION CALCULATOR ─────────────────────────────────────────────────
+const VEST_SCHEDULE = [{
+  year: 2026,
+  date: 'Jun 13, 2026',
+  shares: 194,
+  past: false
+}, {
+  year: 2027,
+  date: 'Jun 13, 2027',
+  shares: 195,
+  past: false
+}, {
+  year: 2028,
+  date: 'Jun 13, 2028',
+  shares: 195,
+  past: false
+}, {
+  year: 2029,
+  date: 'Jun 13, 2029',
+  shares: 194,
+  past: false
+}];
+const DEBT_OPTIONS = [{
+  label: 'Upstart (current)',
+  rate: 29.4,
+  color: '#C62828'
+}, {
+  label: 'Barclay',
+  rate: 29.0,
+  color: '#C62828'
+}, {
+  label: 'Amex',
+  rate: 29.0,
+  color: '#C62828'
+}, {
+  label: 'SoFi',
+  rate: 26.0,
+  color: '#1565C0'
+}, {
+  label: 'Upgrade',
+  rate: 17.0,
+  color: '#5b4a8a'
+}, {
+  label: 'Best Egg',
+  rate: 15.0,
+  color: '#5b4a8a'
+}, {
+  label: 'All Debt Gone',
+  rate: 0,
+  color: '#2E7D32'
+}];
+const XE_OPTIONS_STRIKE = 23;
+const XE_OPTIONS_SHARES = 220;
+const SUPP_WITHHOLD = 0.22;
+const MARGINAL = 0.35;
+const LTCG_TOTAL = 0.188; // 15% LTCG + 3.8% NIIT
+const MS_SHARES_VALUE = 1901.90;
+const LIQUID_NW_BASE = 81062 + 35000 + 244 + 5515 + 490; // excl. XE stock
+
+function RSACalc() {
+  const [price, setPrice] = React.useState(20.43);
+  const [priceInput, setPriceInput] = React.useState('20.43');
+  const [debtIdx, setDebtIdx] = React.useState(0);
+  const [vestIdx, setVestIdx] = React.useState(0);
+  const [showDetail, setShowDetail] = React.useState(false);
+  const debt = DEBT_OPTIONS[debtIdx];
+  const vest = VEST_SCHEDULE[vestIdx];
+  const shares = vest.shares;
+
+  // Core calculations
+  const grossValue = price * shares;
+  const sharesWithheld = Math.ceil(grossValue * SUPP_WITHHOLD / price);
+  const netShares = shares - sharesWithheld;
+  const netProceeds = netShares * price;
+  const withholdingShortfall = grossValue * (MARGINAL - SUPP_WITHHOLD);
+
+  // Opportunity cost: break-even price XE needs to reach (vs paying debt)
+  // Hold benefit: (P - basis) * netShares * (1 - LTCG_TOTAL)
+  // Sell benefit: netProceeds * (debtRate/100)
+  // Break even: P = price + (netProceeds * debtRate/100) / (netShares * (1 - LTCG_TOTAL))
+  const breakEven = debt.rate > 0 ? price + netProceeds * (debt.rate / 100) / (netShares * (1 - LTCG_TOTAL)) : price;
+  const breakEvenPct = (breakEven - price) / price * 100;
+
+  // Sell now: interest saved on debt
+  const annualInterestSaved = netProceeds * (debt.rate / 100);
+
+  // Hold scenarios at different prices
+  const holdScenarios = [{
+    p: price * 0.85,
+    label: 'Stock falls 15%'
+  }, {
+    p: price,
+    label: 'Flat (no change)'
+  }, {
+    p: price * 1.15,
+    label: '+15% recovery'
+  }, {
+    p: price * 1.30,
+    label: '+30% recovery'
+  }, {
+    p: 29.20,
+    label: 'Back to $29.20 (prior high)'
+  }, {
+    p: price * 1.50,
+    label: '+50% recovery'
+  }].filter(s => s.p > 0);
+
+  // Options value
+  const optionsValue = Math.max(0, price - XE_OPTIONS_STRIKE) * XE_OPTIONS_SHARES;
+  const optionsInMoney = price > XE_OPTIONS_STRIKE;
+
+  // Concentration
+  const totalUnvestedValue = 779 * price;
+  const totalXEValue = totalUnvestedValue + MS_SHARES_VALUE;
+  const liquidNW = LIQUID_NW_BASE + totalXEValue;
+  const concPct = totalXEValue / liquidNW * 100;
+  const concOver = concPct > 15;
+
+  // Decision
+  const sellWins = debt.rate > 0 && price <= breakEven;
+  const holdWins = !sellWins && debt.rate > 0;
+  const noDebt = debt.rate === 0;
+
+  // Bar width for concentration meter
+  const barW = Math.min(100, concPct / 20 * 100);
+  function handlePriceChange(v) {
+    const n = parseFloat(v);
+    setPriceInput(v);
+    if (!isNaN(n) && n > 0 && n < 200) setPrice(n);
+  }
+  const recColor = noDebt ? '#1A4A42' : sellWins ? '#C62828' : '#2E7D32';
+  const recBg = noDebt ? '#EEF7F5' : sellWins ? '#FFF0F0' : '#E8F5E9';
+  const recText = noDebt ? 'Debt free — hold for LTCG. Sell only to rebalance above 15% concentration.' : sellWins ? `SELL — apply $${netProceeds.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })} to ${debt.label}. Saves $${annualInterestSaved.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })}/yr guaranteed.` : `HOLD 12+ MONTHS — XE has risen enough. LTCG treatment saves more than debt interest on these shares.`;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      paddingBottom: 72,
+      overflowY: 'auto',
+      minHeight: '100vh'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'linear-gradient(135deg,#1A4A42,#0f2d28)',
+      padding: '18px 16px',
+      color: '#fff'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      letterSpacing: .1,
+      opacity: .6,
+      marginBottom: 4
+    }
+  }, "INTERACTIVE TOOL"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 800,
+      fontSize: 20,
+      marginBottom: 2
+    }
+  }, "RSA Decision Calculator"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      opacity: .7
+    }
+  }, "Adjust price and debt \u2014 get an instant sell vs hold recommendation")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 14px 0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 10
+    }
+  }, "CURRENT XE STOCK PRICE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 12,
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 32,
+      fontWeight: 900,
+      color: '#1A4A42'
+    }
+  }, "$", price.toFixed(2)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    value: priceInput,
+    onChange: e => handlePriceChange(e.target.value),
+    step: "0.01",
+    min: "1",
+    max: "150",
+    style: {
+      width: '100%',
+      padding: '8px 10px',
+      borderRadius: 8,
+      border: '1px solid #DDD',
+      fontSize: 14,
+      fontWeight: 600,
+      textAlign: 'right'
+    }
+  }))), /*#__PURE__*/React.createElement("input", {
+    type: "range",
+    min: "5",
+    max: "60",
+    step: "0.25",
+    value: price,
+    onChange: e => {
+      setPrice(parseFloat(e.target.value));
+      setPriceInput(e.target.value);
+    },
+    style: {
+      width: '100%',
+      accentColor: '#1A4A42'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontSize: 10,
+      color: '#aaa',
+      marginTop: 2
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "$5"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#E65100',
+      fontWeight: 600
+    }
+  }, "UNDERWATER $23 strike \u2192"), /*#__PURE__*/React.createElement("span", null, "$60")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginTop: 8,
+      gap: 6
+    }
+  }, [{
+    v: 20.43,
+    l: 'Current $20.43'
+  }, {
+    v: 23,
+    l: '$23 (options)'
+  }, {
+    v: 29.20,
+    l: '$29.20 (prior high)'
+  }, {
+    v: 40,
+    l: '$40'
+  }].map(b => /*#__PURE__*/React.createElement("button", {
+    key: b.v,
+    onClick: () => {
+      setPrice(b.v);
+      setPriceInput(b.v.toString());
+    },
+    style: {
+      flex: 1,
+      padding: '5px 2px',
+      background: Math.abs(price - b.v) < 0.1 ? '#1A4A42' : '#F5F5F7',
+      color: Math.abs(price - b.v) < 0.1 ? '#fff' : '#555',
+      border: 'none',
+      borderRadius: 7,
+      fontSize: 9,
+      fontWeight: 600,
+      cursor: 'pointer'
+    }
+  }, b.l)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '12px 14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 8
+    }
+  }, "WHICH VEST"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 6
+    }
+  }, VEST_SCHEDULE.map((v, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    onClick: () => setVestIdx(i),
+    style: {
+      flex: 1,
+      padding: '7px 4px',
+      background: vestIdx === i ? '#1A4A42' : '#F5F5F7',
+      color: vestIdx === i ? '#fff' : '#555',
+      border: 'none',
+      borderRadius: 8,
+      fontSize: 9,
+      fontWeight: 600,
+      cursor: 'pointer',
+      lineHeight: 1.4,
+      textAlign: 'center'
+    }
+  }, v.date.split(' ').slice(0, 2).join(' '), /*#__PURE__*/React.createElement("br", null), v.shares, "sh")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '12px 14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 8
+    }
+  }, "CURRENT ATTACK DEBT RATE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 5
+    }
+  }, DEBT_OPTIONS.map((d, i) => /*#__PURE__*/React.createElement("button", {
+    key: i,
+    onClick: () => setDebtIdx(i),
+    style: {
+      padding: '5px 9px',
+      background: debtIdx === i ? d.color : '#F5F5F7',
+      color: debtIdx === i ? '#fff' : d.color,
+      border: `1px solid ${debtIdx === i ? d.color : '#E5E5E5'}`,
+      borderRadius: 8,
+      fontSize: 10,
+      fontWeight: 700,
+      cursor: 'pointer'
+    }
+  }, d.rate > 0 ? `${d.rate}%` : '0%', " ", d.label.split(' ')[0]))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      margin: '0 14px 10px',
+      background: recBg,
+      borderRadius: 14,
+      padding: '16px',
+      border: `2px solid ${recColor}`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 800,
+      fontSize: 15,
+      color: recColor,
+      marginBottom: 6
+    }
+  }, noDebt ? '📈 HOLD' : sellWins ? '💰 SELL NOW' : '📈 HOLD 12+ MONTHS'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: recColor === '#2E7D32' ? '#1b5e20' : '#922b21',
+      lineHeight: 1.65
+    }
+  }, recText)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0 14px 10px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      fontWeight: 700,
+      color: '#888',
+      letterSpacing: .08,
+      marginBottom: 8
+    }
+  }, "KEY NUMBERS \u2014 ", vest.shares, " SHARES VESTING ", vest.date), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 8,
+      marginBottom: 10
+    }
+  }, [{
+    l: 'Gross vest value',
+    v: `$${grossValue.toLocaleString(undefined, {
+      maximumFractionDigits: 0
+    })}`,
+    sub: 'Added to your W-2'
+  }, {
+    l: 'Net shares (after tax hold)',
+    v: `~${netShares} shares`,
+    sub: `~${sharesWithheld} withheld @22%`
+  }, {
+    l: 'Net proceeds if sold',
+    v: `$${netProceeds.toLocaleString(undefined, {
+      maximumFractionDigits: 0
+    })}`,
+    sub: 'At current price'
+  }, {
+    l: 'Withholding shortfall',
+    v: `$${withholdingShortfall.toLocaleString(undefined, {
+      maximumFractionDigits: 0
+    })}`,
+    sub: 'Owed at filing (W-4 fix covers)'
+  }].map((m, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      background: '#fff',
+      borderRadius: 10,
+      padding: '10px 12px',
+      boxShadow: '0 1px 3px rgba(0,0,0,.05)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: '#888',
+      marginBottom: 3
+    }
+  }, m.l), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 800,
+      color: '#1A4A42'
+    }
+  }, m.v), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: '#aaa'
+    }
+  }, m.sub)))), debt.rate > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 10
+    }
+  }, "SELL vs HOLD BREAK-EVEN"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 10,
+      marginBottom: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      background: '#FFF0F0',
+      borderRadius: 10,
+      padding: '10px',
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: '#C62828',
+      fontWeight: 700,
+      marginBottom: 3
+    }
+  }, "SELL NOW SAVES"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 18,
+      fontWeight: 800,
+      color: '#C62828'
+    }
+  }, "$", annualInterestSaved.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: '#aaa'
+    }
+  }, "interest/yr guaranteed")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      background: '#E8F5E9',
+      borderRadius: 10,
+      padding: '10px',
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: '#2E7D32',
+      fontWeight: 700,
+      marginBottom: 3
+    }
+  }, "XE MUST REACH"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 18,
+      fontWeight: 800,
+      color: '#2E7D32'
+    }
+  }, "$", breakEven.toFixed(2)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: '#aaa'
+    }
+  }, "for holding to win (+", breakEvenPct.toFixed(0), "%)"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#F5F5F7',
+      borderRadius: 8,
+      padding: '8px 10px',
+      fontSize: 11,
+      color: '#555',
+      lineHeight: 1.6
+    }
+  }, "XE needs to rise ", /*#__PURE__*/React.createElement("strong", null, breakEvenPct.toFixed(0), "%"), " (from $", price.toFixed(2), " to $", breakEven.toFixed(2), ") within 12 months for holding to beat selling and paying down ", debt.label, ".", sellWins && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#C62828',
+      fontWeight: 600
+    }
+  }, " It has NOT done that \u2192 sell."), holdWins && /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#2E7D32',
+      fontWeight: 600
+    }
+  }, " It HAS done that \u2192 hold."))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    onClick: () => setShowDetail(!showDetail),
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      cursor: 'pointer'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888'
+    }
+  }, "HOLD 12+ MONTHS \u2014 ALL SCENARIOS"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#ccc',
+      fontSize: 16,
+      transition: 'transform .2s',
+      transform: showDetail ? 'rotate(90deg)' : 'none'
+    }
+  }, "\u203A")), showDetail && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr',
+      gap: 4,
+      marginBottom: 6
+    }
+  }, ['Scenario', 'Price', 'LTCG gain', 'vs Sell now'].map(h => /*#__PURE__*/React.createElement("div", {
+    key: h,
+    style: {
+      fontSize: 9,
+      fontWeight: 700,
+      color: '#888'
+    }
+  }, h))), holdScenarios.map((s, i) => {
+    const gain = (s.p - price) * netShares;
+    const ltcgTax = gain > 0 ? gain * LTCG_TOTAL : gain * MARGINAL;
+    const netGain = gain - ltcgTax;
+    const vsDebt = netGain - (debt.rate > 0 ? annualInterestSaved : 0);
+    const better = vsDebt > 0;
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr 1fr 1fr',
+        gap: 4,
+        padding: '6px 0',
+        borderBottom: '1px solid #F5F5F5'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: '#555'
+      }
+    }, s.label), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 600,
+        color: s.p >= price ? '#2E7D32' : '#C62828'
+      }
+    }, "$", s.p.toFixed(2)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: netGain >= 0 ? '#2E7D32' : '#C62828'
+      }
+    }, netGain >= 0 ? '+' : '', netGain.toLocaleString(undefined, {
+      maximumFractionDigits: 0
+    })), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 600,
+        color: better ? '#2E7D32' : '#C62828'
+      }
+    }, better ? 'HOLD ✓' : 'SELL ✗'));
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8,
+      fontSize: 10,
+      color: '#888'
+    }
+  }, "LTCG rate: 18.8% (15% cap gains + 3.8% NIIT). Loss scenarios: 35% ordinary rate deduction."))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)',
+      borderLeft: `3px solid ${optionsInMoney ? '#2E7D32' : '#aaa'}`
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 8
+    }
+  }, "YOUR OPTIONS (220 shares @ $23 strike)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 10,
+      alignItems: 'center',
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 22,
+      fontWeight: 900,
+      color: optionsInMoney ? '#2E7D32' : '#C62828'
+    }
+  }, optionsInMoney ? `$${optionsValue.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })}` : 'WORTHLESS'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#888'
+    }
+  }, optionsInMoney ? `$${(price - XE_OPTIONS_STRIKE).toFixed(2)}/share × 220 shares` : `Stock ${(XE_OPTIONS_STRIKE - price).toFixed(2)} below strike — do NOT exercise`)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'right'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#555'
+    }
+  }, "Strike: ", /*#__PURE__*/React.createElement("strong", null, "$23.00")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#555'
+    }
+  }, "Current: ", /*#__PURE__*/React.createElement("strong", null, "$", price.toFixed(2))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: optionsInMoney ? '#2E7D32' : '#C62828'
+    }
+  }, optionsInMoney ? `$${(price - 23).toFixed(2)} in-the-money` : `$${(23 - price).toFixed(2)} underwater`))), !optionsInMoney && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#FFF0F0',
+      borderRadius: 8,
+      padding: '8px 10px',
+      fontSize: 11,
+      color: '#C62828',
+      lineHeight: 1.5
+    }
+  }, "Do not exercise. Watch for XE to cross $23. At $30: worth $1,540. At $40: worth $3,740. Check your grant letter \u2014 ISO vs NQO determines your tax strategy when the time comes."), optionsInMoney && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#E8F5E9',
+      borderRadius: 8,
+      padding: '8px 10px',
+      fontSize: 11,
+      color: '#1b5e20',
+      lineHeight: 1.5
+    }
+  }, "Options are in the money! Before exercising: check if ISO or NQO in your grant letter. ISO: no income tax at exercise but AMT risk. NQO: spread is ordinary income at 35% immediately.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 10
+    }
+  }, "CONCENTRATION RISK \u2014 XE as % of liquid net worth"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 28,
+      fontWeight: 900,
+      color: concOver ? '#C62828' : '#1A4A42'
+    }
+  }, concPct.toFixed(1), "%"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'right'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#555'
+    }
+  }, "XE value: $", totalXEValue.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: '#555'
+    }
+  }, "Liquid NW: $", liquidNW.toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: concOver ? '#C62828' : '#2E7D32'
+    }
+  }, concOver ? '⚠️ OVER 15% limit' : '✓ Within 15% limit'))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#F0F0F0',
+      borderRadius: 6,
+      height: 10,
+      position: 'relative',
+      marginBottom: 6
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      height: '100%',
+      width: `${Math.min(100, barW)}%`,
+      background: concOver ? '#C62828' : '#1A4A42',
+      borderRadius: 6,
+      transition: 'width .4s'
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      left: '75%',
+      top: -4,
+      bottom: -4,
+      width: 2,
+      background: '#C62828',
+      borderRadius: 1
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontSize: 9,
+      color: '#aaa'
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "0%"), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: '#C62828'
+    }
+  }, "15% max"), /*#__PURE__*/React.createElement("span", null, "20%")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8,
+      fontSize: 11,
+      color: '#555',
+      lineHeight: 1.5
+    }
+  }, concOver ? `You hold more than 15% of your liquid net worth in XE. After each vest, sell enough shares to bring this back below 15%.` : `You're within the safe limit. After each RSA vest, recalculate to make sure a rising stock price doesn't push you over 15%.`)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#fff',
+      borderRadius: 12,
+      padding: '14px',
+      marginBottom: 10,
+      boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: '#888',
+      marginBottom: 10
+    }
+  }, "FUTURE VEST SCHEDULE @ $", price.toFixed(2)), VEST_SCHEDULE.map((v, i) => {
+    const gv = v.shares * price;
+    const nsh = v.shares - Math.ceil(gv * SUPP_WITHHOLD / price);
+    const np = nsh * price;
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: '8px 0',
+        borderBottom: '1px solid #F5F5F5'
+      }
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        fontWeight: 600,
+        color: i === 0 ? '#C62828' : '#333'
+      }
+    }, v.date, " ", i === 0 ? '← NEXT' : '', "  "), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: '#aaa'
+      }
+    }, v.shares, " shares vesting")), /*#__PURE__*/React.createElement("div", {
+      style: {
+        textAlign: 'right'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        fontWeight: 700,
+        color: '#1A4A42'
+      }
+    }, "$", np.toLocaleString(undefined, {
+      maximumFractionDigits: 0
+    }), " net"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: '#aaa'
+      }
+    }, nsh, " net shares")));
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8,
+      background: '#EEF7F5',
+      borderRadius: 8,
+      padding: '8px 10px',
+      fontSize: 11,
+      color: '#1A4A42',
+      lineHeight: 1.6
+    }
+  }, "Total unvested value @ $", price.toFixed(2), ": ", /*#__PURE__*/React.createElement("strong", null, "$", (779 * price).toLocaleString(undefined, {
+    maximumFractionDigits: 0
+  })), " across all 4 vests. This is your XE upside participation for the next 3 years.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#F3EFFF',
+      borderLeft: '4px solid #5b4a8a',
+      borderRadius: '0 12px 12px 0',
+      padding: '12px 14px',
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 12,
+      color: '#5b4a8a',
+      marginBottom: 6
+    }
+  }, "\u26A0\uFE0F Before ANY option exercise \u2014 check grant type"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: '#3d2d6e',
+      lineHeight: 1.65
+    }
+  }, "Log into Fidelity NetBenefits \u2192 Stock Options \u2192 view each grant. It will say ISO (Incentive) or NQO/NSO (Non-Qualified). This determines whether you owe tax at exercise or only on sale. Do not exercise without knowing this."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 6,
+      fontSize: 11,
+      color: '#5b4a8a',
+      fontWeight: 600
+    }
+  }, "IRC \xA7422 (ISOs) \xB7 IRC \xA783 (NQOs) \xB7 Consult a CPA before exercising large option grants"))));
+}
+const SK = 'wb_v11';
 const load = () => {
   try {
     return JSON.parse(localStorage.getItem(SK) || '{}');
@@ -1862,6 +3740,18 @@ function App() {
     e: '📊',
     l: 'Budget'
   }, {
+    id: 'playbook',
+    e: '📚',
+    l: 'Playbook'
+  }, {
+    id: 'rsa',
+    e: '📈',
+    l: 'RSA'
+  }, {
+    id: 'tax',
+    e: '🧾',
+    l: 'Tax'
+  }, {
     id: 'enroll',
     e: '📝',
     l: 'Enroll'
@@ -1932,6 +3822,9 @@ function App() {
   }), tab === 'budget' && /*#__PURE__*/React.createElement(Budget, {
     budSec: budSec,
     setBudSec: setBudSec
+  }), tab === 'playbook' && /*#__PURE__*/React.createElement(Playbook, null), tab === 'rsa' && /*#__PURE__*/React.createElement(RSACalc, null), tab === 'tax' && /*#__PURE__*/React.createElement(TaxGuide, {
+    taxOpen: taxOpen,
+    setTaxOpen: setTaxOpen
   }), tab === 'enroll' && /*#__PURE__*/React.createElement(Enroll, {
     enrTab: enrTab,
     setEnrTab: setEnrTab
@@ -3886,6 +5779,482 @@ function Wins({
     }
   }, "+", rem.length - 5, " more remaining"))));
 }
-ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));</script>
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+
+// ── TAX GUIDE DATA ─────────────────────────────────────────────────────────
+const TAX_STRATEGIES = [{
+  id: 'llc_deduct',
+  cat: 'LLC — Day 1',
+  badge: 'Form LLC Aug 2026',
+  color: '#5b4a8a',
+  title: 'LLC Business Deductions — $5,162/yr saves $1,807',
+  amount: '$1,807/yr saved at 35%',
+  law: 'IRC §162 — ordinary and necessary business expenses. IRC §280A — home office. Treasury Reg §1.162-1 — documentation required. IRC §179 — Section 179 immediate equipment expensing.',
+  what: 'From the day the LLC is formed, these existing expenses become business deductions. You are already paying them — making them pre-tax saves 35 cents per dollar.',
+  items: [{
+    expense: 'Home office (200 sqft × $5/sqft)',
+    annual: 1000,
+    note: 'IRS simplified method — Rev Proc 2013-13. Space must be used exclusively for business.'
+  }, {
+    expense: 'Internet (Fidium $50/mo × 75% business)',
+    annual: 540,
+    note: 'IRC §162. Percentage must reflect actual business use — log business activities.'
+  }, {
+    expense: 'Phone (Google Fi $147/mo × 50% business)',
+    annual: 882,
+    note: 'IRC §274(d) — must document business vs personal use.'
+  }, {
+    expense: 'Claude AI ($20/mo)',
+    annual: 240,
+    note: '100% business tool — fully deductible under IRC §162.'
+  }, {
+    expense: 'GitHub, professional memberships',
+    annual: 300,
+    note: 'Trade or business expenses — IRC §162.'
+  }, {
+    expense: 'Technical books and online training',
+    annual: 200,
+    note: 'Education that maintains/improves current business skills — IRC §162.'
+  }],
+  how: ['Form LLC at sos.nh.gov ($100) → get EIN at irs.gov → deductions start THAT DAY', 'Sign up for Wave Accounting at waveapps.com (free) → connect Relay business account', 'Track every expense from day one — photograph receipts immediately', 'Home office: measure your dedicated workspace (must be exclusive business use)', 'On taxes: TurboTax → Business Income → Schedule C → enter each deduction category', 'Keep a weekly business activity log (date, what you worked on, hours) — 2 min/week']
+}, {
+  id: 'augusta',
+  cat: 'LLC — Augusta Rule',
+  badge: 'Up to 14 Days/Year',
+  color: '#1A4A42',
+  title: 'Augusta Rule — $2,800-4,200 Tax-Free Income',
+  amount: '$2,800-4,200/yr tax-free',
+  law: 'IRC §280A(g) — if a dwelling is rented for fewer than 15 days per year, the rental income is ENTIRELY excluded from gross income. The renting business (LLC) deducts it under IRC §162 as a legitimate business expense.',
+  what: 'Rent your home to your LLC for up to 14 days per year for legitimate business purposes (strategy sessions, planning days, filming, reviews). You receive that rental income completely tax-free — you do not report it anywhere on your return. Your LLC deducts it as a business expense.',
+  items: [{
+    expense: '10 rental days × $200/day',
+    annual: 2000,
+    note: 'You receive this tax-free. LLC deducts $2,000.'
+  }, {
+    expense: '14 rental days × $200/day (max)',
+    annual: 2800,
+    note: '14-day maximum — DO NOT exceed or all days become taxable.'
+  }, {
+    expense: '14 rental days × $300/day (premium rate)',
+    annual: 4200,
+    note: 'Research Peerspace.com for fair market conference room rates in your NH area.'
+  }],
+  how: ['Research fair market rate: Peerspace.com for comparable NH meeting/event spaces ($150-300/day) — DOCUMENT this research with screenshots', 'Create a formal rental agreement for each event: LLC name as tenant, your name as landlord, date, purpose, rate, hours — both parties sign', 'LLC pays you via Relay business account → your personal account (bank transfer with memo)', 'Create an invoice from yourself personally to the LLC for each rental day', 'DO NOT report this income on your personal tax return — §280A(g) fully excludes it', 'LLC reports it as "rent expense" on Schedule C — reduces LLC profit and your SE tax', 'Maximum 14 days per year — track carefully. Day 15 destroys the exemption for ALL days that year.', 'Document each session: date, business purpose, attendees, agenda — keep for 6 years']
+}, {
+  id: 'hire_kids',
+  cat: 'LLC — Hire Children',
+  badge: 'After LLC Forms',
+  color: '#C62828',
+  title: 'Hire Your Children — $15,330/yr Tax Savings',
+  amount: '$15,330/yr at 35% bracket',
+  law: 'IRC §3121(b)(3) — wages paid by parent to child under 18 in an unincorporated business (LLC) are EXEMPT from Social Security and Medicare taxes (FICA). IRC §162 — wages are deductible as a business expense. Standard deduction (~$14,600) means children pay $0 federal tax on wages up to that amount.',
+  what: 'Pay your 3 children for real, documented, age-appropriate work. You deduct their wages at 35%, they pay $0 federal income tax (under the standard deduction), and NO FICA taxes on either side. Then open a custodial Roth IRA for each child funded with what you pay them.',
+  items: [{
+    expense: 'Child 1: $14,600/yr wages (deducted at 35%)',
+    annual: 5110,
+    note: 'Child pays $0 federal tax. No FICA withholding.'
+  }, {
+    expense: 'Child 2: $14,600/yr wages',
+    annual: 5110,
+    note: 'Same benefits — separate timesheet, separate payments.'
+  }, {
+    expense: 'Child 3: $14,600/yr wages',
+    annual: 5110,
+    note: '3 children × $5,110 savings = $15,330/yr total.'
+  }],
+  how: ['Identify REAL age-appropriate work: social media posting, photography, video editing, data entry, filing, basic admin, content creation, website testing', 'Set fair market hourly rate ($10-18/hr depending on age and task type)', 'Create detailed timesheets: date | start time | end time | hours | specific task performed | child signature — fill in REAL TIME, never retroactively', 'Pay by check or ACH from Relay LLC account to a bank account in the child\'s name — NEVER cash', 'Each child fills out W-4 as "Exempt" from withholding (under 18, wages under $14,600)', 'Set up Gusto.com payroll (~$6/mo/person) — automatically issues W-2 to each child every January', 'Open a Custodial Roth IRA at Fidelity for each child: fidelity.com → Open Account → Custodial Roth IRA', 'Fund each Roth IRA up to the child\'s earned wages — invest in FZROX — $7,000 invested today grows to $70,500+ in 30 years tax-free', 'On YOUR return: deduct wages on Schedule C as "Wages paid to employees" — reduces LLC profit and your SE tax', 'On EACH CHILD\'s return: wages shown on W-2, standard deduction eliminates the tax']
+}, {
+  id: 'solo401k',
+  cat: 'LLC — Solo 401K',
+  badge: 'Open before Dec 31, 2026',
+  color: '#1565C0',
+  title: 'Solo 401K — Shelter Up to $70K/yr from Consulting',
+  amount: 'Saves $4,375/yr on $12,500 employer contrib',
+  law: 'IRC §401(k) — self-employed 401K plan. IRC §404(a)(8) — employer contribution deduction. Employee contribution limit: $23,500 (combined with W-2 plans). Employer contribution: up to 25% of net self-employment income. Plan must be ESTABLISHED by December 31 of the tax year.',
+  what: 'Once your LLC earns consulting or product revenue, you can contribute as both "employee" and "employer." Employee contributions go toward the $23,500 combined limit. Employer contributions (25% of net SE income) are ADDITIONAL — completely separate from the $23,500 cap.',
+  items: [{
+    expense: 'Employee contribution (up to $23,500 combined)',
+    annual: 0,
+    note: 'Counts toward the same $23,500 W-2 limit. Coordinate with XE contributions.'
+  }, {
+    expense: 'Employer contribution (25% of $50,000 LLC profit)',
+    annual: 12500,
+    note: 'Separate from employee limit. Saves $12,500 × 35% = $4,375/yr.'
+  }, {
+    expense: 'Employer contribution (25% of $100,000 LLC profit)',
+    annual: 25000,
+    note: 'Saves $25,000 × 35% = $8,750/yr — powerful at this income level.'
+  }],
+  how: ['Open now even with $0 LLC income: fidelity.com → Open Account → Self-Employed 401(k)', 'Enter LLC name and EIN when prompted', 'MUST be established by December 31, 2026 to contribute for 2026 tax year', 'When LLC earns: employee contributions first (coordinate with XE to stay under $23,500 combined)', 'Then employer contributions: (net SE income × 92.35% × 25%) = employer contribution amount', 'Example: $50K LLC profit → $46,175 net SE income × 25% = $11,544 employer contribution → saves $4,040 in taxes', 'Invest Solo 401K in FZROX — same as your XE 401K strategy', 'Report on taxes: TurboTax → Self-Employed section → Solo 401K → enter employee + employer amounts']
+}, {
+  id: 'scorp',
+  cat: 'LLC — S-Corp Election',
+  badge: 'When LLC Hits $50K Profit',
+  color: '#E65100',
+  title: 'S-Corp Election — $6,120-9,180/yr SE Tax Savings',
+  amount: '$6,120-9,180/yr when LLC earns $80K+',
+  law: 'IRC §1362 — S-Corporation election (IRS Form 2553). IRC §1401 — self-employment tax (15.3% on first $168,600, 2.9% above). S-Corp distributions are NOT subject to SE tax. IRS requires a "reasonable salary" for shareholder-employees.',
+  what: 'Once your LLC consistently earns $50,000+/year: elect S-Corp status, pay yourself a reasonable salary (SE tax applies to salary only), take the rest as distributions (no SE tax). The salary portion is subject to FICA; distributions are not.',
+  items: [{
+    expense: '$80K profit: $40K salary + $40K distribution',
+    annual: 6120,
+    note: '$40K × 15.3% SE tax avoided = $6,120/yr saved.'
+  }, {
+    expense: '$100K profit: $50K salary + $50K distribution',
+    annual: 7650,
+    note: '$50K × 15.3% = $7,650/yr saved.'
+  }, {
+    expense: '$120K profit: $60K salary + $60K distribution',
+    annual: 9180,
+    note: '$60K × 15.3% = $9,180/yr saved.'
+  }],
+  how: ['When LLC profit is consistently above $50,000/year: file IRS Form 2553 (S-Corp Election)', 'Download Form 2553 at irs.gov → fill in LLC name, EIN, effective date → mail to IRS (certified mail)', 'Set up formal payroll: Gusto.com handles S-Corp payroll, quarterly filings ($49/mo)', 'Determine "reasonable salary": IRS requires this to be what you\'d pay an arm\'s-length employee for the same work — typically 50-60% of total profit', 'Pay yourself the salary (W-2 income — FICA applies) + take remainder as distributions (no FICA)', 'S-Corp requires: annual meeting minutes, payroll filings (940, 941), and separate corporate records', 'Your CPA handles S-Corp election and annual filings for approximately $500-1,500/yr — costs recovered immediately at this profit level']
+}, {
+  id: 'ss_refund',
+  cat: 'W-2 — Two Employers',
+  badge: 'CLAIM EVERY YEAR',
+  color: '#2E7D32',
+  title: 'SS Overpayment Refund — $10,453 Every Year',
+  amount: '$10,453/yr credit on Form 1040',
+  law: 'IRC §31(b) — Excess Social Security Tax Withheld is credited against your income tax. Both employers withhold SS independently to the $168,600 wage base. Only one wage base is actually owed. The excess is refunded.',
+  what: 'XE withholds $10,453 in SS tax. TP withholds $10,453 in SS tax. Your actual SS liability is only $10,453 (one wage base cap). The other $10,453 is excess — it comes back as a credit on your tax return. This applies to JESSA only (two employers). Jason has one employer, no overpayment.',
+  items: [{
+    expense: 'XE SS withheld (on $168,600)',
+    annual: 10453,
+    note: 'XE withholds 6.2% × $168,600 = $10,453'
+  }, {
+    expense: 'TP SS withheld (on $168,600)',
+    annual: 10453,
+    note: 'TP withholds 6.2% × $168,600 = $10,453'
+  }, {
+    expense: 'Actual SS owed (one cap)',
+    annual: -10453,
+    note: 'Only one $168,600 cap applies'
+  }, {
+    expense: 'EXCESS REFUNDED on tax return',
+    annual: 10453,
+    note: 'Schedule 3, Line 11'
+  }],
+  how: ['Enter ALL W-2s separately in TurboTax — Jessa\'s XE W-2 + Jessa\'s TP W-2 + Jason\'s XE W-2', 'Never combine W-2s — each must be entered exactly as printed', 'TurboTax automatically detects excess SS: Box 4 from both of Jessa\'s W-2s exceeds the annual maximum', 'Verify before filing: TurboTax → Preview My 1040 → Schedule 3, Line 11 → should show ~$10,453', 'If missed on last year\'s return: file amended return Form 1040-X — you have 3 years from original filing deadline', 'Jason has ONE employer — no SS overpayment on his side']
+}, {
+  id: 'fsa_full',
+  cat: 'Benefits — XE Enrollment',
+  badge: 'Nov Open Enrollment',
+  color: '#1565C0',
+  title: 'Both FSAs at XE — $5,513/yr Combined Savings',
+  amount: '$5,513/yr tax savings (fed + FICA)',
+  law: 'IRC §125 — cafeteria plan FSA contributions reduce BOTH federal income tax AND FICA (7.65%) because they reduce pre-FICA wages. Total effective savings rate: 42.65%. IRC §129 — Dependent Care FSA household limit $5,000.',
+  what: 'You and Jason BOTH work at XE. Each of you can independently elect a $3,300 Health Care FSA. Only ONE of you elects the $5,000 Dependent Care FSA (household limit). These are expenses you\'re already paying — making them pre-tax is a free savings.',
+  items: [{
+    expense: 'Jessa FSA Health $3,300 × 42.65%',
+    annual: 1408,
+    note: 'Medical copays, Rx, dental, vision for family of 5'
+  }, {
+    expense: 'Jason FSA Health $3,300 × 42.65%',
+    annual: 1408,
+    note: 'Jason enrolls separately as his own XE employee'
+  }, {
+    expense: 'Dep Care FSA $5,000 × 42.65% (Jessa only)',
+    annual: 2133,
+    note: 'After-school, summer camps for kids under 13. Jason waives this.'
+  }],
+  how: ['XE open enrollment (November): Jessa elects FSA Health $3,300 AND FSA Dependent Care $5,000', 'Jason enrolls separately: FSA Health $3,300 only — he waives Dependent Care (household limit is $5,000 total)', 'Medical FSA: use for copays, prescriptions, dental fillings, braces, vision, OTC medications', 'Dep Care FSA: submit receipts for after-school programs, summer camps, childcare (kids under 13)', 'Dance Studio ($1,020/mo): may NOT qualify for Dep Care FSA — dance is enrichment, not care while you work. Verify with XE HR.', 'Both FSA elections appear on your W-2 Box 1 as reduced wages — TurboTax handles automatically', 'Health FSA: up to $660 rolls over — with 3 kids you will spend the full amount annually']
+}, {
+  id: 'roth_strat',
+  cat: 'Retirement — Backdoor Roth',
+  badge: 'Starts Feb 2027',
+  color: '#5b4a8a',
+  title: 'Backdoor Roth IRA — $14,000/yr Tax-Free Growth',
+  amount: '$7,680+ more per $7K vs waiting',
+  law: 'IRC §408A — Roth IRA. No income limit on conversions (only on direct contributions). IRS Notice 2014-54 — permits immediate conversion of non-deductible contributions. Form 8606 required to avoid double taxation. IRC §219(c) — spousal IRA.',
+  what: 'At $547,200 combined income you are far over the Roth income limit ($240K MFJ). The backdoor route is the only legal path. Both you and Jason each contribute $7,000/yr to a Traditional IRA then immediately convert to Roth. All growth is permanently tax-free. Starting in February 2027 (after Upstart dies) vs waiting until November 2028 earns $7,680 more per $7,000 contribution over 30 years.',
+  items: [{
+    expense: 'Jessa Roth: $7,000/yr starting Feb 2027',
+    annual: 7000,
+    note: 'Tax-free growth. Grows to $70,500+ in 30 years.'
+  }, {
+    expense: 'Jason Roth: $7,000/yr starting Jun 2027',
+    annual: 7000,
+    note: 'Separate account. Same process and benefits.'
+  }],
+  how: ['FIRST: Roll Fidelity Traditional IRA ($3,570) into your Vanguard 401K — eliminates pro-rata tax issue', 'fidelity.com → Traditional IRA → Contribute $7,000 → wait 3 days for settlement → DO NOT invest yet', 'Traditional IRA → Transact → Convert to Roth IRA → convert entire amount', 'Roth IRA → Buy FZROX (0% expense ratio) with all available cash', 'TurboTax: IRA Contributions → enter $7,000 as NON-DEDUCTIBLE → generates Form 8606 automatically', 'Form 8606 is essential — without it the IRS may tax you twice on the same money', 'Set calendar reminder: January 1 every year → repeat for both you and Jason', 'Jason: same process with his own separate Traditional IRA and Roth IRA at Fidelity']
+}];
+function TaxGuide({
+  taxOpen,
+  setTaxOpen
+}) {
+  const totalSavings = 1807 + 2800 + 15330 + 4375 + 10453 + 5513;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      paddingBottom: 72,
+      overflowY: 'auto',
+      minHeight: '100vh'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'linear-gradient(135deg,#1A4A42,#0f2d28)',
+      padding: '18px 16px',
+      color: '#fff'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      letterSpacing: .1,
+      opacity: .6,
+      marginBottom: 4
+    }
+  }, "CPA \xB7 TAX ATTORNEY GUIDE \xB7 IRC CITATIONS"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 800,
+      fontSize: 20,
+      marginBottom: 4
+    }
+  }, "Tax Strategy Guide"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      opacity: .7,
+      marginBottom: 12
+    }
+  }, "Every strategy with exact DIY instructions and the law that makes it legal"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'rgba(255,255,255,.13)',
+      borderRadius: 10,
+      padding: '10px 12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      opacity: .6,
+      marginBottom: 2
+    }
+  }, "MAX ANNUAL SAVINGS"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 17,
+      fontWeight: 800,
+      color: '#7EC8B8'
+    }
+  }, "$", totalSavings.toLocaleString(), "/yr")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: 'rgba(255,255,255,.13)',
+      borderRadius: 10,
+      padding: '10px 12px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      opacity: .6,
+      marginBottom: 2
+    }
+  }, "MARGINAL RATE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 17,
+      fontWeight: 800
+    }
+  }, "35% federal \xB7 $0 NH")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: '#EEF7F5',
+      borderLeft: '4px solid #1A4A42',
+      margin: '10px 14px',
+      borderRadius: '0 10px 10px 0',
+      padding: '10px 12px',
+      fontSize: 12,
+      color: '#1A4A42',
+      lineHeight: 1.65
+    }
+  }, /*#__PURE__*/React.createElement("strong", null, "Your situation:"), " $547,200 combined MFJ \xB7 35% marginal \xB7 No HSA (XE non-HDHP) \xB7 3 W-2 jobs \xB7 NH (no state income tax on wages)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0 14px'
+    }
+  }, TAX_STRATEGIES.map(t => {
+    const isO = taxOpen === t.id;
+    return /*#__PURE__*/React.createElement("div", {
+      key: t.id,
+      style: {
+        background: '#fff',
+        borderRadius: 12,
+        marginBottom: 8,
+        overflow: 'hidden',
+        boxShadow: '0 1px 3px rgba(0,0,0,.06)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      onClick: () => setTaxOpen(isO ? null : t.id),
+      style: {
+        padding: '12px 14px',
+        cursor: 'pointer',
+        borderLeft: '4px solid ' + t.color
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        paddingRight: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        gap: 6,
+        alignItems: 'center',
+        marginBottom: 4,
+        flexWrap: 'wrap'
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        background: t.color + '20',
+        color: t.color,
+        fontSize: 9,
+        fontWeight: 700,
+        padding: '2px 7px',
+        borderRadius: 6
+      }
+    }, t.badge), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 9,
+        color: '#aaa'
+      }
+    }, t.cat)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 700,
+        fontSize: 14,
+        lineHeight: 1.3,
+        marginBottom: 3
+      }
+    }, t.title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: t.color + '15',
+        color: t.color,
+        fontSize: 11,
+        fontWeight: 700,
+        padding: '3px 8px',
+        borderRadius: 7,
+        display: 'inline-block'
+      }
+    }, t.amount)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: '#ccc',
+        fontSize: 18,
+        flexShrink: 0,
+        marginTop: 4,
+        transition: 'transform .2s',
+        transform: isO ? 'rotate(90deg)' : 'none'
+      }
+    }, "\u203A"))), isO && /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '0 14px 14px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: '#F9F9F9',
+        borderRadius: 8,
+        padding: '8px 10px',
+        marginBottom: 8,
+        fontSize: 12,
+        color: '#555',
+        lineHeight: 1.65
+      }
+    }, t.what), /*#__PURE__*/React.createElement("div", {
+      style: {
+        background: '#F3EFFF',
+        borderLeft: '3px solid #5b4a8a',
+        padding: '6px 10px',
+        borderRadius: '0 7px 7px 0',
+        fontSize: 10,
+        color: '#3d2d6e',
+        marginBottom: 10,
+        lineHeight: 1.6,
+        fontStyle: 'italic'
+      }
+    }, t.law), t.items && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 700,
+        color: '#888',
+        letterSpacing: .06,
+        marginBottom: 6
+      }
+    }, "BREAKDOWN"), t.items.map((item, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        padding: '7px 0',
+        borderBottom: '1px solid #F5F5F5'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        paddingRight: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: '#333',
+        fontWeight: 500
+      }
+    }, item.expense), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        color: '#aaa',
+        marginTop: 2
+      }
+    }, item.note)), item.annual !== 0 && /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        fontWeight: 700,
+        color: item.annual > 0 ? t.color : '#C62828',
+        flexShrink: 0
+      }
+    }, item.annual > 0 ? '+' : '', Math.abs(item.annual).toLocaleString())))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 700,
+        color: '#888',
+        letterSpacing: .06,
+        margin: '10px 0 6px'
+      }
+    }, "HOW TO DO IT \u2014 STEP BY STEP"), t.how.map((h, i) => /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: 'flex',
+        gap: 8,
+        marginBottom: 6,
+        alignItems: 'flex-start'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 18,
+        height: 18,
+        borderRadius: 5,
+        background: t.color,
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: 9,
+        fontWeight: 700,
+        flexShrink: 0,
+        marginTop: 1
+      }
+    }, i + 1), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: '#444',
+        lineHeight: 1.6,
+        flex: 1
+      }
+    }, h)))));
+  })));
+}</script>
 </body>
 </html>
